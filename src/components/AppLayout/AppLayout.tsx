@@ -1,7 +1,7 @@
-import styles from './AppLayout.module.scss';
+import styles from "./AppLayout.module.scss";
 
-import { Outlet } from 'react-router';
-import Nav from '../Nav/Nav';
+import { Outlet } from "react-router";
+import Nav from "../Nav/Nav";
 
 const AppLayout = () => {
   return (
