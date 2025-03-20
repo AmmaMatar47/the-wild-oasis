@@ -1,0 +1,56 @@
+.nav {
+  background-color: var(--color-grey-0);
+  font-size: 1.6rem;
+  padding: 2.4rem;
+  display: flex;
+  flex-direction: column;
+  width: 22rem;
+  align-items: center;
+}
+
+.appLogo {
+  width: 13.4rem;
+  margin-bottom: 3.8rem;
+}
+
+.navList {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.navItem {
+  margin-bottom: 0.8rem;
+  :global(.active) {
+    background-color: var(--color-grey-50);
+    color: var(--color-grey-900);
+    svg {
+      stroke: var(--color-brand-700);
+    }
+  }
+}
+
+.navLink {
+  display: flex;
+  padding: 1.2rem 0 1.2rem 2.4rem;
+  gap: 1.2rem;
+  align-items: center;
+  transition: all 0.3s;
+  border-radius: var(--border-radius-sm);
+  color: var(--color-grey-600);
+  font-weight: 500;
+
+  &:hover {
+    background-color: var(--color-grey-100);
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  svg {
+    width: 2.4rem;
+    height: 2.4rem;
+    stroke: var(--color-grey-400);
+  }
+}
