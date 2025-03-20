@@ -1,6 +1,6 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from "axios";
 
-type HttpMethods = 'get' | 'post' | 'patch' | 'delete';
+type HttpMethods = "get" | "post" | "patch" | "delete";
 
 const HttpService = class HttpService {
   private instance: AxiosInstance;
@@ -10,7 +10,7 @@ const HttpService = class HttpService {
       baseURL,
       timeout: 15000,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         apikey: import.meta.env.VITE_WILD_OASIS_API_KEY,
       },
     });
@@ -28,15 +28,15 @@ const HttpService = class HttpService {
   handleError(error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        if (error.status === 401) return 'Invalid email or password';
-        return 'There was an error with the request.';
+        if (error.status === 401) return "Invalid email or password";
+        return "There was an error with the request.";
       } else if (error.request) {
         return error.message;
       } else {
-        return error.message || 'Something went wrong. Please try again later.';
+        return error.message || "Something went wrong. Please try again later.";
       }
     } else {
-      return 'An unknown error occurred.';
+      return "An unknown error occurred.";
     }
   }
 };
