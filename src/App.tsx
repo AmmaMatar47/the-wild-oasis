@@ -1,5 +1,5 @@
 import { createBrowserRouter, createRoutesFromElements, Navigate, Route } from 'react-router';
-import AppLayout from './components/AppLayout';
+import AppLayout from './components/AppLayout/AppLayout';
 import Dashboard from './pages/Dashboard';
 import Account from './pages/Account';
 import Users from './pages/Users';
@@ -9,6 +9,8 @@ import Settings from './pages/Settings';
 import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
 import { RouterProvider } from 'react-router-dom';
+import { ChakraProvider } from '@chakra-ui/react';
+import system from './styles/designSystem';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,7 +32,11 @@ const router = createBrowserRouter(
 );
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <ChakraProvider value={system}>
+      <RouterProvider router={router} />
+    </ChakraProvider>
+  );
 };
 
 export default App;
