@@ -10,7 +10,7 @@ import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
 import { RouterProvider } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
-import system from './styles/designSystem';
+import system from './designSystem';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
