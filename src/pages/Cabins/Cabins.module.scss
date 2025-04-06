@@ -1,0 +1,32 @@
+.cabinImg {
+  width: 9.2rem;
+}
+
+.tableHead {
+  font-size: 1.4rem;
+  color: var(--color-grey-600);
+  font-weight: 600;
+  padding: 1.6rem 0;
+}
+
+.menuBtn {
+  width: 1.6rem;
+  height: 3rem;
+  border-radius: 6px;
+  margin-right: 1.2rem;
+}
+
+.menuIcon {
+  width: 2.4rem;
+  height: 2.4rem;
+  fill: var(--color-grey-600);
+}
+
+.menuItem {
+  font-size: 1.4rem;
+  color: var(--color-grey-600);
+  padding: 1.2rem;
+  &:not(:last-child) svg {
+    fill: var(--color-grey-400);
+  }
+}
