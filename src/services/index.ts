@@ -1,4 +1,4 @@
-import { http, httpStorage } from './HttpService';
+import { http, httpStorage } from "./HttpService";
 
 export interface CabinType {
   created_at: Date;
@@ -25,26 +25,40 @@ export interface NewCabinValues {
   regularPrice: number;
 }
 
-export const getCabins = async (params: { order?: string; discount?: string }) => {
-  const res = await http.request<CabinType[]>('get', `/cabins`, { params: params });
+export const getCabins = async (params: {
+  order?: string;
+  discount?: string;
+}) => {
+  const res = await http.request<CabinType[]>("get", `/cabins`, {
+    params: params,
+  });
   return res.data;
 };
 
 export const deleteCabin = (cabinId: number, imagePath: string) => {
-  httpStorage.request('delete', imagePath);
-  const res = http.request('delete', '/cabins', { params: { id: `eq.${cabinId}` } });
+  httpStorage.request("delete", imagePath);
+  const res = http.request("delete", "/cabins", {
+    params: { id: `eq.${cabinId}` },
+  });
   return res;
 };
 
-export const createCabin = async (body: NewCabinValues, bucketName: string, file: Blob) => {
+export const createCabin = async (
+  body: NewCabinValues,
+  bucketName: string,
+  file: Blob,
+) => {
   const formData = new FormData();
-  formData.append('file', file);
+  formData.append("file", file);
 
-  httpStorage.request<{ Key: string }>('post', bucketName, {
+  httpStorage.request<{ Key: string }>("post", bucketName, {
     data: formData,
   });
 
-  return http.request<CabinType>('post', '/cabins', {
-    data: { ...body, image: `${import.meta.env.VITE_WILD_OASIS_STORAGE_URL}/${bucketName}` },
+  return http.request<CabinType>("post", "/cabins", {
+    data: {
+      ...body,
+      image: `${import.meta.env.VITE_WILD_OASIS_STORAGE_URL}/${bucketName}`,
+    },
   });
 };

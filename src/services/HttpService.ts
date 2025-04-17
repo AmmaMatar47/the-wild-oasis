@@ -1,8 +1,8 @@
-import axios, { AxiosHeaders, AxiosInstance } from 'axios';
-import { NewCabinValues } from '.';
-import { Params } from 'react-router-dom';
+import axios, { AxiosHeaders, AxiosInstance } from "axios";
+import { NewCabinValues } from ".";
+import { Params } from "react-router-dom";
 
-type HttpMethods = 'get' | 'post' | 'patch' | 'delete';
+type HttpMethods = "get" | "post" | "patch" | "delete";
 
 const HttpService = class HttpService {
   private instance: AxiosInstance;
@@ -25,7 +25,7 @@ const HttpService = class HttpService {
       params?: Params;
       data?: FormData | NewCabinValues;
       headers?: AxiosHeaders;
-    }
+    },
   ) {
     return this.instance.request<Res>({
       method,
@@ -39,19 +39,21 @@ const HttpService = class HttpService {
   handleError(error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
-        if (error.status === 401) return 'Invalid email or password';
-        return 'There was an error with the request.';
+        if (error.status === 401) return "Invalid email or password";
+        return "There was an error with the request.";
       } else if (error.request) {
         return error.message;
       } else {
-        return error.message || 'Something went wrong. Please try again later.';
+        return error.message || "Something went wrong. Please try again later.";
       }
     } else {
-      return 'An unknown error occurred.';
+      return "An unknown error occurred.";
     }
   }
 };
 
 export const http = new HttpService(import.meta.env.VITE_WILD_OASIS_BASE_URL);
 
-export const httpStorage = new HttpService(import.meta.env.VITE_WILD_OASIS_STORAGE_URL);
+export const httpStorage = new HttpService(
+  import.meta.env.VITE_WILD_OASIS_STORAGE_URL,
+);
