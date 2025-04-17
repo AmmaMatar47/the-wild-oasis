@@ -1,17 +1,17 @@
 .nav {
   background-color: var(--color-grey-0);
-  font-size: 1.6rem;
-  padding: 2.4rem;
+  font-size: 1rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  width: 40rem;
+  width: 25rem;
   align-items: center;
   border-right: 1px solid var(--color-grey-100);
 }
 
 .appLogo {
-  width: 13.4rem;
-  margin-bottom: 3.8rem;
+  width: 8.375rem;
+  margin-bottom: 2.375rem;
 }
 
 .navList {
@@ -21,20 +21,20 @@
 }
 
 .navItem {
-  margin-bottom: 0.8rem;
+  margin-bottom: .5rem;
   :global(.active) {
     background-color: var(--color-grey-50);
     color: var(--color-grey-900);
     svg {
-      stroke: var(--color-brand-700);
+      stroke: var(--color-brand-600);
     }
   }
 }
 
 .navLink {
   display: flex;
-  padding: 1.2rem 0 1.2rem 2.4rem;
-  gap: 1.2rem;
+  padding: 0.75rem 0 0.75rem 1.5rem;
+  gap: 0.75rem;
   align-items: center;
   transition: all 0.3s;
   border-radius: var(--border-radius-sm);
@@ -50,8 +50,8 @@
   }
 
   svg {
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 1.5rem;
+    height: 1.5rem;
     stroke: var(--color-grey-400);
   }
 }

@@ -2,12 +2,19 @@ import styles from './Segment.module.scss';
 
 import { SegmentGroup } from '@chakra-ui/react';
 
+type SegmentItems =
+  | {
+      label: string;
+      value: string;
+    }
+  | string;
+
 const Segment = ({
   items,
   value,
   setValue,
 }: {
-  items: string[];
+  items: SegmentItems[];
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
 }) => {
@@ -16,16 +23,13 @@ const Segment = ({
       value={value}
       onValueChange={e => setValue(e.value)}
       bgColor='var(--color-grey-0)'
-      height='fit-content'
-      width='auto'
-      shadow='xs'
+      shadow='var(--shadow-sm)'
+      size='md'
     >
       <SegmentGroup.Indicator color='var(--color-grey-0)' bgColor='var(--color-brand-600)' />
       <SegmentGroup.Items
         items={items}
-        padding='1.2rem'
         color='var(--color-grey-700)'
-        fontSize='1.4rem'
         fontWeight='500'
         className={styles.segmentItems}
       />

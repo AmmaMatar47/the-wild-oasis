@@ -1,31 +1,32 @@
 .cabinImg {
-  width: 9.2rem;
+  width: 5.75rem;
+  margin-right: 1rem;
 }
 
 .tableHead {
-  font-size: 1.4rem;
+  font-size: .875rem;
   color: var(--color-grey-600);
   font-weight: 600;
-  padding: 1.6rem 0;
+  padding: 1rem 0;
 }
 
 .menuBtn {
-  width: 1.6rem;
-  height: 3rem;
+  width: 1rem;
+  height: 1.875rem;
   border-radius: 6px;
-  margin-right: 1.2rem;
+  margin-right: .75rem;
 }
 
 .menuIcon {
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 1.5rem;
+  height: 1.5rem;
   fill: var(--color-grey-600);
 }
 
 .menuItem {
-  font-size: 1.4rem;
+  font-size: .875rem;
   color: var(--color-grey-600);
-  padding: 1.2rem;
+  padding: .75rem;
   &:not(:last-child) svg {
     fill: var(--color-grey-400);
   }

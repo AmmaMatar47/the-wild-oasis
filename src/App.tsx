@@ -3,13 +3,14 @@ import AppLayout from './components/AppLayout/AppLayout';
 import Dashboard from './pages/Dashboard';
 import Account from './pages/Account';
 import Users from './pages/Users';
-import Cabins from './pages/Cabins/Cabins';
+import Cabins from './pages/Cabins';
 import Bookings from './pages/Bookings';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
 import { RouterProvider } from 'react-router-dom';
 import { ChakraProvider, defaultSystem } from '@chakra-ui/react';
+import { Toaster } from './components/ui/toaster';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
 const App = () => {
   return (
     <ChakraProvider value={defaultSystem}>
+      <Toaster />
       <RouterProvider router={router} />
     </ChakraProvider>
   );
