@@ -1,4 +1,4 @@
-import { createCabin, ImageFileType, CabinType } from '@/services';
+import { editCabin, ImageFileType, CabinType } from '@/services';
 import {
   Button,
   Dialog,
@@ -8,86 +8,77 @@ import {
   Separator,
   Stack,
   Textarea,
+  FileUploadFileChangeDetails,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { LuFileImage } from 'react-icons/lu';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import InputField from '@/components/InputField/InputField';
+import { Tooltip } from '@/components/ui/tooltip';
+import { cabinFormValidation, formInitialValues } from '../CreateCabin/CreateCabin';
 
-export const formInitialValues = {
-  name: '',
-  maxCapacity: 1,
-  regularPrice: 0,
-  discount: 0,
-  description: '',
-  image: '',
-};
+const EditCabin = ({
+  open,
+  setOpen,
+  cabinValues,
+  cabinId,
+}: {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  cabinValues?: CabinType;
+  cabinId?: number;
+}) => {
+  const [isLoading, setIsLoading] = useState(false);
 
-export const cabinFormValidation = Yup.object().shape({
-  name: Yup.string()
-    .min(1, 'Name is too short')
-    .max(15, 'Name is too long')
-    .required('This field is required'),
-  maxCapacity: Yup.number()
-    .min(1, 'Cabin should fit 1 guest at least')
-    .required('This field is required'),
-  regularPrice: Yup.number().required('This field is required'),
-  discount: Yup.number()
-    .min(0, `Discount can't be negative`)
-    .max(Yup.ref('regularPrice'), 'Discount should be less than the regular price')
-    .required(),
-
-  description: Yup.string().required('This field is required'),
-});
-
-const CreateCabin = () => {
   const formik = useFormik({
-    initialValues: formInitialValues,
+    initialValues: cabinValues ? cabinValues : formInitialValues,
     validationSchema: cabinFormValidation,
     onSubmit: handleSubmit,
+    enableReinitialize: true,
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [isFormOpen, setIsFormOpen] = useState(false);
 
   async function handleSubmit(values: CabinType) {
-    const file = values.image as ImageFileType;
-    const bucketName = `object/cabin-images/${file.name}`;
-    const filePath = `${import.meta.env.VITE_WILD_OASIS_STORAGE_URL}/${bucketName}`;
-    const cabinData = { ...values, image: filePath };
-    setIsLoading(true);
-    createCabin(cabinData, bucketName, file)
-      .then(() => {
-        setIsFormOpen(false);
-      })
-      .finally(() => setIsLoading(false));
+    try {
+      if (!formik.dirty || cabinValues === undefined || cabinId === undefined) return;
+      if (cabinValues.image !== values.image) {
+        const file = values.image as ImageFileType;
+        const bucketName = `object/cabin-images/${file.name}`;
+        const filePath = `${import.meta.env.VITE_WILD_OASIS_STORAGE_URL}/${bucketName}`;
+        const cabinData = { ...values, image: filePath };
+        console.log('photo', cabinData);
+        await editCabin(cabinId, cabinData, bucketName, file);
+      } else {
+        console.log('No photo');
+        await editCabin(cabinId, values);
+      }
+      setOpen(false);
+    } catch {
+      setOpen(true);
+    } finally {
+      setIsLoading(false);
+    }
   }
+
+  const handleFileChange = (files: FileUploadFileChangeDetails) => {
+    if (!files?.acceptedFiles?.[0]) return;
+
+    const file: File = files.acceptedFiles[0];
+    formik.setFieldValue('image', file);
+  };
 
   return (
     <Dialog.Root
       placement='center'
       size='xl'
-      open={isFormOpen}
-      onOpenChange={e => setIsFormOpen(e.open)}
+      lazyMount
+      open={open}
+      onOpenChange={e => setOpen(e.open)}
     >
-      <Dialog.Trigger asChild>
-        <Button
-          size='lg'
-          fontSize='.875rem'
-          color='var(--color-grey-100)'
-          bgColor='var(--color-brand-500)'
-          _hover={{ bgColor: 'var(--color-brand-700)' }}
-          borderRadius='4px'
-          marginTop='8'
-        >
-          Add new cabin
-        </Button>
-      </Dialog.Trigger>
       <Dialog.Backdrop />
       <Dialog.Positioner>
         <Dialog.Content>
           <Dialog.Header>
-            <Dialog.Title color='var(--color-grey-800)'>Create cabin</Dialog.Title>
+            <Dialog.Title color='var(--color-grey-800)'>Edit cabin</Dialog.Title>
           </Dialog.Header>
           <Dialog.Body paddingTop='8'>
             <form onSubmit={formik.handleSubmit}>
@@ -101,7 +92,6 @@ const CreateCabin = () => {
                   invalid={!!formik.errors.name}
                   disabled={isLoading}
                 />
-
                 <Separator />
 
                 <InputField
@@ -155,6 +145,7 @@ const CreateCabin = () => {
                     name='description'
                     focusRingColor='var(--color-brand-600)'
                     maxW='16.8rem'
+                    minH='fit-content'
                     maxH='8lh'
                     onChange={formik.handleChange}
                     value={formik.values.description}
@@ -176,12 +167,7 @@ const CreateCabin = () => {
                   <FileUpload.Root
                     accept='image/*'
                     name='image'
-                    onFileChange={files => {
-                      if (!files?.acceptedFiles?.[0]) return;
-
-                      const file: File = files.acceptedFiles[0];
-                      formik.setFieldValue('image', file);
-                    }}
+                    onFileChange={files => handleFileChange(files)}
                     flexDirection='row'
                     maxW='20rem'
                   >
@@ -195,19 +181,25 @@ const CreateCabin = () => {
                   </FileUpload.Root>
                 </Field.Root>
               </Stack>
+
               <Dialog.Footer>
                 <Dialog.ActionTrigger asChild>
                   <Button variant='outline'>Cancel</Button>
                 </Dialog.ActionTrigger>
-                <Button
-                  type='submit'
-                  color='var(--color-grey-100)'
-                  bgColor='var(--color-brand-500)'
-                  _hover={{ bgColor: 'var(--color-brand-700)' }}
-                  disabled={isLoading}
+                <Tooltip
+                  content='Change one field at least to edit the cabin'
+                  disabled={isLoading || formik.dirty}
                 >
-                  Create new cabin
-                </Button>
+                  <Button
+                    type='submit'
+                    color='var(--color-grey-100)'
+                    bgColor='var(--color-brand-500)'
+                    _hover={{ bgColor: 'var(--color-brand-700)' }}
+                    disabled={isLoading || !formik.dirty}
+                  >
+                    Edit
+                  </Button>
+                </Tooltip>
               </Dialog.Footer>
             </form>
           </Dialog.Body>
@@ -217,4 +209,4 @@ const CreateCabin = () => {
   );
 };
 
-export default CreateCabin;
+export default EditCabin;
