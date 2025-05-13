@@ -14,8 +14,8 @@ import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import { RouterProvider } from "react-router-dom";
-import { ChakraProvider } from "@chakra-ui/react";
-import system from "./designSystem";
+import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
+import { Toaster } from "./components/ui/toaster";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -38,7 +38,8 @@ const router = createBrowserRouter(
 
 const App = () => {
   return (
-    <ChakraProvider value={system}>
+    <ChakraProvider value={defaultSystem}>
+      <Toaster />
       <RouterProvider router={router} />
     </ChakraProvider>
   );

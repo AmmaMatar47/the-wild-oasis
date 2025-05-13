@@ -1,7 +1,10 @@
 .appContainer {
   display: flex;
+  min-height: 100vh;
 }
 
 .mainSection {
   background-color: var(--color-grey-50);
+  width: 100%;
+  padding: 1.75rem 2rem;
 }
