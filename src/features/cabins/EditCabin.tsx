@@ -1,4 +1,4 @@
-import { editCabin, ImageFileType, CabinType } from '@/services';
+import { editCabin, ImageFileType, CabinType } from '@/services/api/cabinsApi';
 import {
   Button,
   Dialog,
@@ -13,9 +13,9 @@ import {
 import { useFormik } from 'formik';
 import { LuFileImage } from 'react-icons/lu';
 import React, { useState } from 'react';
-import InputField from '@/components/InputField/InputField';
+import InputField from '@/components/InputField';
 import { Tooltip } from '@/components/ui/tooltip';
-import { cabinFormValidation, formInitialValues } from '../CreateCabin/CreateCabin';
+import { cabinFormValidation, formInitialValues } from './CreateCabin';
 
 const EditCabin = ({
   open,

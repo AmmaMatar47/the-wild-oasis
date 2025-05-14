@@ -1,104 +1,92 @@
-import {
-  createListCollection,
-  Flex,
-  Heading,
-  Portal,
-  Select,
-  SelectValueChangeDetails,
-} from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { CabinType, getCabins, getDataRange } from "@/services";
-import Spinner from "@/components/Spinner/Spinner";
-import Segment from "@/components/Segment/Segment";
-import CabinsTable from "@/features/cabins/CabinsTable/CabinsTable";
-import CreateCabin from "@/features/cabins/CreateCabin/CreateCabin";
-import { useSearchParams } from "react-router-dom";
-import TablePagination from "@/components/TablePagination";
+import { createListCollection, Flex, SelectValueChangeDetails } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { CabinResponseType, getCabins } from '@/services/api/cabinsApi';
+import Spinner from '@/components/Spinner/Spinner';
+import Segment from '@/components/Segment/Segment';
+import CabinsTable from '@/features/cabins/CabinsTable';
+import CreateCabin from '@/features/cabins/CreateCabin';
+import { useSearchParams } from 'react-router-dom';
+import TablePagination from '@/components/TablePagination';
+import SelectComp from '@/components/Select';
+import Header from '@/components/Header';
+import { calculatePageRange } from '@/utils/helper';
+import { getDataRange } from '@/services/api/indexApi';
 
 const segmentItems = [
-  { label: "All", value: "All" },
-  { label: "No discount", value: "eq.0" },
-  { label: "With discount", value: "gt.0" },
+  { label: 'All', value: 'All' },
+  { label: 'No discount', value: 'eq.0' },
+  { label: 'With discount', value: 'gt.0' },
 ];
 
 const sortBy = createListCollection({
   items: [
-    { label: "name (A-Z)", value: "name.asc" },
-    { label: "name (Z-A)", value: "name.desc" },
-    { label: "price (low first)", value: "regularPrice.asc" },
-    { label: "price (high first)", value: "regularPrice.desc" },
-    { label: "capacity (low first)", value: "maxCapacity.asc" },
-    { label: "capacity (high first)", value: "maxCapacity.desc" },
+    { label: 'name (A-Z)', value: 'name.asc' },
+    { label: 'name (Z-A)', value: 'name.desc' },
+    { label: 'price (low first)', value: 'regularPrice.asc' },
+    { label: 'price (high first)', value: 'regularPrice.desc' },
+    { label: 'capacity (low first)', value: 'maxCapacity.asc' },
+    { label: 'capacity (high first)', value: 'maxCapacity.desc' },
   ],
 });
 
-const pageSize = 6;
-
-const calculatePageRange = (page: number, pageSize: number) => {
-  const start = (page - 1) * pageSize;
-  const end = page * pageSize - 1;
-  const range = `${start}-${end}`;
-
-  return range;
-};
+const CABINS_PAGE_SIZE = 6;
 
 const Cabins = () => {
   // Cabins table
-  const [cabins, setCabins] = useState<CabinType[]>([]);
+  const [cabins, setCabins] = useState<CabinResponseType[]>([]);
   const [cabinsCount, setCabinsCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   // Cabins params
   const [searchParams, setSearchParams] = useSearchParams();
-  const activePage = Number(searchParams?.get("page")) || 1;
-  const cabinsRange = calculatePageRange(activePage, pageSize);
-  const sortingValue = searchParams?.get("order") || "name.asc";
-  const activeSegment = searchParams?.get("discount") || "All";
+  const activePage = Number(searchParams?.get('page')) || 1;
+  const sortingValue = searchParams?.get('order') || 'name.asc';
+  const activeSegment = searchParams?.get('discount') || 'All';
 
   useEffect(() => {
-    handleFetchCabins({});
+    fetchCabins({});
   }, []);
 
   // Get the cabins Data length
   useEffect(() => {
     const getCabinsCount = async () => {
       const count = await getDataRange(
-        "cabins",
-        activeSegment === "All" ? null : { discount: activeSegment },
+        'cabins',
+        activeSegment === 'All' ? null : { discount: activeSegment }
       );
       setCabinsCount(count);
     };
     getCabinsCount();
   }, [cabinsCount, activeSegment]);
 
-  const handleFetchCabins = async ({
+  const fetchCabins = async ({
     activeSorting = sortingValue,
     activeSegmentValue = activeSegment,
-    curCabinsRange = cabinsRange,
+    activePageParam = activePage,
   }) => {
     setIsLoading(true);
     const cabinsData = await getCabins(
       activeSorting,
       activeSegmentValue,
-      curCabinsRange,
+      calculatePageRange(activePageParam, CABINS_PAGE_SIZE)
     );
     setCabins(cabinsData);
     setIsLoading(false);
   };
 
   const handlePageChange = ({ page }: { page: number }) => {
-    handleFetchCabins({ curCabinsRange: cabinsRange });
-    setSearchParams((prevParams) => {
-      prevParams.set("page", String(page));
+    setSearchParams(prevParams => {
+      prevParams.set('page', String(page));
       return prevParams;
     });
+    fetchCabins({ activePageParam: page });
   };
 
   const handleSegmentValueChange = (value: string) => {
-    handleFetchCabins({ activeSegmentValue: value });
-    setSearchParams((prevParams) => {
-      prevParams.set("discount", value);
-      prevParams.set("page", "1");
+    fetchCabins({ activeSegmentValue: value, activePageParam: 1 });
+    setSearchParams(prevParams => {
+      prevParams.set('discount', value);
+      prevParams.set('page', '1');
       return prevParams;
     });
   };
@@ -107,80 +95,33 @@ const Cabins = () => {
     details: SelectValueChangeDetails<{
       label: string;
       value: string;
-    }>,
+    }>
   ) => {
-    handleFetchCabins({ activeSorting: sortingValue });
-    setSearchParams((prevParams) => {
-      prevParams.set("order", details.value[0]);
+    fetchCabins({ activeSorting: details.value[0], activePageParam: 1 });
+    setSearchParams(prevParams => {
+      prevParams.set('order', details.value[0]);
+      prevParams.set('page', '1');
       return prevParams;
     });
   };
 
   return (
     <>
-      <Flex justifyContent="space-between">
-        <Heading
-          as="h2"
-          fontSize="3xl"
-          color="var(--color-grey-700)"
-          fontFamily="Poppins, sans-serif"
-          fontWeight="600"
-          lineHeight="1.05"
-        >
-          All cabins
-        </Heading>
-        <Flex gapX="1.125rem">
+      <Flex justifyContent='space-between'>
+        <Header>All cabins</Header>
+        <Flex gapX='1.125rem'>
           <Segment
             items={segmentItems}
             value={activeSegment}
             onValueChange={handleSegmentValueChange}
           />
 
-          <Select.Root
+          <SelectComp
             collection={sortBy}
-            size="md"
-            width="12.5rem"
-            variant="subtle"
             onValueChange={handleSortingValueChange}
             defaultValue={[sortingValue]}
-            disabled={cabinsCount === 0}
-          >
-            <Select.HiddenSelect />
-            <Select.Control>
-              <Select.Trigger
-                bg="var(--color-grey-0)"
-                borderRadius="md"
-                shadow="var(--shadow-sm)"
-                padding=".625rem"
-              >
-                <Select.ValueText
-                  placeholder="Sort by"
-                  fontSize=".875rem"
-                  fontWeight="500"
-                  color="var(--color-grey-700)"
-                />
-              </Select.Trigger>
-              <Select.IndicatorGroup>
-                <Select.Indicator />
-              </Select.IndicatorGroup>
-            </Select.Control>
-            <Portal>
-              <Select.Positioner>
-                <Select.Content>
-                  {sortBy.items.map((sortBy) => (
-                    <Select.Item
-                      item={sortBy}
-                      key={sortBy.value}
-                      fontSize=".875rem"
-                    >
-                      {sortBy.label}
-                      <Select.ItemIndicator />
-                    </Select.Item>
-                  ))}
-                </Select.Content>
-              </Select.Positioner>
-            </Portal>
-          </Select.Root>
+            disabled={cabinsCount < 2}
+          />
         </Flex>
       </Flex>
       {isLoading ? (
@@ -188,17 +129,16 @@ const Cabins = () => {
       ) : (
         <>
           <CabinsTable cabins={cabins} />
-          {cabinsCount === 0 || !cabinsCount ? null : (
+          {cabinsCount <= CABINS_PAGE_SIZE || !cabinsCount ? null : (
             <TablePagination
               page={activePage}
-              pageSize={pageSize}
+              pageSize={CABINS_PAGE_SIZE}
               onPageChange={handlePageChange}
               count={cabinsCount}
             />
           )}
         </>
       )}
-
       <CreateCabin />
     </>
   );
