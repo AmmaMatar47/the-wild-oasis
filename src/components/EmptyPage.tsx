@@ -1,5 +1,5 @@
-import { EmptyState, VStack } from '@chakra-ui/react';
-import { IconType } from 'react-icons';
+import { EmptyState, VStack } from "@chakra-ui/react";
+import { IconType } from "react-icons";
 
 const EmptyPage = ({
   description,
@@ -11,13 +11,15 @@ const EmptyPage = ({
   Icon: IconType;
 }) => {
   return (
-    <EmptyState.Root size='lg'>
+    <EmptyState.Root size="lg">
       <EmptyState.Content>
         <EmptyState.Indicator>
           <Icon />
         </EmptyState.Indicator>
-        <VStack textAlign='center'>
-          <EmptyState.Title color='var(--color-grey-800)'>{title}</EmptyState.Title>
+        <VStack textAlign="center">
+          <EmptyState.Title color="var(--color-grey-800)">
+            {title}
+          </EmptyState.Title>
           <EmptyState.Description>{description}</EmptyState.Description>
         </VStack>
       </EmptyState.Content>

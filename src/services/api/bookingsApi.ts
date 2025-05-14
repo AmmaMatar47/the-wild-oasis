@@ -1,9 +1,9 @@
-import { toaster } from '@/components/ui/toaster';
-import { http } from '../HttpService';
-import { AxiosResponse } from 'axios';
-import { CabinResponseType } from './cabinsApi';
+import { toaster } from "@/components/ui/toaster";
+import { http } from "../HttpService";
+import { AxiosResponse } from "axios";
+import { CabinResponseType } from "./cabinsApi";
 
-export type StatusType = 'unconfirmed' | 'checked-out' | 'checked-in';
+export type StatusType = "unconfirmed" | "checked-out" | "checked-in";
 
 interface Guests {
   countryFlag: string;
@@ -41,13 +41,17 @@ export interface BookingDetails extends BookingsType {
   startDate: string;
 }
 
-export const getBookings = async (status: string, sortBy: string, dataRange: string) => {
-  const res = await http.request<BookingsType[]>('get', '/bookings', {
+export const getBookings = async (
+  status: string,
+  sortBy: string,
+  dataRange: string,
+) => {
+  const res = await http.request<BookingsType[]>("get", "/bookings", {
     params: {
       order: sortBy,
       status: status,
       select:
-        'id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)',
+        "id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)",
     },
     headers: {
       range: dataRange,
@@ -58,22 +62,22 @@ export const getBookings = async (status: string, sortBy: string, dataRange: str
 };
 
 export const getBookingById = async (id: number) => {
-  const res = await http.request<BookingDetails[]>('get', 'bookings', {
+  const res = await http.request<BookingDetails[]>("get", "bookings", {
     params: { id: `eq.${id}`, select: `*, cabins(*), guests(*)` },
   });
   return res.data;
 };
 
 export const deleteBooking = (id: number) => {
-  const res = http.request<AxiosResponse<''>>('delete', 'bookings', {
+  const res = http.request<AxiosResponse<"">>("delete", "bookings", {
     params: {
       id: `eq.${id}`,
     },
   });
 
   toaster.promise(res, {
-    success: { description: 'Booking deleted successfully' },
-    loading: { description: 'Deleting' },
+    success: { description: "Booking deleted successfully" },
+    loading: { description: "Deleting" },
     error: {
       description: `Couldn't delete booking`,
     },
@@ -82,10 +86,10 @@ export const deleteBooking = (id: number) => {
 };
 
 export const checkOut = (id: number) => {
-  const res = http.request('patch', 'bookings', {
+  const res = http.request("patch", "bookings", {
     params: { id: `eq.${id}` },
     data: {
-      status: 'checked-out',
+      status: "checked-out",
     },
   });
 

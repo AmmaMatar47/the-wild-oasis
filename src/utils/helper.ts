@@ -1,9 +1,10 @@
-import { formatDistanceToNow, formatDate } from 'date-fns';
+import { formatDistanceToNow, formatDate } from "date-fns";
 
 export const formatToUSCurrency = (number: number) => {
-  const USDCurrency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
-    number
-  );
+  const USDCurrency = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(number);
   return USDCurrency;
 };
 
@@ -12,7 +13,10 @@ export const formatTimeToNow = (date: string) => {
   return result;
 };
 
-export const formatDateToReadable = (date: string, formatString = 'MMM dd yyyy') => {
+export const formatDateToReadable = (
+  date: string,
+  formatString = "MMM dd yyyy",
+) => {
   const formattedDate: string = formatDate(date, formatString);
   return formattedDate;
 };

@@ -1,8 +1,8 @@
-import axios, { AxiosInstance } from 'axios';
-import { CabinType } from './api/cabinsApi';
-import { Params } from 'react-router-dom';
+import axios, { AxiosInstance } from "axios";
+import { CabinType } from "./api/cabinsApi";
+import { Params } from "react-router-dom";
 
-type HttpMethods = 'get' | 'post' | 'patch' | 'delete';
+type HttpMethods = "get" | "post" | "patch" | "delete";
 
 const HttpService = class HttpService {
   private instance: AxiosInstance;
@@ -25,7 +25,7 @@ const HttpService = class HttpService {
       params?: Params;
       data?: FormData | CabinType | Partial<CabinType> | { status: string };
       headers?: { range: string };
-    }
+    },
   ) {
     return this.instance.request<Res>({
       method,
@@ -39,4 +39,6 @@ const HttpService = class HttpService {
 
 export const http = new HttpService(import.meta.env.VITE_WILD_OASIS_BASE_URL);
 
-export const httpStorage = new HttpService(import.meta.env.VITE_WILD_OASIS_STORAGE_URL);
+export const httpStorage = new HttpService(
+  import.meta.env.VITE_WILD_OASIS_STORAGE_URL,
+);

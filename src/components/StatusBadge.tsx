@@ -1,5 +1,5 @@
-import { StatusType } from '@/services/api/bookingsApi';
-import { Badge, BadgeProps } from '@chakra-ui/react';
+import { StatusType } from "@/services/api/bookingsApi";
+import { Badge, BadgeProps } from "@chakra-ui/react";
 
 interface StatusBadge extends BadgeProps {
   status: StatusType;
@@ -8,9 +8,9 @@ interface StatusBadge extends BadgeProps {
 const StatusBadge: React.FC<StatusBadge> = ({ children, status }) => {
   return (
     <Badge
-      fontWeight='600'
-      textTransform='uppercase'
-      colorPalette={`${status === 'unconfirmed' ? 'blue' : status === 'checked-in' ? 'green' : 'grey'}`}
+      fontWeight="600"
+      textTransform="uppercase"
+      colorPalette={`${status === "unconfirmed" ? "blue" : status === "checked-in" ? "green" : "grey"}`}
     >
       {children}
     </Badge>
