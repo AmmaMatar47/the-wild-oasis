@@ -1,9 +1,4 @@
-import {
-  ListCollection,
-  Portal,
-  Select,
-  SelectRootProps,
-} from "@chakra-ui/react";
+import { ListCollection, Portal, Select, SelectRootProps } from '@chakra-ui/react';
 
 interface SelectCompParams extends SelectRootProps {
   collection: ListCollection<{
@@ -14,26 +9,20 @@ interface SelectCompParams extends SelectRootProps {
 
 const SelectComp = ({ collection, ...props }: SelectCompParams) => {
   return (
-    <Select.Root
-      collection={collection}
-      size="md"
-      width="12.5rem"
-      variant="subtle"
-      {...props}
-    >
+    <Select.Root collection={collection} width='12.5rem' variant='subtle' {...props}>
       <Select.HiddenSelect />
       <Select.Control>
         <Select.Trigger
-          bg="var(--color-grey-0)"
-          borderRadius="md"
-          shadow="var(--shadow-sm)"
-          padding=".625rem"
+          bg='var(--color-grey-0)'
+          borderRadius='md'
+          shadow='var(--shadow-sm)'
+          padding='.625rem'
         >
           <Select.ValueText
-            placeholder="Sort by"
-            fontSize=".875rem"
-            fontWeight="500"
-            color="var(--color-grey-700)"
+            placeholder='Sort by'
+            fontSize='.875rem'
+            fontWeight='500'
+            color='var(--color-grey-700)'
           />
         </Select.Trigger>
         <Select.IndicatorGroup>
@@ -43,8 +32,8 @@ const SelectComp = ({ collection, ...props }: SelectCompParams) => {
       <Portal>
         <Select.Positioner>
           <Select.Content>
-            {collection.items.map((item) => (
-              <Select.Item item={item} key={item.value} fontSize=".875rem">
+            {collection.items.map(item => (
+              <Select.Item item={item} key={item.value} fontSize='.875rem'>
                 {item.label}
                 <Select.ItemIndicator />
               </Select.Item>
