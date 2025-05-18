@@ -1,4 +1,4 @@
-import { http } from '../HttpService';
+import { http } from "../HttpService";
 
 export interface SettingsType {
   breakfastPrice: number;
@@ -10,6 +10,6 @@ export interface SettingsType {
 }
 
 export const getSettings = async () => {
-  const res = await http.request<SettingsType[]>('get', '/settings');
+  const res = await http.request<SettingsType[]>("get", "/settings");
   return res.data;
 };
