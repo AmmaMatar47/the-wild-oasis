@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from "axios";
-import { EditCabinBody, NewCabinValues } from ".";
+import { CabinType } from "./api/cabinsApi";
 import { Params } from "react-router-dom";
+import { BookingDetailsType } from "./api/bookingsApi";
 
 type HttpMethods = "get" | "post" | "patch" | "delete";
 
@@ -23,7 +24,11 @@ const HttpService = class HttpService {
     endpoint: string,
     config?: {
       params?: Params;
-      data?: FormData | NewCabinValues | EditCabinBody;
+      data?:
+        | FormData
+        | CabinType
+        | Partial<CabinType>
+        | Partial<BookingDetailsType>;
       headers?: { range: string };
     },
   ) {

@@ -1,4 +1,8 @@
-import { createCabin, ImageFileType, CabinType } from "@/services";
+import {
+  createCabin,
+  ImageFileType,
+  CabinType,
+} from "@/services/api/cabinsApi";
 import {
   Button,
   Dialog,
@@ -13,7 +17,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { LuFileImage } from "react-icons/lu";
 import { useState } from "react";
-import InputField from "@/components/InputField/InputField";
+import InputField from "@/components/InputField";
 
 export const formInitialValues = {
   name: "",

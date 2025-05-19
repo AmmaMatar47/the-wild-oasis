@@ -1,3 +1,4 @@
 .segmentItems[data-state="checked"] {
+  transition: all 0.2s;
   color: var(--color-grey-0);
 }

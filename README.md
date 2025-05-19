@@ -21,7 +21,7 @@ The application includes user authentication, role-based access control, and a r
 ## Technologies Used
 
 - **Frontend**: React.js, Chakra UI, React Router, Typescript, Sass
-- **Database**: Supabase (or PostgreSQL)
-- **Authentication**: Supabase Auth (or JWT)
-- **Deployment**: Vercel (Frontend)
-- **Other Tools**: React Query, Formik, Redux Toolkit
+- **Database**: Supabase
+- **Authentication**: Supabase Auth JWT
+- **Deployment**: Vercel
+- **Other Tools**: Formik, Redux Toolkit

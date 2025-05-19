@@ -16,6 +16,8 @@ import PageNotFound from "./pages/PageNotFound";
 import { RouterProvider } from "react-router-dom";
 import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import { Toaster } from "./components/ui/toaster";
+import BookingsDetails from "./features/bookings/BookingsDetails";
+import CheckIn from "./features/check-in-out/CheckIn";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,10 +25,12 @@ const router = createBrowserRouter(
       <Route element={<AppLayout />}>
         <Route index element={<Navigate replace={true} to="/dashboard" />} />
         <Route path="dashboard" element={<Dashboard />} />
-        <Route path="Users" element={<Users />} />
+        <Route path="users" element={<Users />} />
         <Route path="account" element={<Account />} />
         <Route path="cabins" element={<Cabins />} />
         <Route path="bookings" element={<Bookings />} />
+        <Route path="bookings/:bookingsId" element={<BookingsDetails />} />
+        <Route path="checkin/:bookingsId" element={<CheckIn />} />
         <Route path="settings" element={<Settings />} />
       </Route>
 

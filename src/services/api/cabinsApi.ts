@@ -1,6 +1,6 @@
 import { toaster } from "@/components/ui/toaster";
-import { http, httpStorage } from "./HttpService";
-import { Params } from "react-router";
+import { http, httpStorage } from "../HttpService";
+import { AxiosResponse } from "axios";
 
 export interface CabinType {
   description: string;
@@ -21,21 +21,13 @@ export interface ImageFileType extends Blob {
   size: number;
   type: string;
 }
-export interface EditCabinBody {
-  description?: string;
-  discount?: number;
-  image?: string | ImageFileType;
-  maxCapacity?: number;
-  name?: string;
-  regularPrice?: number;
-}
 
 export const getCabins = async (
   order: string,
   discount: string,
   range: string,
 ) => {
-  const res = await http.request<CabinType[]>("get", `/cabins`, {
+  const res = await http.request<CabinResponseType[]>("get", `/cabins`, {
     params:
       discount === "All"
         ? { order: order }
@@ -82,7 +74,7 @@ export const createCabin = (
 
 export const editCabin = (
   id: number,
-  body: EditCabinBody,
+  body: Partial<CabinType>,
   bucketName?: string,
   file?: Blob,
 ) => {
@@ -113,7 +105,7 @@ export const editCabin = (
 
 export const deleteCabin = (cabinId: number, imagePath: string) => {
   httpStorage.request<"">("delete", imagePath);
-  const res = http.request<{ message: string }>("delete", "/cabins", {
+  const res = http.request<AxiosResponse<"">>("delete", "/cabins", {
     params: { id: `eq.${cabinId}` },
   });
   toaster.promise(res, {
@@ -124,15 +116,4 @@ export const deleteCabin = (cabinId: number, imagePath: string) => {
     loading: { description: "Deleting" },
   });
   return res;
-};
-
-export const getDataRange = async (
-  endpoint: "cabins" | "bookings",
-  customParam: Params | null,
-) => {
-  const countRes = await http.request<{ count: number }[]>("get", endpoint, {
-    params: { select: "count", ...customParam },
-  });
-
-  return countRes.data[0].count;
 };

@@ -1,27 +1,25 @@
-import { Button, CloseButton, Dialog, Portal } from "@chakra-ui/react";
+import {
+  Button,
+  CloseButton,
+  Dialog,
+  DialogRootProps,
+  Portal,
+} from "@chakra-ui/react";
 
-type DeleteDialogProps = {
+interface DeleteDialogProps extends DialogRootProps {
   children: string;
   title: string;
-  onClick: () => void;
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
+  onDelete: () => void;
+}
 
 const DeleteDialog = ({
   children,
   title,
-  onClick,
-  open,
-  setOpen,
+  onDelete,
+  ...props
 }: DeleteDialogProps) => {
   return (
-    <Dialog.Root
-      lazyMount
-      open={open}
-      onOpenChange={(e) => setOpen(e.open)}
-      placement="center"
-    >
+    <Dialog.Root lazyMount {...props} placement="center">
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
@@ -41,7 +39,7 @@ const DeleteDialog = ({
                 <Button variant="outline">Cancel</Button>
               </Dialog.ActionTrigger>
               <Button
-                onClick={onClick}
+                onClick={onDelete}
                 bg="var(--color-red-700)"
                 _hover={{ bg: "var(--color-red-800)" }}
               >

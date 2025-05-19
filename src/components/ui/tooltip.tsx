@@ -31,7 +31,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
         <Portal disabled={!portalled} container={portalRef}>
           <ChakraTooltip.Positioner>
             <ChakraTooltip.Content
-              bgColor="var(--color-grey-50)"
+              bgColor="var(--color-grey-0)"
               color="var(--color-grey-800)"
               ref={ref}
               {...contentProps}

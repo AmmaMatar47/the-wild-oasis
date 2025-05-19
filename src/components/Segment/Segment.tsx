@@ -23,15 +23,10 @@ const Segment = ({
       onValueChange={(e) => onValueChange(e.value)}
       bgColor="var(--color-grey-0)"
       shadow="var(--shadow-sm)"
-      size="md"
     >
-      <SegmentGroup.Indicator
-        color="var(--color-grey-0)"
-        bgColor="var(--color-brand-600)"
-      />
+      <SegmentGroup.Indicator bgColor="var(--color-brand-600)" />
       <SegmentGroup.Items
         items={items}
-        color="var(--color-grey-700)"
         fontWeight="500"
         className={styles.segmentItems}
       />
