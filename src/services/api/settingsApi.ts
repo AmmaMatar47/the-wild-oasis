@@ -1,5 +1,5 @@
-import { toaster } from '@/components/ui/toaster';
-import { http } from '../HttpService';
+import { toaster } from "@/components/ui/toaster";
+import { http } from "../HttpService";
 
 export interface UpdateSettingsRequestType {
   breakfastPrice: number;
@@ -14,21 +14,21 @@ export interface SettingsType extends UpdateSettingsRequestType {
 }
 
 export const getSettings = async () => {
-  const res = await http.request<SettingsType[]>('get', '/settings');
+  const res = await http.request<SettingsType[]>("get", "/settings");
   return res.data;
 };
 
 export const updateSettings = (settingsData: UpdateSettingsRequestType) => {
   // There's only one settings row in the server so no need for passing an id for the updateSettings function
-  const res = http.request<SettingsType[]>('patch', '/settings', {
-    params: { id: 'eq.1' },
+  const res = http.request<SettingsType[]>("patch", "/settings", {
+    params: { id: "eq.1" },
     data: settingsData,
   });
 
   toaster.promise(res, {
-    error: { description: 'failed to update settings' },
-    loading: { description: 'Updating settings' },
-    success: { description: 'Settings updated successfully' },
+    error: { description: "failed to update settings" },
+    loading: { description: "Updating settings" },
+    success: { description: "Settings updated successfully" },
   });
 
   return res;

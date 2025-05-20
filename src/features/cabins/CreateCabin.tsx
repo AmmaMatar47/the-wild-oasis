@@ -1,4 +1,8 @@
-import { createCabin, ImageFileType, CabinType } from '@/services/api/cabinsApi';
+import {
+  createCabin,
+  ImageFileType,
+  CabinType,
+} from "@/services/api/cabinsApi";
 import {
   Button,
   Dialog,
@@ -8,12 +12,12 @@ import {
   Separator,
   Stack,
   Textarea,
-} from '@chakra-ui/react';
-import { useFormik } from 'formik';
-import { LuFileImage } from 'react-icons/lu';
-import { useState } from 'react';
-import InputField from '@/components/InputField';
-import { cabinFormValidation, formInitialValues } from './cabinsFormConfig';
+} from "@chakra-ui/react";
+import { useFormik } from "formik";
+import { LuFileImage } from "react-icons/lu";
+import { useState } from "react";
+import InputField from "@/components/InputField";
+import { cabinFormValidation, formInitialValues } from "./cabinsFormConfig";
 
 const CreateCabin = () => {
   const formik = useFormik({
@@ -39,20 +43,20 @@ const CreateCabin = () => {
 
   return (
     <Dialog.Root
-      placement='center'
-      size='xl'
+      placement="center"
+      size="xl"
       open={isFormOpen}
-      onOpenChange={e => setIsFormOpen(e.open)}
+      onOpenChange={(e) => setIsFormOpen(e.open)}
     >
       <Dialog.Trigger asChild>
         <Button
-          size='lg'
-          fontSize='.875rem'
-          color='var(--color-grey-100)'
-          bgColor='var(--color-brand-500)'
-          _hover={{ bgColor: 'var(--color-brand-700)' }}
-          borderRadius='4px'
-          marginTop='8'
+          size="lg"
+          fontSize=".875rem"
+          color="var(--color-grey-100)"
+          bgColor="var(--color-brand-500)"
+          _hover={{ bgColor: "var(--color-brand-700)" }}
+          borderRadius="4px"
+          marginTop="8"
         >
           Add new cabin
         </Button>
@@ -61,14 +65,20 @@ const CreateCabin = () => {
       <Dialog.Positioner>
         <Dialog.Content>
           <Dialog.Header>
-            <Dialog.Title color='var(--color-grey-800)'>Create cabin</Dialog.Title>
+            <Dialog.Title color="var(--color-grey-800)">
+              Create cabin
+            </Dialog.Title>
           </Dialog.Header>
-          <Dialog.Body paddingTop='8'>
+          <Dialog.Body paddingTop="8">
             <form onSubmit={formik.handleSubmit}>
-              <Stack gap='5' css={{ '--field-label-width': '148px' }} color='var(--color-grey-700)'>
+              <Stack
+                gap="5"
+                css={{ "--field-label-width": "148px" }}
+                color="var(--color-grey-700)"
+              >
                 <InputField
-                  name='name'
-                  label='Cabin name'
+                  name="name"
+                  label="Cabin name"
                   value={formik.values.name}
                   errorMessage={formik.errors.name}
                   onChange={formik.handleChange}
@@ -79,9 +89,9 @@ const CreateCabin = () => {
                 <Separator />
 
                 <InputField
-                  type='number'
-                  name='maxCapacity'
-                  label='Maximum capacity'
+                  type="number"
+                  name="maxCapacity"
+                  label="Maximum capacity"
                   value={formik.values.maxCapacity}
                   errorMessage={formik.errors.maxCapacity}
                   onChange={formik.handleChange}
@@ -92,9 +102,9 @@ const CreateCabin = () => {
                 <Separator />
 
                 <InputField
-                  type='number'
-                  name='regularPrice'
-                  label='Regular price'
+                  type="number"
+                  name="regularPrice"
+                  label="Regular price"
                   value={formik.values.regularPrice}
                   errorMessage={formik.errors.regularPrice}
                   onChange={formik.handleChange}
@@ -105,9 +115,9 @@ const CreateCabin = () => {
                 <Separator />
 
                 <InputField
-                  type='number'
-                  name='discount'
-                  label='Discount'
+                  type="number"
+                  name="discount"
+                  label="Discount"
                   value={formik.values.discount}
                   errorMessage={formik.errors.discount}
                   onChange={formik.handleChange}
@@ -118,18 +128,18 @@ const CreateCabin = () => {
                 <Separator />
 
                 <Field.Root
-                  justifyContent='start'
-                  gap='6.2rem'
-                  orientation='horizontal'
+                  justifyContent="start"
+                  gap="6.2rem"
+                  orientation="horizontal"
                   invalid={!!formik.errors.description}
                   disabled={isLoading}
                 >
                   <Field.Label>Description</Field.Label>
                   <Textarea
-                    name='description'
-                    focusRingColor='var(--color-brand-600)'
-                    maxW='16.8rem'
-                    maxH='8lh'
+                    name="description"
+                    focusRingColor="var(--color-brand-600)"
+                    maxW="16.8rem"
+                    maxH="8lh"
                     onChange={formik.handleChange}
                     value={formik.values.description}
                   />
@@ -139,29 +149,33 @@ const CreateCabin = () => {
                 <Separator />
 
                 <Field.Root
-                  justifyContent='start'
-                  gap='6.2rem'
-                  orientation='horizontal'
-                  marginBottom='2.4rem'
+                  justifyContent="start"
+                  gap="6.2rem"
+                  orientation="horizontal"
+                  marginBottom="2.4rem"
                   disabled={isLoading}
                 >
                   <Field.Label>Cabin photo</Field.Label>
 
                   <FileUpload.Root
-                    accept='image/*'
-                    name='image'
-                    onFileChange={files => {
+                    accept="image/*"
+                    name="image"
+                    onFileChange={(files) => {
                       if (!files?.acceptedFiles?.[0]) return;
 
                       const file: File = files.acceptedFiles[0];
-                      formik.setFieldValue('image', file);
+                      formik.setFieldValue("image", file);
                     }}
-                    flexDirection='row'
-                    maxW='20rem'
+                    flexDirection="row"
+                    maxW="20rem"
                   >
                     <FileUpload.HiddenInput />
                     <FileUpload.Trigger asChild>
-                      <Button variant='outline' size='md' color='var(--color-grey-700)'>
+                      <Button
+                        variant="outline"
+                        size="md"
+                        color="var(--color-grey-700)"
+                      >
                         <LuFileImage /> Upload Images
                       </Button>
                     </FileUpload.Trigger>
@@ -171,13 +185,13 @@ const CreateCabin = () => {
               </Stack>
               <Dialog.Footer>
                 <Dialog.ActionTrigger asChild>
-                  <Button variant='outline'>Cancel</Button>
+                  <Button variant="outline">Cancel</Button>
                 </Dialog.ActionTrigger>
                 <Button
-                  type='submit'
-                  color='var(--color-grey-100)'
-                  bgColor='var(--color-brand-500)'
-                  _hover={{ bgColor: 'var(--color-brand-700)' }}
+                  type="submit"
+                  color="var(--color-grey-100)"
+                  bgColor="var(--color-brand-500)"
+                  _hover={{ bgColor: "var(--color-brand-700)" }}
                   disabled={isLoading}
                 >
                   Create new cabin

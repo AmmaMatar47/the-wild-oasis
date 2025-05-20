@@ -1,5 +1,5 @@
-import { updateSettings } from '@/services/api/settingsApi';
-import { useMutation } from 'react-query';
+import { updateSettings } from "@/services/api/settingsApi";
+import { useMutation } from "react-query";
 
 export const useUpdateSettings = () => {
   const { mutate, data, error, isLoading } = useMutation({
