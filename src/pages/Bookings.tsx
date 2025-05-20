@@ -13,7 +13,7 @@ import {
   Flex,
   SelectValueChangeDetails,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import PageError from "@/components/PageError";
 
@@ -51,39 +51,42 @@ const Bookings = () => {
   const sortByValue = searchParams.get("order") || "startDate.desc";
   const activeStatus = searchParams.get("status") || "not.is.null";
 
+  const fetchBookings = useCallback(
+    async ({
+      status = activeStatus,
+      sortBy = sortByValue,
+      page = activePage,
+    }: {
+      status?: string;
+      sortBy?: string;
+      page?: number;
+    }) => {
+      try {
+        setIsLoading(true);
+        const bookingsDataCount = await getDataRange("bookings", {
+          status: status,
+        });
+        setBookingsCount(bookingsDataCount);
+
+        const bookingsRes = await getBookings(
+          status,
+          sortBy,
+          calculatePageRange(page, BOOKINGS_PAGE_SIZE),
+        );
+        setBookings(bookingsRes);
+        setIsLoading(false);
+      } catch {
+        setError("Failed to load bookings");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [activePage, activeStatus, sortByValue],
+  );
+
   useEffect(() => {
     fetchBookings({});
-  }, [searchParams]);
-
-  const fetchBookings = async ({
-    status = activeStatus,
-    sortBy = sortByValue,
-    page = activePage,
-  }: {
-    status?: string;
-    sortBy?: string;
-    page?: number;
-  }) => {
-    try {
-      setIsLoading(true);
-      const bookingsDataCount = await getDataRange("bookings", {
-        status: status,
-      });
-      setBookingsCount(bookingsDataCount);
-
-      const bookingsRes = await getBookings(
-        status,
-        sortBy,
-        calculatePageRange(page, BOOKINGS_PAGE_SIZE),
-      );
-      setBookings(bookingsRes);
-      setIsLoading(false);
-    } catch {
-      setError("Failed to load bookings");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [fetchBookings]);
 
   const handleSortingValueChange = (
     details: SelectValueChangeDetails<{ value: string; label: string }>,

@@ -15,7 +15,7 @@ import { LuFileImage } from "react-icons/lu";
 import React, { useState } from "react";
 import InputField from "@/components/InputField";
 import { Tooltip } from "@/components/ui/tooltip";
-import { cabinFormValidation, formInitialValues } from "./CreateCabin";
+import { cabinFormValidation, formInitialValues } from "./cabinsFormConfig";
 
 const EditCabin = ({
   open,

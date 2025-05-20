@@ -14,39 +14,10 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { LuFileImage } from "react-icons/lu";
 import { useState } from "react";
 import InputField from "@/components/InputField";
-
-export const formInitialValues = {
-  name: "",
-  maxCapacity: 1,
-  regularPrice: 0,
-  discount: 0,
-  description: "",
-  image: "",
-};
-
-export const cabinFormValidation = Yup.object().shape({
-  name: Yup.string()
-    .min(1, "Name is too short")
-    .max(15, "Name is too long")
-    .required("This field is required"),
-  maxCapacity: Yup.number()
-    .min(1, "Cabin should fit 1 guest at least")
-    .required("This field is required"),
-  regularPrice: Yup.number().required("This field is required"),
-  discount: Yup.number()
-    .min(0, `Discount can't be negative`)
-    .max(
-      Yup.ref("regularPrice"),
-      "Discount should be less than the regular price",
-    )
-    .required(),
-
-  description: Yup.string().required("This field is required"),
-});
+import { cabinFormValidation, formInitialValues } from "./cabinsFormConfig";
 
 const CreateCabin = () => {
   const formik = useFormik({

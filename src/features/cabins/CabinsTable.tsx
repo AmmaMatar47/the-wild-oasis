@@ -104,9 +104,10 @@ const CabinsTable = ({ cabins }: { cabins: CabinResponseType[] }) => {
               borderColor="var(--color-grey-100)"
               maxH="8.1rem"
             >
-              <Table.Cell w="5.75rem">
+              <Table.Cell w="5.75rem" padding=".1rem 0">
                 <Image
                   marginRight="1rem"
+                  padding="0"
                   src={cabin.image}
                   alt={cabin.description}
                 />

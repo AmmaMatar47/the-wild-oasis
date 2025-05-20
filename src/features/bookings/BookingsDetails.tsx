@@ -36,7 +36,7 @@ const BookingsDetails = () => {
       }
     };
     fetchBooking();
-  }, []);
+  }, [bookingsId]);
 
   const handleGoBack = () => navigate(-1);
 

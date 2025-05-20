@@ -3,7 +3,7 @@ import {
   Flex,
   SelectValueChangeDetails,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { CabinResponseType, getCabins } from "@/services/api/cabinsApi";
 import Spinner from "@/components/Spinner/Spinner";
 import Segment from "@/components/Segment/Segment";
@@ -50,9 +50,33 @@ const Cabins = () => {
   const sortingValue = searchParams?.get("order") || "name.asc";
   const activeSegment = searchParams?.get("discount") || "All";
 
+  const fetchCabins = useCallback(
+    async ({
+      activeSorting = sortingValue,
+      activeSegmentValue = activeSegment,
+      activePageParam = activePage,
+    }) => {
+      try {
+        setIsLoading(true);
+        const cabinsData = await getCabins(
+          activeSorting,
+          activeSegmentValue,
+          calculatePageRange(activePageParam, CABINS_PAGE_SIZE),
+        );
+        setCabins(cabinsData);
+        setIsLoading(false);
+      } catch {
+        setError("Failed to load cabins");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [sortingValue, activeSegment, activePage],
+  );
+
   useEffect(() => {
     fetchCabins({});
-  }, [searchParams]);
+  }, [fetchCabins]);
 
   // Get the cabins Data length
   useEffect(() => {
@@ -64,28 +88,7 @@ const Cabins = () => {
       setCabinsCount(count);
     };
     getCabinsCount();
-  }, [cabinsCount, activeSegment]);
-
-  const fetchCabins = async ({
-    activeSorting = sortingValue,
-    activeSegmentValue = activeSegment,
-    activePageParam = activePage,
-  }) => {
-    try {
-      setIsLoading(true);
-      const cabinsData = await getCabins(
-        activeSorting,
-        activeSegmentValue,
-        calculatePageRange(activePageParam, CABINS_PAGE_SIZE),
-      );
-      setCabins(cabinsData);
-      setIsLoading(false);
-    } catch {
-      setError("Failed to load cabins");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [activeSegment]);
 
   const handlePageChange = ({ page }: { page: number }) => {
     setSearchParams((prevParams) => {

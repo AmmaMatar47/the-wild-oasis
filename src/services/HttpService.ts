@@ -2,6 +2,7 @@ import axios, { AxiosInstance } from "axios";
 import { CabinType } from "./api/cabinsApi";
 import { Params } from "react-router-dom";
 import { BookingDetailsType } from "./api/bookingsApi";
+import { UpdateSettingsRequestType } from "./api/settingsApi";
 
 type HttpMethods = "get" | "post" | "patch" | "delete";
 
@@ -27,6 +28,7 @@ const HttpService = class HttpService {
       data?:
         | FormData
         | CabinType
+        | UpdateSettingsRequestType
         | Partial<CabinType>
         | Partial<BookingDetailsType>;
       headers?: { range: string };

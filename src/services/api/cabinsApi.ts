@@ -104,10 +104,13 @@ export const editCabin = (
 };
 
 export const deleteCabin = (cabinId: number, imagePath: string) => {
-  httpStorage.request<"">("delete", imagePath);
-  const res = http.request<AxiosResponse<"">>("delete", "/cabins", {
-    params: { id: `eq.${cabinId}` },
-  });
+  const res = http
+    .request<AxiosResponse<"">>("delete", "/cabins", {
+      params: { id: `eq.${cabinId}` },
+    })
+    .then(() => {
+      httpStorage.request<"">("delete", imagePath);
+    });
   toaster.promise(res, {
     success: {
       description: "Cabin deleted successfully",

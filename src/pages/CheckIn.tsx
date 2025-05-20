@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router";
-import BookingsDetailsBox from "../bookings/BookingsDetailsBox";
+import BookingsDetailsBox from "../features/bookings/BookingsDetailsBox";
 import { useEffect, useState } from "react";
 import {
   BookingDetailsType,
@@ -8,10 +8,10 @@ import {
 } from "@/services/api/bookingsApi";
 import Spinner from "@/components/Spinner/Spinner";
 import SectionHeader from "@/components/SectionHeader";
-import Heading from "../../components/Heading";
+import Heading from "../components/Heading";
 import BackButton from "@/components/BackButton";
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { getSettings, SettingsType } from "@/services/api/settingApi";
+import { getSettings, SettingsType } from "@/services/api/settingsApi";
 import { formatToUSCurrency } from "@/utils/helper";
 import Checkbox from "@/components/Checkbox";
 import { Tooltip } from "@/components/ui/tooltip";
@@ -45,7 +45,7 @@ const CheckIn = () => {
       }
     };
     fetchBooking();
-  }, []);
+  }, [bookingId]);
 
   const handleCheckIn = () => {
     if (booking === undefined || settings === undefined) return;
