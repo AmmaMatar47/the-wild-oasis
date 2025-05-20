@@ -3,8 +3,18 @@ import { CabinType } from "./api/cabinsApi";
 import { Params } from "react-router-dom";
 import { BookingDetailsType } from "./api/bookingsApi";
 import { UpdateSettingsRequestType } from "./api/settingsApi";
+import { UserData } from "./api/authApi";
 
 type HttpMethods = "get" | "post" | "patch" | "delete";
+
+type HttpBodyType =
+  | FormData
+  | CabinType
+  | UserData
+  | UpdateSettingsRequestType
+  | Partial<CabinType>
+  | Partial<BookingDetailsType>
+  | { data: { fullName: string; avatar: string } };
 
 const HttpService = class HttpService {
   private instance: AxiosInstance;
@@ -25,12 +35,7 @@ const HttpService = class HttpService {
     endpoint: string,
     config?: {
       params?: Params;
-      data?:
-        | FormData
-        | CabinType
-        | UpdateSettingsRequestType
-        | Partial<CabinType>
-        | Partial<BookingDetailsType>;
+      data?: HttpBodyType;
       headers?: { range: string };
     },
   ) {
@@ -45,6 +50,10 @@ const HttpService = class HttpService {
 };
 
 export const http = new HttpService(import.meta.env.VITE_WILD_OASIS_BASE_URL);
+
+export const httpAuth = new HttpService(
+  import.meta.env.VITE_WILD_OASIS_AUTH_URL,
+);
 
 export const httpStorage = new HttpService(
   import.meta.env.VITE_WILD_OASIS_STORAGE_URL,

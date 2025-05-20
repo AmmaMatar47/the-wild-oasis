@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { useSettings } from "./useSettings";
 import * as Yup from "yup";
 import { useUpdateSettings } from "./useUpdateSettings";
+import { Tooltip } from "@/components/ui/tooltip";
 
 const settingsFormValidation = Yup.object().shape({
   minBookingLength: Yup.number()
@@ -102,13 +103,19 @@ const SettingsEditForm = () => {
         disabled={isLoading || isUpdating}
       />
       <Flex justifyContent="end" marginTop="6">
-        <Button
-          type="submit"
-          bgColor="var(--color-brand-500)"
-          _hover={{ bgColor: "var(--color-brand-700)" }}
+        <Tooltip
+          content="Change one settings to update"
+          disabled={formik.dirty}
         >
-          Update
-        </Button>
+          <Button
+            type="submit"
+            bgColor="var(--color-brand-500)"
+            _hover={{ bgColor: "var(--color-brand-700)" }}
+            disabled={isLoading || isUpdating || !formik.dirty}
+          >
+            Update
+          </Button>
+        </Tooltip>
       </Flex>
     </form>
   );
