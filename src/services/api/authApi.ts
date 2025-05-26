@@ -1,6 +1,6 @@
-import { toaster } from '@/components/ui/toaster';
-import { http } from '../HttpService';
-import { API_ENDPOINTS } from '@/utils/constants';
+import { toaster } from "@/components/ui/toaster";
+import { http } from "../HttpService";
+import { API_ENDPOINTS } from "@/utils/constants";
 
 export interface Credentials {
   email: string;
@@ -25,14 +25,14 @@ export interface LoginResType {
 }
 
 export const createUser = ({ fullName, ...userData }: UserData) => {
-  const res = http.request<''>('post', `${API_ENDPOINTS.auth}/signup`, {
-    data: { ...userData, data: { fullName, avatar: '' } },
+  const res = http.request<"">("post", `${API_ENDPOINTS.auth}/signup`, {
+    data: { ...userData, data: { fullName, avatar: "" } },
   });
 
   toaster.promise(res, {
-    success: { description: 'User created successfully' },
-    error: { description: 'Failed to create new user' },
-    loading: { description: 'Creating user' },
+    success: { description: "User created successfully" },
+    error: { description: "Failed to create new user" },
+    loading: { description: "Creating user" },
   });
 
   return res;
@@ -40,37 +40,46 @@ export const createUser = ({ fullName, ...userData }: UserData) => {
 
 export const login = async (credentials: Credentials) => {
   try {
-    const res = await http.request<LoginResType>('post', `${API_ENDPOINTS.auth}/token`, {
-      params: { grant_type: 'password' },
-      data: { ...credentials },
-    });
+    const res = await http.request<LoginResType>(
+      "post",
+      `${API_ENDPOINTS.auth}/token`,
+      {
+        params: { grant_type: "password" },
+        data: { ...credentials },
+      },
+    );
     http.setIsAuthenticated(true);
     return res.data;
   } catch (err) {
     http.setIsAuthenticated(false);
-    toaster.error({ description: 'Incorrect email or password. Please try again' });
+    toaster.error({
+      description: "Incorrect email or password. Please try again",
+    });
     return Promise.reject(err);
   }
 };
 
 export const getCurrentUser = async () => {
-  const res = await http.request<UserDataRes>('get', `${API_ENDPOINTS.auth}/user`);
+  const res = await http.request<UserDataRes>(
+    "get",
+    `${API_ENDPOINTS.auth}/user`,
+  );
 
   return res.data;
 };
 
 export const requestNewAccessToken = () => {
-  const refreshToken = localStorage.getItem('refresh_token') as string;
+  const refreshToken = localStorage.getItem("refresh_token") as string;
 
   const res = http.request<{ access_token: string; refresh_token: string }>(
-    'post',
+    "post",
     `${API_ENDPOINTS.auth}/token`,
     {
       params: {
-        grant_type: 'refresh_token',
+        grant_type: "refresh_token",
       },
       data: { refresh_token: JSON.parse(refreshToken) },
-    }
+    },
   );
 
   return res;

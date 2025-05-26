@@ -1,7 +1,7 @@
-import Heading from '@/components/Heading';
-import SectionHeader from '@/components/SectionHeader';
-import CreateUserForm from '@/features/authentication/CreateUserForm';
-import { Box } from '@chakra-ui/react';
+import Heading from "@/components/Heading";
+import SectionHeader from "@/components/SectionHeader";
+import CreateUserForm from "@/features/authentication/CreateUserForm";
+import { Box } from "@chakra-ui/react";
 
 const Users = () => {
   return (
@@ -11,11 +11,11 @@ const Users = () => {
       </SectionHeader>
 
       <Box
-        bgColor='var(--color-grey-0)'
-        borderRadius='md'
-        paddingY='6'
-        paddingX='10'
-        boxShadow='var(--shadow-sm)'
+        bgColor="var(--color-grey-0)"
+        borderRadius="md"
+        paddingY="6"
+        paddingX="10"
+        boxShadow="var(--shadow-sm)"
       >
         <CreateUserForm />
       </Box>

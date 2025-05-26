@@ -1,8 +1,11 @@
-import { getCurrentUser } from '@/services/api/authApi';
-import { useQuery } from 'react-query';
+import { getCurrentUser } from "@/services/api/authApi";
+import { useQuery } from "react-query";
 
 export const useUser = () => {
-  const { data: user, isLoading } = useQuery({ queryKey: ['user'], queryFn: getCurrentUser });
+  const { data: user, isLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: getCurrentUser,
+  });
 
-  return { user, isLoading, isAuthenticated: user?.role === 'authenticated' };
+  return { user, isLoading, isAuthenticated: user?.role === "authenticated" };
 };
