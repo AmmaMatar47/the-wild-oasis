@@ -2,6 +2,7 @@ import { toaster } from "@/components/ui/toaster";
 import { http } from "../HttpService";
 import { AxiosResponse } from "axios";
 import { CabinResponseType } from "./cabinsApi";
+import { API_ENDPOINTS } from "@/utils/constants";
 
 export type StatusType = "unconfirmed" | "checked-out" | "checked-in";
 
@@ -46,34 +47,46 @@ export const getBookings = async (
   sortBy: string,
   dataRange: string,
 ) => {
-  const res = await http.request<BookingsType[]>("get", "/bookings", {
-    params: {
-      order: sortBy,
-      status: status,
-      select:
-        "id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)",
+  const res = await http.request<BookingsType[]>(
+    "get",
+    `${API_ENDPOINTS.base}/bookings`,
+    {
+      params: {
+        order: sortBy,
+        status: status,
+        select:
+          "id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)",
+      },
+      headers: {
+        range: dataRange,
+      },
     },
-    headers: {
-      range: dataRange,
-    },
-  });
+  );
 
   return res.data;
 };
 
 export const getBookingById = async (id: number) => {
-  const res = await http.request<BookingDetailsType[]>("get", "bookings", {
-    params: { id: `eq.${id}`, select: `*, cabins(*), guests(*)` },
-  });
+  const res = await http.request<BookingDetailsType[]>(
+    "get",
+    `${API_ENDPOINTS.base}/bookings`,
+    {
+      params: { id: `eq.${id}`, select: `*, cabins(*), guests(*)` },
+    },
+  );
   return res.data;
 };
 
 export const deleteBooking = (id: number) => {
-  const res = http.request<AxiosResponse<"">>("delete", "bookings", {
-    params: {
-      id: `eq.${id}`,
+  const res = http.request<AxiosResponse<"">>(
+    "delete",
+    `${API_ENDPOINTS.base}/bookings`,
+    {
+      params: {
+        id: `eq.${id}`,
+      },
     },
-  });
+  );
 
   toaster.promise(res, {
     success: { description: "Booking deleted successfully" },
@@ -86,7 +99,7 @@ export const deleteBooking = (id: number) => {
 };
 
 export const checkOut = (id: number) => {
-  const res = http.request("patch", "bookings", {
+  const res = http.request("patch", `${API_ENDPOINTS.auth}/bookings`, {
     params: { id: `eq.${id}` },
     data: {
       status: "checked-out",
@@ -109,7 +122,7 @@ export const checkIn = (
   hasBreakfast: boolean,
   totalPrice: number,
 ) => {
-  const res = http.request("patch", "bookings", {
+  const res = http.request("patch", `${API_ENDPOINTS.auth}/bookings`, {
     params: { id: `eq.${id}` },
     data: {
       status: "checked-in",

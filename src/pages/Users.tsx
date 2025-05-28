@@ -1,6 +1,6 @@
 import Heading from "@/components/Heading";
 import SectionHeader from "@/components/SectionHeader";
-import CreateUserForm from "@/features/auth/CreateUserForm";
+import CreateUserForm from "@/features/authentication/CreateUserForm";
 import { Box } from "@chakra-ui/react";
 
 const Users = () => {

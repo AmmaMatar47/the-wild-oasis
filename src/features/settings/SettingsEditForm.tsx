@@ -45,8 +45,8 @@ const SettingsEditForm = () => {
   const formik = useFormik({
     initialValues: initialSettingsValues,
     onSubmit: handleSubmit,
-    enableReinitialize: true,
     validationSchema: settingsFormValidation,
+    enableReinitialize: true,
   });
 
   return (

@@ -13,6 +13,7 @@ import Login from "./pages/Login";
 import PageNotFound from "./pages/PageNotFound";
 import CheckIn from "./pages/CheckIn";
 import BookingsDetails from "./features/bookings/BookingsDetails";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -22,7 +23,14 @@ const App = () => {
       <ChakraProvider value={defaultSystem}>
         <BrowserRouter>
           <Routes>
-            <Route element={<AppLayout />}>
+            <Route index element={<Navigate to="login" replace />} />
+            <Route
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route
                 index
                 element={<Navigate replace={true} to="/dashboard" />}

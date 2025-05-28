@@ -18,6 +18,7 @@ import { LuFileImage } from "react-icons/lu";
 import { useState } from "react";
 import InputField from "@/components/InputField";
 import { cabinFormValidation, formInitialValues } from "./cabinsFormConfig";
+import { API_ENDPOINTS } from "@/utils/constants";
 
 const CreateCabin = () => {
   const formik = useFormik({
@@ -31,7 +32,7 @@ const CreateCabin = () => {
   async function handleSubmit(values: CabinType) {
     const file = values.image as ImageFileType;
     const bucketName = `object/cabin-images/${file.name}`;
-    const filePath = `${import.meta.env.VITE_WILD_OASIS_STORAGE_URL}/${bucketName}`;
+    const filePath = `${import.meta.env.VITE_WILD_OASIS_BASE_URL}/${API_ENDPOINTS.storage}/${bucketName}`;
     const cabinData = { ...values, image: filePath };
     setIsLoading(true);
     createCabin(cabinData, bucketName, file)

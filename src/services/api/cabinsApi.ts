@@ -1,6 +1,7 @@
 import { toaster } from "@/components/ui/toaster";
-import { http, httpStorage } from "../HttpService";
+import { http } from "../HttpService";
 import { AxiosResponse } from "axios";
+import { API_ENDPOINTS } from "@/utils/constants";
 
 export interface CabinType {
   description: string;
@@ -27,15 +28,19 @@ export const getCabins = async (
   discount: string,
   range: string,
 ) => {
-  const res = await http.request<CabinResponseType[]>("get", `/cabins`, {
-    params:
-      discount === "All"
-        ? { order: order }
-        : { order: order, discount: discount },
-    headers: {
-      range,
+  const res = await http.request<CabinResponseType[]>(
+    "get",
+    `${API_ENDPOINTS.base}/cabins`,
+    {
+      params:
+        discount === "All"
+          ? { order: order }
+          : { order: order, discount: discount },
+      headers: {
+        range,
+      },
     },
-  });
+  );
 
   return res.data;
 };
@@ -44,9 +49,13 @@ const postImage = (bucketName: string, file: Blob) => {
   const formData = new FormData();
   formData.append("file", file);
 
-  httpStorage.request<{ Key: string }>("post", bucketName, {
-    data: formData,
-  });
+  http.request<{ Key: string }>(
+    "post",
+    `${API_ENDPOINTS.storage}/${bucketName}`,
+    {
+      data: formData,
+    },
+  );
 };
 
 export const createCabin = (
@@ -58,9 +67,13 @@ export const createCabin = (
     postImage(bucketName, file);
   }
 
-  const createCabinRes = http.request<"">("post", "/cabins", {
-    data: body,
-  });
+  const createCabinRes = http.request<"">(
+    "post",
+    `${API_ENDPOINTS.base}/cabins`,
+    {
+      data: body,
+    },
+  );
 
   toaster.promise(createCabinRes, {
     success: {
@@ -82,7 +95,7 @@ export const editCabin = (
     postImage(bucketName, file);
   }
 
-  const res = http.request<"">("patch", `/cabins`, {
+  const res = http.request<"">("patch", `${API_ENDPOINTS.base}/cabins`, {
     params: {
       id: `eq.${id}`,
     },
@@ -105,11 +118,11 @@ export const editCabin = (
 
 export const deleteCabin = (cabinId: number, imagePath: string) => {
   const res = http
-    .request<AxiosResponse<"">>("delete", "/cabins", {
+    .request<AxiosResponse<"">>("delete", `${API_ENDPOINTS.base}/cabins`, {
       params: { id: `eq.${cabinId}` },
     })
     .then(() => {
-      httpStorage.request<"">("delete", imagePath);
+      http.request<"">("delete", imagePath);
     });
   toaster.promise(res, {
     success: {

@@ -16,6 +16,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import PageError from "@/components/PageError";
+import { BOOKINGS_PAGE_SIZE } from "@/utils/constants";
 
 const segmentItems = [
   {
@@ -35,8 +36,6 @@ const sortBy = createListCollection({
     { label: "Amount (low first)", value: "totalPrice.asc" },
   ],
 });
-
-const BOOKINGS_PAGE_SIZE = 7;
 
 const Bookings = () => {
   const [bookings, setBookings] = useState<BookingsType[]>([]);

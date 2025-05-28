@@ -17,6 +17,7 @@ import { calculatePageRange } from "@/utils/helper";
 import { getDataRange } from "@/services/api/indexApi";
 import SectionHeader from "@/components/SectionHeader";
 import PageError from "@/components/PageError";
+import { CABINS_PAGE_SIZE } from "@/utils/constants";
 
 const segmentItems = [
   { label: "All", value: "All" },
@@ -34,8 +35,6 @@ const sortBy = createListCollection({
     { label: "capacity (high first)", value: "maxCapacity.desc" },
   ],
 });
-
-const CABINS_PAGE_SIZE = 6;
 
 const Cabins = () => {
   // Cabins table
