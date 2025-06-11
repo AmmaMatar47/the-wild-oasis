@@ -17,7 +17,7 @@ export interface SettingsType extends UpdateSettingsRequestType {
 export const getSettings = async () => {
   const res = await http.request<SettingsType[]>(
     "get",
-    `${API_ENDPOINTS.base}/settings`,
+    API_ENDPOINTS.settings,
   );
   return res.data;
 };
@@ -26,7 +26,7 @@ export const updateSettings = (settingsData: UpdateSettingsRequestType) => {
   // There's only one settings row in the server so no need for passing an id for the updateSettings function
   const res = http.request<SettingsType[]>(
     "patch",
-    `${API_ENDPOINTS.base}/settings`,
+    API_ENDPOINTS.settings,
     {
       params: { id: "eq.1" },
       data: settingsData,
