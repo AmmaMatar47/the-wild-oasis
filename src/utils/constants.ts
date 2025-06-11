@@ -1,7 +1,7 @@
 export const API_ENDPOINTS = {
-  base: '/rest/v1',
-  storage: '/storage/v1',
-  auth: '/auth/v1',
+  base: "/rest/v1",
+  storage: "/storage/v1",
+  auth: "/auth/v1",
 
   // Server tables
   cabins: `/rest/v1/cabins`,

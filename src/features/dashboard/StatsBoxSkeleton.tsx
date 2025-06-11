@@ -1,14 +1,14 @@
-import { For, SkeletonCircle, SkeletonText } from '@chakra-ui/react';
-import DashboardBox from './DashboardBox';
+import { For, SkeletonCircle, SkeletonText } from "@chakra-ui/react";
+import DashboardBox from "./DashboardBox";
 
 const StatsBoxSkeleton = () => {
   return (
-    <For each={['', '', '', '']}>
+    <For each={["", "", "", ""]}>
       {() => (
-        <DashboardBox display='flex' alignItems='center'>
-          <SkeletonCircle variant='shine' rounded='full' size='16' />
+        <DashboardBox display="flex" alignItems="center">
+          <SkeletonCircle variant="shine" rounded="full" size="16" />
 
-          <SkeletonText variant='shine' noOfLines={2} gap={3} />
+          <SkeletonText variant="shine" noOfLines={2} gap={3} />
         </DashboardBox>
       )}
     </For>
