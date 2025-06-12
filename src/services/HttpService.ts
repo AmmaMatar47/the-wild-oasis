@@ -1,9 +1,10 @@
 import axios, { AxiosInstance } from "axios";
 import { CabinType } from "./api/cabinsApi";
-import { Params } from "react-router-dom";
 import { BookingDetailsType } from "./api/bookingsApi";
 import { UpdateSettingsRequestType } from "./api/settingsApi";
 import { Credentials, requestNewAccessToken, UserData } from "./api/authApi";
+
+type HttpParams = Record<string, string | string[]>;
 
 type HttpMethods = "get" | "post" | "patch" | "delete";
 
@@ -52,7 +53,11 @@ const HttpService = class HttpService {
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
-        if (error.status === 403 && !this.retry && this.isAuthenticated) {
+        if (
+          (error.status === 403 || error.status === 401) &&
+          !this.retry &&
+          this.isAuthenticated
+        ) {
           try {
             const res = await requestNewAccessToken();
             const { access_token, refresh_token: newRefreshToken } = res.data;
@@ -87,7 +92,7 @@ const HttpService = class HttpService {
     method: HttpMethods,
     endpoint: string,
     config?: {
-      params?: Params;
+      params?: HttpParams;
       data?: HttpDataType;
       headers?: { range: string };
     },

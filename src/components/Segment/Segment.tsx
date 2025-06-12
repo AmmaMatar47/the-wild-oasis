@@ -24,7 +24,7 @@ const Segment = ({
       bgColor="var(--color-grey-0)"
       shadow="var(--shadow-sm)"
     >
-      <SegmentGroup.Indicator bgColor="var(--color-brand-600)" />
+      <SegmentGroup.Indicator bgColor="var(--color-brand-500)" />
       <SegmentGroup.Items
         items={items}
         fontWeight="500"

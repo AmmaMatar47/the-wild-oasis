@@ -30,10 +30,10 @@ const segmentItems = [
 
 const sortBy = createListCollection({
   items: [
-    { label: "Date (recent first)", value: "startDate.desc" },
-    { label: "Date (earlier first)", value: "startDate.asc" },
-    { label: "Amount (high first)", value: "totalPrice.desc" },
-    { label: "Amount (low first)", value: "totalPrice.asc" },
+    { label: "Date (Newest first)", value: "startDate.desc" },
+    { label: "Date (Oldest first)", value: "startDate.asc" },
+    { label: "Amount (High to Low)", value: "totalPrice.desc" },
+    { label: "Amount (Low to High)", value: "totalPrice.asc" },
   ],
 });
 

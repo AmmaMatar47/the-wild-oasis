@@ -25,7 +25,7 @@ export interface LoginResType {
 }
 
 export const createUser = ({ fullName, ...userData }: UserData) => {
-  const res = http.request<"">("post", `${API_ENDPOINTS.auth}/signup`, {
+  const res = http.request<"">("post", API_ENDPOINTS.users.signup, {
     data: { ...userData, data: { fullName, avatar: "" } },
   });
 
@@ -42,7 +42,7 @@ export const login = async (credentials: Credentials) => {
   try {
     const res = await http.request<LoginResType>(
       "post",
-      `${API_ENDPOINTS.auth}/token`,
+      API_ENDPOINTS.users.token,
       {
         params: { grant_type: "password" },
         data: { ...credentials },
@@ -59,7 +59,7 @@ export const login = async (credentials: Credentials) => {
 };
 
 export const logout = () => {
-  const res = http.request<void>("post", `${API_ENDPOINTS.auth}/logout`);
+  const res = http.request<void>("post", API_ENDPOINTS.users.logout);
 
   toaster.promise(res, {
     loading: { description: "Logging out" },
@@ -71,10 +71,7 @@ export const logout = () => {
 };
 
 export const getCurrentUser = async () => {
-  const res = await http.request<UserDataRes>(
-    "get",
-    `${API_ENDPOINTS.auth}/user`,
-  );
+  const res = await http.request<UserDataRes>("get", API_ENDPOINTS.users.user);
   return res.data;
 };
 
@@ -82,7 +79,7 @@ export const requestNewAccessToken = () => {
   const refreshToken = localStorage.getItem("refresh_token") as string;
   const res = http.request<{ access_token: string; refresh_token: string }>(
     "post",
-    `${API_ENDPOINTS.auth}/token`,
+    API_ENDPOINTS.users.token,
     {
       params: {
         grant_type: "refresh_token",

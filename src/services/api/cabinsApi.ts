@@ -2,26 +2,16 @@ import { toaster } from "@/components/ui/toaster";
 import { http } from "../HttpService";
 import { AxiosResponse } from "axios";
 import { API_ENDPOINTS } from "@/utils/constants";
+import { CabinResponseType, CabinType } from "@/types/cabinsTypes";
 
-export interface CabinType {
-  description: string;
-  discount: number;
-  image: string | ImageFileType;
-  maxCapacity: number;
-  name: string;
-  regularPrice: number;
-}
-export interface CabinResponseType extends CabinType {
-  id: number;
-  created_at: Date;
-  image: string;
-}
+export const getAllCabins = async () => {
+  const res = await http.request<CabinResponseType[]>(
+    "get",
+    API_ENDPOINTS.cabins,
+  );
 
-export interface ImageFileType extends Blob {
-  name: string;
-  size: number;
-  type: string;
-}
+  return res.data;
+};
 
 export const getCabins = async (
   order: string,
@@ -30,7 +20,7 @@ export const getCabins = async (
 ) => {
   const res = await http.request<CabinResponseType[]>(
     "get",
-    `${API_ENDPOINTS.base}/cabins`,
+    API_ENDPOINTS.cabins,
     {
       params:
         discount === "All"
@@ -67,13 +57,9 @@ export const createCabin = (
     postImage(bucketName, file);
   }
 
-  const createCabinRes = http.request<"">(
-    "post",
-    `${API_ENDPOINTS.base}/cabins`,
-    {
-      data: body,
-    },
-  );
+  const createCabinRes = http.request<"">("post", API_ENDPOINTS.cabins, {
+    data: body,
+  });
 
   toaster.promise(createCabinRes, {
     success: {
@@ -95,7 +81,7 @@ export const editCabin = (
     postImage(bucketName, file);
   }
 
-  const res = http.request<"">("patch", `${API_ENDPOINTS.base}/cabins`, {
+  const res = http.request<"">("patch", API_ENDPOINTS.cabins, {
     params: {
       id: `eq.${id}`,
     },
@@ -118,7 +104,7 @@ export const editCabin = (
 
 export const deleteCabin = (cabinId: number, imagePath: string) => {
   const res = http
-    .request<AxiosResponse<"">>("delete", `${API_ENDPOINTS.base}/cabins`, {
+    .request<AxiosResponse<"">>("delete", API_ENDPOINTS.cabins, {
       params: { id: `eq.${cabinId}` },
     })
     .then(() => {

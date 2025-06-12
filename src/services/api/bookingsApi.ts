@@ -1,45 +1,63 @@
 import { toaster } from "@/components/ui/toaster";
 import { http } from "../HttpService";
 import { AxiosResponse } from "axios";
-import { CabinResponseType } from "./cabinsApi";
 import { API_ENDPOINTS } from "@/utils/constants";
+import { getToday } from "@/utils/helper";
+import {
+  BookingDetailsType,
+  BookingsPricesType,
+  BookingsType,
+  ConfirmedBookingsType,
+  TodaysBookingsType,
+} from "@/types/bookingsTypes";
 
-export type StatusType = "unconfirmed" | "checked-out" | "checked-in";
+export const getBookingsWithinDuration = async (date: string) => {
+  const res = await http.request<BookingsPricesType[]>(
+    "get",
+    API_ENDPOINTS.bookings,
+    {
+      params: {
+        select: "created_at,totalPrice,extraPrice",
+        created_at: [`gte.${date}`, `lte.${getToday({ end: true })}`],
+        order: "created_at.asc",
+      },
+    },
+  );
 
-interface Guests {
-  countryFlag: string;
-  created_at: string;
-  email: string;
-  fullName: string;
-  id: number;
-  nationalID: string;
-  nationality: string;
-}
+  return res.data;
+};
 
-export interface BookingsType {
-  cabins: { name: string };
-  created_at: string;
-  endDate: string;
-  guests: { email: string; fullName: string };
-  id: number;
-  numGuests: number;
-  numNights: number;
-  startDate: string;
-  status: StatusType;
-  totalPrice: number;
-}
+// Returns all stays that were created after the given date
+export const getStaysWithinDuration = async (date: string) => {
+  const res = await http.request<ConfirmedBookingsType[]>(
+    "get",
+    API_ENDPOINTS.bookings,
+    {
+      params: {
+        select: "*,guests(fullName)",
+        startDate: [`gte.${date}`, `lte.${getToday()}`],
+      },
+    },
+  );
 
-export interface BookingDetailsType extends BookingsType {
-  cabinId: number;
-  cabinPrice: number;
-  cabins: CabinResponseType;
-  extrasPrice: number;
-  guestId: number;
-  guests: Guests;
-  hasBreakfast: boolean;
-  isPaid: boolean;
-  observations: string;
-  startDate: string;
+  return res.data;
+};
+
+// Returns the checked-in and unconfirmed bookings for today
+export async function getStaysTodayActivity() {
+  const res = await http.request<TodaysBookingsType[]>(
+    "get",
+    API_ENDPOINTS.bookings,
+    {
+      params: {
+        select: "*,guests(fullName,nationality,countryFlag)",
+        or: `(and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()}))`,
+        order: "created_at.asc",
+      },
+    },
+  );
+
+  return res.data;
 }
 
 export const getBookings = async (
@@ -49,7 +67,7 @@ export const getBookings = async (
 ) => {
   const res = await http.request<BookingsType[]>(
     "get",
-    `${API_ENDPOINTS.base}/bookings`,
+    API_ENDPOINTS.bookings,
     {
       params: {
         order: sortBy,
@@ -69,7 +87,7 @@ export const getBookings = async (
 export const getBookingById = async (id: number) => {
   const res = await http.request<BookingDetailsType[]>(
     "get",
-    `${API_ENDPOINTS.base}/bookings`,
+    API_ENDPOINTS.bookings,
     {
       params: { id: `eq.${id}`, select: `*, cabins(*), guests(*)` },
     },
@@ -80,7 +98,7 @@ export const getBookingById = async (id: number) => {
 export const deleteBooking = (id: number) => {
   const res = http.request<AxiosResponse<"">>(
     "delete",
-    `${API_ENDPOINTS.base}/bookings`,
+    API_ENDPOINTS.bookings,
     {
       params: {
         id: `eq.${id}`,
@@ -99,7 +117,7 @@ export const deleteBooking = (id: number) => {
 };
 
 export const checkOut = (id: number) => {
-  const res = http.request("patch", `${API_ENDPOINTS.auth}/bookings`, {
+  const res = http.request("patch", API_ENDPOINTS.bookings, {
     params: { id: `eq.${id}` },
     data: {
       status: "checked-out",
@@ -122,7 +140,7 @@ export const checkIn = (
   hasBreakfast: boolean,
   totalPrice: number,
 ) => {
-  const res = http.request("patch", `${API_ENDPOINTS.auth}/bookings`, {
+  const res = http.request("patch", API_ENDPOINTS.bookings, {
     params: { id: `eq.${id}` },
     data: {
       status: "checked-in",

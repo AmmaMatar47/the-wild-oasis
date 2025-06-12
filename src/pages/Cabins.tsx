@@ -27,12 +27,12 @@ const segmentItems = [
 
 const sortBy = createListCollection({
   items: [
-    { label: "name (A-Z)", value: "name.asc" },
-    { label: "name (Z-A)", value: "name.desc" },
-    { label: "price (low first)", value: "regularPrice.asc" },
-    { label: "price (high first)", value: "regularPrice.desc" },
-    { label: "capacity (low first)", value: "maxCapacity.asc" },
-    { label: "capacity (high first)", value: "maxCapacity.desc" },
+    { label: "Name (A-Z)", value: "name.asc" },
+    { label: "Name (Z-A)", value: "name.desc" },
+    { label: "Price (High to Low)", value: "regularPrice.desc" },
+    { label: "Price (Low to High)", value: "regularPrice.asc" },
+    { label: "Capacity (High to Low)", value: "maxCapacity.desc" },
+    { label: "Capacity (Low to High)", value: "maxCapacity.asc" },
   ],
 });
 
