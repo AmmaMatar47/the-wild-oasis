@@ -1,6 +1,6 @@
-import { Stat } from '@chakra-ui/react';
-import React from 'react';
-import DashboardBox from '@/components/SectionBox';
+import { Stat } from "@chakra-ui/react";
+import React from "react";
+import DashboardBox from "@/components/SectionBox";
 
 const StatBox = ({
   label,
@@ -12,20 +12,20 @@ const StatBox = ({
   icon?: React.JSX.Element;
 }) => {
   return (
-    <DashboardBox display='flex' alignItems='center'>
+    <DashboardBox display="flex" alignItems="center">
       {icon}
 
       <Stat.Root>
         <Stat.Label
-          textTransform='uppercase'
-          fontSize='0.775rem'
-          fontWeight='600'
-          color='var(--color-grey-500)'
+          textTransform="uppercase"
+          fontSize="0.775rem"
+          fontWeight="600"
+          color="var(--color-grey-500)"
         >
           {label}
         </Stat.Label>
 
-        <Stat.ValueText color='var(--color-grey-600)' fontWeight='500'>
+        <Stat.ValueText color="var(--color-grey-600)" fontWeight="500">
           {value}
         </Stat.ValueText>
       </Stat.Root>

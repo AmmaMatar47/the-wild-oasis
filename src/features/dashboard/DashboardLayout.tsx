@@ -1,23 +1,29 @@
-import { Grid } from '@chakra-ui/react';
-import Stats from './Stats';
-import TodayGuestsActivity from './TodayGuestsActivity';
-import DurationChart from './DurationChart';
-import SalesChart from './SalesChart';
-import { useRecentBookings } from './useRecentBookings';
-import { useRecentStays } from './useRecentStays';
-import { useCabins } from '../cabins/useCabins';
-import StatsBoxSkeleton from './StatsBoxSkeleton';
-import DurationSkeleton from './DurationSkeleton';
-import SalesChartSkeleton from './SalesChartSkeleton';
+import { Grid } from "@chakra-ui/react";
+import Stats from "./Stats";
+import TodayGuestsActivity from "./TodayGuestsActivity";
+import DurationChart from "./DurationChart";
+import SalesChart from "./SalesChart";
+import { useRecentBookings } from "./useRecentBookings";
+import { useRecentStays } from "./useRecentStays";
+import { useCabins } from "../cabins/useCabins";
+import StatsBoxSkeleton from "./StatsBoxSkeleton";
+import DurationSkeleton from "./DurationSkeleton";
+import SalesChartSkeleton from "./SalesChartSkeleton";
 
 const DashboardLayout = () => {
-  const { data: bookingsPrices, isLoading: isLoadingBookingsPrices, numDays } = useRecentBookings();
-  const { confirmedStays, isLoading: isLoadingConfirmedStays } = useRecentStays();
+  const {
+    data: bookingsPrices,
+    isLoading: isLoadingBookingsPrices,
+    numDays,
+  } = useRecentBookings();
+  const { confirmedStays, isLoading: isLoadingConfirmedStays } =
+    useRecentStays();
   const { cabins, isLoading: isLoadingCabins } = useCabins();
 
-  const isLoadingStatsData = isLoadingBookingsPrices || isLoadingConfirmedStays || isLoadingCabins;
+  const isLoadingStatsData =
+    isLoadingBookingsPrices || isLoadingConfirmedStays || isLoadingCabins;
   return (
-    <Grid grid='auto 22rem 28rem / 1fr 1fr 1fr 1fr' gap='5'>
+    <Grid grid="auto 22rem 28rem / 1fr 1fr 1fr 1fr" gap="5">
       {isLoadingStatsData ? (
         <StatsBoxSkeleton />
       ) : (
@@ -29,7 +35,7 @@ const DashboardLayout = () => {
         />
       )}
 
-      <TodayGuestsActivity gridColumn='1 / 3' />
+      <TodayGuestsActivity gridColumn="1 / 3" />
 
       {isLoadingConfirmedStays ? (
         <DurationSkeleton />
