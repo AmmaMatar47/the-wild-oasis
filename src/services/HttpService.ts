@@ -1,12 +1,13 @@
-import axios, { AxiosInstance } from "axios";
-import { CabinType } from "./api/cabinsApi";
-import { BookingDetailsType } from "./api/bookingsApi";
-import { UpdateSettingsRequestType } from "./api/settingsApi";
-import { Credentials, requestNewAccessToken, UserData } from "./api/authApi";
+import axios, { AxiosInstance } from 'axios';
+import { CabinType } from '../types/cabinsTypes';
+import { BookingDetailsType } from '../types/bookingsTypes';
+import { UpdateSettingsRequestType } from './api/settingsApi';
+import { Credentials, UserData } from '../types/authTypes';
+import { requestNewAccessToken } from './api/authApi';
 
 type HttpParams = Record<string, string | string[]>;
 
-type HttpMethods = "get" | "post" | "patch" | "delete";
+type HttpMethods = 'get' | 'post' | 'patch' | 'put' | 'delete';
 
 type HttpDataType =
   | FormData
@@ -16,13 +17,13 @@ type HttpDataType =
   | UpdateSettingsRequestType
   | Partial<CabinType>
   | Partial<BookingDetailsType>
-  | { data: { fullName: string; avatar: string } }
-  | { refresh_token: string };
+  | { data: { fullName: string; avatar?: string | null } }
+  | { refresh_token: string }
+  | { password: string };
 
 const HttpService = class HttpService {
   private instance: AxiosInstance;
-  private isAuthenticated: boolean =
-    localStorage.getItem("refresh_token") === null ? false : true;
+  private isAuthenticated: boolean = localStorage.getItem('refresh_token') === null ? false : true;
   private retry = false;
 
   constructor(baseURL: string) {
@@ -35,47 +36,42 @@ const HttpService = class HttpService {
     });
     this.instance.interceptors.request.use(
       // To inject the access token for all requests if exits
-      (request) => {
-        const accessToken = localStorage.getItem("access_token");
+      request => {
+        const accessToken = localStorage.getItem('access_token');
         if (accessToken !== null) {
           request.headers.Authorization = `Bearer ${accessToken}`;
         }
 
         return request;
       },
-      (error) => {
+      error => {
         return Promise.reject(error);
-      },
+      }
     );
 
     this.instance.interceptors.response.use(
       // Directly return successful responses
-      (response) => response,
-      async (error) => {
+      response => response,
+      async error => {
         const originalRequest = error.config;
-        if (
-          (error.status === 403 || error.status === 401) &&
-          !this.retry &&
-          this.isAuthenticated
-        ) {
+        if ((error.status === 403 || error.status === 401) && !this.retry && this.isAuthenticated) {
           try {
             const res = await requestNewAccessToken();
             const { access_token, refresh_token: newRefreshToken } = res.data;
-            localStorage.setItem("access_token", access_token);
-            localStorage.setItem("refresh_token", newRefreshToken);
-            this.instance.defaults.headers.common["Authorization"] =
-              `Bearer ${access_token}`;
+            localStorage.setItem('access_token', access_token);
+            localStorage.setItem('refresh_token', newRefreshToken);
+            this.instance.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
             return this.instance(originalRequest);
           } catch (refreshError) {
             this.clearAuthTokens();
-            window.location.href = "/login";
+            window.location.href = '/login';
             return Promise.reject(refreshError);
           }
         } else if (this.retry) {
           this.retry = true;
         }
         return Promise.reject(error);
-      },
+      }
     );
   }
 
@@ -84,8 +80,8 @@ const HttpService = class HttpService {
   }
 
   clearAuthTokens() {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("refresh_token");
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
   }
 
   request<Res>(
@@ -95,7 +91,7 @@ const HttpService = class HttpService {
       params?: HttpParams;
       data?: HttpDataType;
       headers?: { range: string };
-    },
+    }
   ) {
     return this.instance.request<Res>({
       method,
