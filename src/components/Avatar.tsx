@@ -5,21 +5,21 @@ import {
 } from "@chakra-ui/react";
 
 interface AvatarProps extends AvatarRootProps {
-  avatarSrc: string;
-  fullName: string;
-  loadingAvatar?: boolean;
+  avatarSrc?: string;
+  fullName?: string;
+  isLoadingAvatar?: boolean;
 }
 
 const Avatar = ({
   avatarSrc,
   fullName,
-  loadingAvatar,
+  isLoadingAvatar,
   ...props
 }: AvatarProps) => {
   return (
     <Skeleton
       rounded="full"
-      loading={loadingAvatar === undefined ? false : loadingAvatar}
+      loading={isLoadingAvatar === undefined ? false : isLoadingAvatar}
       variant="shine"
     >
       <AvatarChakraUI.Root colorPalette="purple" {...props}>

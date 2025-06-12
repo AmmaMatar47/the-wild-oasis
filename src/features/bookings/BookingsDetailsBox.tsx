@@ -1,3 +1,4 @@
+import { BookingDetailsType } from "@/types/bookingsTypes";
 import {
   formatDateToReadable,
   formatTimeToNow,
@@ -5,7 +6,6 @@ import {
 } from "@/utils/helper";
 import { Box, Circle, Container, Flex, Stack, Text } from "@chakra-ui/react";
 import { format } from "date-fns";
-import { BookingDetailsType } from "../../services/api/bookingsApi";
 import {
   HiOutlineChatBubbleBottomCenterText,
   HiOutlineCheckCircle,

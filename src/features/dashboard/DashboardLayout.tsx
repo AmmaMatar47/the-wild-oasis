@@ -13,7 +13,7 @@ import SalesChartSkeleton from "./SalesChartSkeleton";
 const DashboardLayout = () => {
   const {
     data: bookingsPrices,
-    isLoading: isLoadingBookings,
+    isLoading: isLoadingBookingsPrices,
     numDays,
   } = useRecentBookings();
   const { confirmedStays, isLoading: isLoadingConfirmedStays } =
@@ -21,7 +21,7 @@ const DashboardLayout = () => {
   const { cabins, isLoading: isLoadingCabins } = useCabins();
 
   const isLoadingStatsData =
-    isLoadingBookings || isLoadingConfirmedStays || isLoadingCabins;
+    isLoadingBookingsPrices || isLoadingConfirmedStays || isLoadingCabins;
   return (
     <Grid grid="auto 22rem 28rem / 1fr 1fr 1fr 1fr" gap="5">
       {isLoadingStatsData ? (
@@ -43,7 +43,7 @@ const DashboardLayout = () => {
         <DurationChart confirmedStays={confirmedStays} />
       )}
 
-      {isLoadingBookings ? (
+      {isLoadingBookingsPrices ? (
         <SalesChartSkeleton />
       ) : (
         <SalesChart bookingsPrices={bookingsPrices} numDays={numDays} />

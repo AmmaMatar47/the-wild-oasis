@@ -1,6 +1,6 @@
 import { Stat } from "@chakra-ui/react";
 import React from "react";
-import DashboardBox from "@/features/dashboard/DashboardBox";
+import DashboardBox from "@/components/SectionBox";
 
 const StatBox = ({
   label,

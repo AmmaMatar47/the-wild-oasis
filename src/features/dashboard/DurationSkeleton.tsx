@@ -6,21 +6,19 @@ import {
   Box,
   Circle,
 } from "@chakra-ui/react";
-import DashboardBox from "./DashboardBox";
-import Heading from "@/components/Heading";
+import SectionBox from "../../components/SectionBox";
 
 const DurationSkeleton = () => {
   return (
-    <DashboardBox
+    <SectionBox
       display="flex"
       flexDirection="column"
       padding="6"
       gridColumn="3 / -1"
       gap="8"
     >
-      <Heading as="h3" fontSize="xl">
-        Stay duration summary
-      </Heading>
+      <SkeletonText noOfLines={1} w="10.8rem" h="1.2rem" />
+
       <Flex alignItems="center" justifyContent="space-around">
         <Box position="relative">
           <SkeletonCircle size="14rem" variant="shine" />
@@ -43,7 +41,7 @@ const DurationSkeleton = () => {
           </For>
         </Box>
       </Flex>
-    </DashboardBox>
+    </SectionBox>
   );
 };
 

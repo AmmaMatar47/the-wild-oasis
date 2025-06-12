@@ -1,5 +1,5 @@
 import Heading from "@/components/Heading";
-import { BookingsPricesType } from "@/services/api/bookingsApi";
+import { BookingsPricesType } from "../../types/bookingsTypes";
 import { getToday } from "@/utils/helper";
 import { subDays, isSameDay, eachDayOfInterval, format } from "date-fns";
 import { formatDateToReadable } from "../../utils/helper";
@@ -12,7 +12,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import DashboardBox from "./DashboardBox";
+import DashboardBox from "../../components/SectionBox";
 
 const SalesChart = ({
   bookingsPrices,

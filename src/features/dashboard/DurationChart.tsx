@@ -7,8 +7,8 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
-import DashboardBox from "./DashboardBox";
-import { ConfirmedBookingsType } from "@/services/api/bookingsApi";
+import SectionBox from "../../components/SectionBox";
+import { ConfirmedBookingsType } from "../../types/bookingsTypes";
 import { EmptyState } from "@chakra-ui/react";
 import { useSearchParams } from "react-router";
 
@@ -100,7 +100,7 @@ const DurationChart = ({
   const date = searchParams.get("last");
 
   return (
-    <DashboardBox
+    <SectionBox
       display="flex"
       flexDirection="column"
       padding="6"
@@ -152,7 +152,7 @@ const DurationChart = ({
           </PieChart>
         </ResponsiveContainer>
       )}
-    </DashboardBox>
+    </SectionBox>
   );
 };
 

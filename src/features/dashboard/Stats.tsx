@@ -2,7 +2,7 @@ import StatBox from "@/components/StatBox";
 import {
   BookingsPricesType,
   ConfirmedBookingsType,
-} from "@/services/api/bookingsApi";
+} from "../../types/bookingsTypes";
 import { Circle, FormatNumber } from "@chakra-ui/react";
 import {
   HiOutlineBanknotes,
@@ -10,7 +10,7 @@ import {
   HiOutlineCalendarDays,
   HiOutlineChartBar,
 } from "react-icons/hi2";
-import { CabinType } from "@/services/api/cabinsApi";
+import { CabinType } from "../../types/cabinsTypes";
 
 const Stats = ({
   bookingsPrices,

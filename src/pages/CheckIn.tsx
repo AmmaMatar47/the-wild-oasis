@@ -1,11 +1,7 @@
 import { useNavigate, useParams } from "react-router";
 import BookingsDetailsBox from "../features/bookings/BookingsDetailsBox";
 import { useEffect, useState } from "react";
-import {
-  BookingDetailsType,
-  checkIn,
-  getBookingById,
-} from "@/services/api/bookingsApi";
+import { checkIn, getBookingById } from "@/services/api/bookingsApi";
 import Spinner from "@/components/Spinner/Spinner";
 import SectionHeader from "@/components/SectionHeader";
 import Heading from "../components/Heading";
@@ -16,6 +12,7 @@ import { formatToUSCurrency } from "@/utils/helper";
 import Checkbox from "@/components/Checkbox";
 import { Tooltip } from "@/components/ui/tooltip";
 import PageError from "@/components/PageError";
+import { BookingDetailsType } from "@/types/bookingsTypes";
 
 const CheckIn = () => {
   const params = useParams();

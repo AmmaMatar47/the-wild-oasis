@@ -8,11 +8,7 @@ import {
 
 import { Flex, Menu, Table, Text } from "@chakra-ui/react";
 import EmptyPage from "@/components/EmptyPage";
-import {
-  BookingsType,
-  checkOut,
-  deleteBooking,
-} from "@/services/api/bookingsApi";
+import { checkOut, deleteBooking } from "@/services/api/bookingsApi";
 import {
   formatDateToReadable,
   formatTimeToNow,
@@ -23,6 +19,7 @@ import DeleteDialog from "@/components/DeleteDialog";
 import { useState } from "react";
 import { Link } from "react-router";
 import StatusBadge from "@/components/StatusBadge";
+import { BookingsType } from "@/types/bookingsTypes";
 
 const BookingsTable = ({ bookings }: { bookings: BookingsType[] }) => {
   const [deleteDialogInfo, setDeleteDialogInfo] = useState<{

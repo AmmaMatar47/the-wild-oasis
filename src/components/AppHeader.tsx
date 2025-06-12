@@ -31,12 +31,12 @@ const AppHeader = () => {
         openDelay={200}
         closeDelay={200}
       >
-        <Link to="/account">
+        <Link to="/profile">
           {user === undefined ? null : (
             <Avatar
               fullName={user.user_metadata.fullName}
               avatarSrc={user.user_metadata.avatar}
-              loadingAvatar={isLoading}
+              isLoadingAvatar={isLoading}
             />
           )}
         </Link>

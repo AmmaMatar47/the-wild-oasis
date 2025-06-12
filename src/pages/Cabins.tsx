@@ -4,7 +4,7 @@ import {
   SelectValueChangeDetails,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
-import { CabinResponseType, getCabins } from "@/services/api/cabinsApi";
+import { CabinResponseType } from "../types/cabinsTypes";
 import Spinner from "@/components/Spinner/Spinner";
 import Segment from "@/components/Segment/Segment";
 import CabinsTable from "@/features/cabins/CabinsTable";
@@ -18,6 +18,7 @@ import { getDataRange } from "@/services/api/indexApi";
 import SectionHeader from "@/components/SectionHeader";
 import PageError from "@/components/PageError";
 import { CABINS_PAGE_SIZE } from "@/utils/constants";
+import { getCabins } from "@/services/api/cabinsApi";
 
 const segmentItems = [
   { label: "All", value: "All" },

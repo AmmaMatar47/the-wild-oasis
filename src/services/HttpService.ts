@@ -1,12 +1,13 @@
 import axios, { AxiosInstance } from "axios";
-import { CabinType } from "./api/cabinsApi";
-import { BookingDetailsType } from "./api/bookingsApi";
+import { CabinType } from "../types/cabinsTypes";
+import { BookingDetailsType } from "../types/bookingsTypes";
 import { UpdateSettingsRequestType } from "./api/settingsApi";
-import { Credentials, requestNewAccessToken, UserData } from "./api/authApi";
+import { Credentials, UserData } from "../types/authTypes";
+import { requestNewAccessToken } from "./api/authApi";
 
 type HttpParams = Record<string, string | string[]>;
 
-type HttpMethods = "get" | "post" | "patch" | "delete";
+type HttpMethods = "get" | "post" | "patch" | "put" | "delete";
 
 type HttpDataType =
   | FormData
@@ -16,8 +17,9 @@ type HttpDataType =
   | UpdateSettingsRequestType
   | Partial<CabinType>
   | Partial<BookingDetailsType>
-  | { data: { fullName: string; avatar: string } }
-  | { refresh_token: string };
+  | { data: { fullName: string; avatar?: string | null } }
+  | { refresh_token: string }
+  | { password: string };
 
 const HttpService = class HttpService {
   private instance: AxiosInstance;

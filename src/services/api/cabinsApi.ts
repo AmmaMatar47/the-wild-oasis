@@ -3,6 +3,7 @@ import { http } from "../HttpService";
 import { AxiosResponse } from "axios";
 import { API_ENDPOINTS } from "@/utils/constants";
 import { CabinResponseType, CabinType } from "@/types/cabinsTypes";
+import { postImage } from "./indexApi";
 
 export const getAllCabins = async () => {
   const res = await http.request<CabinResponseType[]>(
@@ -33,19 +34,6 @@ export const getCabins = async (
   );
 
   return res.data;
-};
-
-const postImage = (bucketName: string, file: Blob) => {
-  const formData = new FormData();
-  formData.append("file", file);
-
-  http.request<{ Key: string }>(
-    "post",
-    `${API_ENDPOINTS.storage}/${bucketName}`,
-    {
-      data: formData,
-    },
-  );
 };
 
 export const createCabin = (

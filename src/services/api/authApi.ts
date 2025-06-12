@@ -1,32 +1,20 @@
 import { toaster } from "@/components/ui/toaster";
 import { http } from "../HttpService";
 import { API_ENDPOINTS } from "@/utils/constants";
+import { Credentials, LoginResType, UserDataRes } from "@/types/authTypes";
+import { ImageFileType } from "@/types/cabinsTypes";
+import { postImage } from "./indexApi";
 
-export interface Credentials {
+export const createUser = ({
+  fullName,
+  ...userData
+}: {
+  fullName: string;
   email: string;
   password: string;
-}
-export interface UserData extends Credentials {
-  fullName: string;
-  avatar: string;
-}
-
-interface UserDataRes {
-  role: string;
-  user_metadata: { email: string; fullName: string; avatar: string };
-}
-
-export interface LoginResType {
-  access_token: string;
-  expires_at: number;
-  expires_in: number;
-  refresh_token: string;
-  user: UserDataRes;
-}
-
-export const createUser = ({ fullName, ...userData }: UserData) => {
+}) => {
   const res = http.request<"">("post", API_ENDPOINTS.users.signup, {
-    data: { ...userData, data: { fullName, avatar: "" } },
+    data: { ...userData, data: { fullName, avatar: null } },
   });
 
   toaster.promise(res, {
@@ -89,4 +77,45 @@ export const requestNewAccessToken = () => {
   );
 
   return res;
+};
+
+export const updateAccount = async (
+  {
+    fullName,
+    avatarFile,
+  }: {
+    fullName: string;
+    avatarFile: null | ImageFileType;
+  },
+  oldAvatarPath?: string,
+) => {
+  try {
+    if (avatarFile !== null && oldAvatarPath) {
+      const bucketName = `object/avatars/${avatarFile.name}`;
+      const imagePath = await postImage(bucketName, avatarFile);
+
+      http.request<"">("put", API_ENDPOINTS.users.user, {
+        data: { data: { fullName: fullName, avatar: imagePath } },
+      });
+      http.request<"">("delete", oldAvatarPath);
+    } else {
+      http.request<"">("put", API_ENDPOINTS.users.user, {
+        data: { data: { fullName: fullName } },
+      });
+    }
+  } catch {
+    toaster.error({ description: "Failed to update account" });
+  }
+};
+
+export const changePassword = (password: string) => {
+  const res = http.request<"">("put", API_ENDPOINTS.users.user, {
+    data: { password: password },
+  });
+
+  toaster.promise(res, {
+    loading: { description: "Chan" },
+    error: { description: "Failed to logout" },
+    success: { description: "Logged out successfully" },
+  });
 };

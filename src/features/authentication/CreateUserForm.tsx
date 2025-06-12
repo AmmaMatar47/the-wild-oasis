@@ -12,7 +12,7 @@ const initialUserValues = {
   confirmPassword: "",
 };
 
-const settingsFormValidation = Yup.object().shape({
+const createUserFormValidation = Yup.object().shape({
   fullName: Yup.string()
     .min(2, "Name must be at least 2 characters")
     .max(20, "Name cannot exceed 20 characters")
@@ -45,7 +45,7 @@ const CreateUserForm = () => {
   const formik = useFormik({
     initialValues: initialUserValues,
     onSubmit: handleSubmit,
-    validationSchema: settingsFormValidation,
+    validationSchema: createUserFormValidation,
     validateOnChange: false,
     validateOnBlur: false,
   });
@@ -56,7 +56,7 @@ const CreateUserForm = () => {
         name="fullName"
         value={formik.values.fullName}
         onChange={formik.handleChange}
-        label="Full name"
+        label="User name"
         labelWidth="12rem"
         maxWidth="22rem"
         errorMessage={formik.errors.fullName}

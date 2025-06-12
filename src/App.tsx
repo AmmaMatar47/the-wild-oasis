@@ -4,7 +4,7 @@ import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import { Toaster } from "./components/ui/toaster";
 import AppLayout from "./components/AppLayout/AppLayout";
 import Dashboard from "./pages/Dashboard";
-import Account from "./pages/Account";
+import Profile from "./pages/Profile";
 import Users from "./pages/Users";
 import Cabins from "./pages/Cabins";
 import Bookings from "./pages/Bookings";
@@ -37,7 +37,7 @@ const App = () => {
               />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="users" element={<Users />} />
-              <Route path="account" element={<Account />} />
+              <Route path="profile" element={<Profile />} />
               <Route path="cabins" element={<Cabins />} />
               <Route path="bookings" element={<Bookings />} />
               <Route

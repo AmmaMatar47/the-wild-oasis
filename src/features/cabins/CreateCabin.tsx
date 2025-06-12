@@ -1,8 +1,4 @@
-import {
-  createCabin,
-  ImageFileType,
-  CabinType,
-} from "@/services/api/cabinsApi";
+import { createCabin } from "@/services/api/cabinsApi";
 import {
   Button,
   Dialog,
@@ -19,6 +15,7 @@ import { useState } from "react";
 import InputField from "@/components/InputField";
 import { cabinFormValidation, formInitialValues } from "./cabinsFormConfig";
 import { API_ENDPOINTS } from "@/utils/constants";
+import { CabinType, ImageFileType } from "@/types/cabinsTypes";
 
 const CreateCabin = () => {
   const formik = useFormik({
@@ -156,7 +153,7 @@ const CreateCabin = () => {
                   marginBottom="2.4rem"
                   disabled={isLoading}
                 >
-                  <Field.Label>Cabin photo</Field.Label>
+                  <Field.Label>Cabin image</Field.Label>
 
                   <FileUpload.Root
                     accept="image/*"
@@ -177,7 +174,7 @@ const CreateCabin = () => {
                         size="md"
                         color="var(--color-grey-700)"
                       >
-                        <LuFileImage /> Upload Images
+                        <LuFileImage /> Upload image
                       </Button>
                     </FileUpload.Trigger>
                     <FileUploadList clearable />
