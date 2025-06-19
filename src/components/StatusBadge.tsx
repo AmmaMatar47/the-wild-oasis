@@ -1,4 +1,4 @@
-import { StatusType } from "@/services/api/bookingsApi";
+import { StatusType } from "@/types/bookingsTypes";
 import { Badge, BadgeProps } from "@chakra-ui/react";
 
 interface StatusBadge extends BadgeProps {
