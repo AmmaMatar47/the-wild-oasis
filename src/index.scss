@@ -1,11 +1,11 @@
-@use './assets/styles/base/global';
-@use './assets/styles/base/form';
-@use './assets/styles/base/menu';
+@use "./assets/styles/base/global";
+@use "./assets/styles/base/form";
+@use "./assets/styles/base/menu";
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Sono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
-:root[data-theme='light'] {
+:root[data-theme="light"] {
   /* Indigo */
   --color-brand-50: #eef2ff;
   --color-brand-100: #e0e7ff;
@@ -61,7 +61,7 @@
   --image-opacity: 100%;
 }
 
-:root[data-theme='dark'] {
+:root[data-theme="dark"] {
   /* Indigo (adjusted for dark mode) */
   --color-grey-0: #18212f;
   --color-grey-50: #111827;

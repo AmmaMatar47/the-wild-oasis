@@ -1,19 +1,19 @@
-import { useNavigate, useParams } from 'react-router';
-import BookingsDetailsBox from '../features/bookings/BookingsDetailsBox';
-import { useEffect, useState } from 'react';
-import { checkIn, getBookingById } from '@/services/api/bookingsApi';
-import Spinner from '@/components/Spinner/Spinner';
-import SectionHeader from '@/components/SectionHeader';
-import Heading from '../components/Heading';
-import BackButton from '@/components/BackButton';
-import { Box, Flex } from '@chakra-ui/react';
-import { getSettings, SettingsType } from '@/services/api/settingsApi';
-import { formatToUSCurrency } from '@/utils/helper';
-import Checkbox from '@/components/Checkbox';
-import { Tooltip } from '@/components/ui/tooltip';
-import PageError from '@/components/PageError';
-import { BookingDetailsType } from '@/types/bookingsTypes';
-import Button from '@/components/Button';
+import { useNavigate, useParams } from "react-router";
+import BookingsDetailsBox from "../features/bookings/BookingsDetailsBox";
+import { useEffect, useState } from "react";
+import { checkIn, getBookingById } from "@/services/api/bookingsApi";
+import Spinner from "@/components/Spinner/Spinner";
+import SectionHeader from "@/components/SectionHeader";
+import Heading from "../components/Heading";
+import BackButton from "@/components/BackButton";
+import { Box, Flex } from "@chakra-ui/react";
+import { getSettings, SettingsType } from "@/services/api/settingsApi";
+import { formatToUSCurrency } from "@/utils/helper";
+import Checkbox from "@/components/Checkbox";
+import { Tooltip } from "@/components/ui/tooltip";
+import PageError from "@/components/PageError";
+import { BookingDetailsType } from "@/types/bookingsTypes";
+import Button from "@/components/Button";
 
 const CheckIn = () => {
   const params = useParams();
@@ -37,7 +37,7 @@ const CheckIn = () => {
         setSettings(settingsData[0]);
         setIsLoading(false);
       } catch {
-        throw new Error('Failed to load data');
+        throw new Error("Failed to load data");
       } finally {
         setIsLoading(false);
       }
@@ -56,14 +56,14 @@ const CheckIn = () => {
     checkIn(
       bookingId,
       booking?.hasBreakfast ? booking.hasBreakfast : addBreakfastChecked,
-      price
+      price,
     ).then(() => navigate(-1));
   };
 
   return isLoading ? (
     <Spinner />
   ) : booking === undefined || settings === undefined ? (
-    <PageError message='Failed to load Data' />
+    <PageError message="Failed to load Data" />
   ) : (
     <>
       <SectionHeader>
@@ -74,48 +74,59 @@ const CheckIn = () => {
       <BookingsDetailsBox booking={booking} />
 
       {!booking.hasBreakfast && (
-        <Box marginBottom='6' boxShadow='var(--shadow-sm)'>
+        <Box marginBottom="6" boxShadow="var(--shadow-sm)">
           <Checkbox
             checked={addBreakfastChecked}
-            onCheckedChange={e => {
-              if (booking.hasBreakfast === addBreakfastChecked && booking.isPaid)
+            onCheckedChange={(e) => {
+              if (
+                booking.hasBreakfast === addBreakfastChecked &&
+                booking.isPaid
+              )
                 setPaidChecked(false);
-              if (booking.hasBreakfast !== addBreakfastChecked && booking.isPaid)
+              if (
+                booking.hasBreakfast !== addBreakfastChecked &&
+                booking.isPaid
+              )
                 setPaidChecked(true);
 
               setAddBreakfastChecked(!!e.checked);
             }}
-            cursor='pointer'
+            cursor="pointer"
           >
-            Want to add breakfast for {formatToUSCurrency(settings.breakfastPrice)}?
+            Want to add breakfast for{" "}
+            {formatToUSCurrency(settings.breakfastPrice)}?
           </Checkbox>
         </Box>
       )}
 
       <Tooltip
-        content='This booking is marked as paid and cannot be charged again.'
+        content="This booking is marked as paid and cannot be charged again."
         disabled={!(booking.isPaid && paidChecked)}
       >
-        <Box marginBottom='8' boxShadow='var(--shadow-sm)'>
+        <Box marginBottom="8" boxShadow="var(--shadow-sm)">
           <Checkbox
             checked={paidChecked}
-            onCheckedChange={e => setPaidChecked(!!e.checked)}
-            bgColor='var(--color-grey-0)'
+            onCheckedChange={(e) => setPaidChecked(!!e.checked)}
+            bgColor="var(--color-grey-0)"
             disabled={booking.isPaid && paidChecked}
-            cursor='pointer'
+            cursor="pointer"
           >
-            I confirm that {booking.guests.fullName} has paid the total amount of{' '}
+            I confirm that {booking.guests.fullName} has paid the total amount
+            of{" "}
             {addBreakfastChecked
               ? formatToUSCurrency(booking.totalPrice + settings.breakfastPrice)
-              : formatToUSCurrency(booking.totalPrice)}{' '}
+              : formatToUSCurrency(booking.totalPrice)}{" "}
             {addBreakfastChecked &&
               `(${formatToUSCurrency(booking.totalPrice)} + ${formatToUSCurrency(settings.breakfastPrice)})`}
           </Checkbox>
         </Box>
       </Tooltip>
 
-      <Flex justifyContent='end'>
-        <Tooltip content='Please verify payment before checking in' disabled={paidChecked}>
+      <Flex justifyContent="end">
+        <Tooltip
+          content="Please verify payment before checking in"
+          disabled={paidChecked}
+        >
           <Button disabled={!paidChecked} onClick={handleCheckIn}>
             Check in booking #{bookingId}
           </Button>

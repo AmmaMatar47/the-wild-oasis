@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface ThemeContextType {
   theme: string;
@@ -6,30 +6,40 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: 'light',
+  theme: "light",
   toggleTheme: () => {},
 });
 
-export const ThemeProvider = ({ children }: { children: React.JSX.Element }) => {
+export const ThemeProvider = ({
+  children,
+}: {
+  children: React.JSX.Element;
+}) => {
   const getPreferredTheme = () => {
-    const storedTheme = localStorage.getItem('theme');
+    const storedTheme = localStorage.getItem("theme");
     if (storedTheme) return storedTheme;
 
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
     // returns user preferred theme if there's no stored theme in local storage
-    return prefersDark ? 'dark' : 'light';
+    return prefersDark ? "dark" : "light";
   };
 
   const [theme, setTheme] = useState(getPreferredTheme);
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
-  return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
 };
 
 export const useTheme = () => useContext(ThemeContext);

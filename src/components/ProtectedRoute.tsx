@@ -1,9 +1,9 @@
-import { useUser } from '@/features/authentication/useUser';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
-import Spinner from './Spinner/Spinner';
-import { Center } from '@chakra-ui/react';
-import { http } from '@/services/HttpService';
+import { useUser } from "@/features/authentication/useUser";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+import Spinner from "./Spinner/Spinner";
+import { Center } from "@chakra-ui/react";
+import { http } from "@/services/HttpService";
 
 const ProtectedRoute = ({ children }: { children: React.JSX.Element }) => {
   const { isLoading, isAuthenticated, isFetched } = useUser();
@@ -14,12 +14,12 @@ const ProtectedRoute = ({ children }: { children: React.JSX.Element }) => {
   }, [isFetched]);
 
   useEffect(() => {
-    if (!isAuthenticated && !isLoading) navigate('/login');
+    if (!isAuthenticated && !isLoading) navigate("/login");
   }, [isAuthenticated, isLoading, navigate]);
 
   return isLoading ? (
-    <Center h='100vh' bgColor='var(--color-grey-0)'>
-      <Spinner size='7.2rem' />
+    <Center h="100vh" bgColor="var(--color-grey-0)">
+      <Spinner size="7.2rem" />
     </Center>
   ) : (
     children

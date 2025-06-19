@@ -1,13 +1,13 @@
-import { updateAccount } from '@/services/api/authApi';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { UpdateAccountFormType } from './UpdateAccountForm';
-import { UserDataRes } from '@/types/authTypes';
+import { updateAccount } from "@/services/api/authApi";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { UpdateAccountFormType } from "./UpdateAccountForm";
+import { UserDataRes } from "@/types/authTypes";
 
 export const useUpdateAccount = () => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
-    mutationKey: ['user'],
+    mutationKey: ["user"],
     mutationFn: ({
       values,
       avatarPath,
@@ -17,7 +17,7 @@ export const useUpdateAccount = () => {
     }) => updateAccount(values, avatarPath),
 
     onSuccess(res: UserDataRes) {
-      queryClient.setQueryData(['user'], res);
+      queryClient.setQueryData(["user"], res);
     },
   });
 

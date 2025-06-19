@@ -1,5 +1,5 @@
-import { getCurrentUser } from '@/services/api/authApi';
-import { useQuery } from '@tanstack/react-query';
+import { getCurrentUser } from "@/services/api/authApi";
+import { useQuery } from "@tanstack/react-query";
 
 export const useUser = () => {
   const {
@@ -7,10 +7,15 @@ export const useUser = () => {
     isLoading,
     isFetched,
   } = useQuery({
-    queryKey: ['user'],
+    queryKey: ["user"],
     queryFn: getCurrentUser,
     retry: false,
   });
 
-  return { user, isLoading, isFetched, isAuthenticated: user?.role === 'authenticated' };
+  return {
+    user,
+    isLoading,
+    isFetched,
+    isAuthenticated: user?.role === "authenticated",
+  };
 };

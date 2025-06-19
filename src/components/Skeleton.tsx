@@ -1,13 +1,13 @@
-import { Skeleton as ChakraUISkeleton, SkeletonProps } from '@chakra-ui/react';
+import { Skeleton as ChakraUISkeleton, SkeletonProps } from "@chakra-ui/react";
 
 const Skeleton: React.FC<SkeletonProps> = ({ children, ...props }) => {
   return (
     <ChakraUISkeleton
       css={{
-        '--start-color': 'var(--color-grey-300)',
-        '--end-color': 'var(--color-grey-200)',
+        "--start-color": "var(--color-grey-300)",
+        "--end-color": "var(--color-grey-200)",
       }}
-      variant='shine'
+      variant="shine"
       {...props}
     >
       {children}
