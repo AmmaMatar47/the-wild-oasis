@@ -1,5 +1,4 @@
-import styles from "./Segment.module.scss";
-import { SegmentGroup } from "@chakra-ui/react";
+import { SegmentGroup } from '@chakra-ui/react';
 
 type SegmentItems =
   | {
@@ -20,15 +19,16 @@ const Segment = ({
   return (
     <SegmentGroup.Root
       value={value}
-      onValueChange={(e) => onValueChange(e.value)}
-      bgColor="var(--color-grey-0)"
-      shadow="var(--shadow-sm)"
+      onValueChange={e => onValueChange(e.value)}
+      bgColor='var(--color-grey-0)'
+      shadow='var(--shadow-sm)'
     >
-      <SegmentGroup.Indicator bgColor="var(--color-brand-500)" />
+      <SegmentGroup.Indicator bgColor='var(--color-brand-600)' />
       <SegmentGroup.Items
         items={items}
-        fontWeight="500"
-        className={styles.segmentItems}
+        fontWeight='500'
+        color='var(--color-grey-800)'
+        _checked={{ color: '#fff' }}
       />
     </SegmentGroup.Root>
   );

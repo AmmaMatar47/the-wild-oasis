@@ -1,0 +1,30 @@
+.darkModeIcon {
+  animation: darkModeIconAnimation 0.2s ease-in-out;
+}
+
+.lightModeIcon {
+  animation: lightModeIconAnimation 0.2s ease-in-out;
+}
+
+@keyframes darkModeIconAnimation {
+  0% {
+    scale: 0;
+    translate: 0 100%;
+  }
+
+  100% {
+    scale: 1;
+    translate: 0;
+  }
+}
+
+@keyframes lightModeIconAnimation {
+  0% {
+    scale: 0;
+    translate: 0 -100%;
+  }
+  100% {
+    scale: 1;
+    translate: 0;
+  }
+}

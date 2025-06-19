@@ -1,7 +1,7 @@
 export const API_ENDPOINTS = {
-  base: "/rest/v1",
-  storage: "/storage/v1",
-  auth: "/auth/v1",
+  base: '/rest/v1',
+  storage: '/storage/v1',
+  auth: '/auth/v1',
 
   // Server tables
   cabins: `/rest/v1/cabins`,
@@ -19,3 +19,6 @@ export const API_ENDPOINTS = {
 export const CABINS_PAGE_SIZE = 6;
 
 export const BOOKINGS_PAGE_SIZE = 6;
+
+export const SUPPORTED_IMAGE_FORMATS = ['image/jpeg', 'image/png', 'image/webp'];
+export const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2MB

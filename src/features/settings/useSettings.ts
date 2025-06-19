@@ -1,9 +1,9 @@
-import { getSettings } from "@/services/api/settingsApi";
-import { useQuery } from "react-query";
+import { getSettings } from '@/services/api/settingsApi';
+import { useQuery } from '@tanstack/react-query';
 
 export const useSettings = () => {
-  const { isLoading, error, data } = useQuery({
-    queryKey: ["settings"],
+  const { isLoading, error, data, refetch } = useQuery({
+    queryKey: ['settings'],
     queryFn: getSettings,
   });
 
@@ -13,5 +13,6 @@ export const useSettings = () => {
     isLoading,
     error,
     settings,
+    refetch,
   };
 };

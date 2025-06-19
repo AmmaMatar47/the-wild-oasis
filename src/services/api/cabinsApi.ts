@@ -1,109 +1,112 @@
-import { toaster } from "@/components/ui/toaster";
-import { http } from "../HttpService";
-import { AxiosResponse } from "axios";
-import { API_ENDPOINTS } from "@/utils/constants";
-import { CabinResponseType, CabinType } from "@/types/cabinsTypes";
-import { postImage } from "./indexApi";
+import { toaster } from '@/components/ui/toaster';
+import { http } from '../HttpService';
+import { isAxiosError } from 'axios';
+import { API_ENDPOINTS } from '@/utils/constants';
+import { CabinResponseType, CabinType } from '@/types/cabinsTypes';
+import { postImage } from './indexApi';
 
 export const getAllCabins = async () => {
-  const res = await http.request<CabinResponseType[]>(
-    "get",
-    API_ENDPOINTS.cabins,
-  );
+  const res = await http.request<CabinResponseType[]>('get', API_ENDPOINTS.cabins);
 
   return res.data;
 };
 
-export const getCabins = async (
-  order: string,
-  discount: string,
-  range: string,
-) => {
-  const res = await http.request<CabinResponseType[]>(
-    "get",
-    API_ENDPOINTS.cabins,
-    {
-      params:
-        discount === "All"
-          ? { order: order }
-          : { order: order, discount: discount },
-      headers: {
-        range,
-      },
+export const getCabinById = async (id: string) => {
+  const res = await http.request<CabinType[]>('get', API_ENDPOINTS.cabins, {
+    params: { id: `eq.${id}`, select: 'description,discount,image,maxCapacity,name,regularPrice' },
+  });
+  return res.data.at(0);
+};
+
+export const getCabins = async (order: string, discount: string, range: string) => {
+  const res = await http.request<CabinResponseType[]>('get', API_ENDPOINTS.cabins, {
+    params: discount === 'All' ? { order: order } : { order: order, discount: discount },
+    headers: {
+      range,
     },
-  );
+  });
 
   return res.data;
 };
 
-export const createCabin = (
-  body: CabinType,
-  bucketName?: string,
-  file?: Blob,
-) => {
-  if (bucketName && file) {
-    postImage(bucketName, file);
-  }
+export const createCabin = async (body: CabinType, bucketName?: string) => {
+  try {
+    // giving it an id so that I can remove it
 
-  const createCabinRes = http.request<"">("post", API_ENDPOINTS.cabins, {
-    data: body,
-  });
+    toaster.loading({ description: 'Uploading', id: 'loading' });
+    let imagePath;
+    if (bucketName) {
+      imagePath = await postImage(bucketName, body.image as Blob);
+    }
 
-  toaster.promise(createCabinRes, {
-    success: {
-      description: "Cabin created successfully",
-    },
-    error: { description: "Cabin could not be created" },
-    loading: { description: "Uploading..." },
-  });
-  return createCabinRes;
-};
-
-export const editCabin = (
-  id: number,
-  body: Partial<CabinType>,
-  bucketName?: string,
-  file?: Blob,
-) => {
-  if (bucketName && file) {
-    postImage(bucketName, file);
-  }
-
-  const res = http.request<"">("patch", API_ENDPOINTS.cabins, {
-    params: {
-      id: `eq.${id}`,
-    },
-    data: body,
-  });
-
-  toaster.promise(res, {
-    success: {
-      description: "Cabin edited successfully",
-    },
-    loading: {
-      description: "Editing cabin",
-    },
-    error: {
-      description: "Failed to edit cabin",
-    },
-  });
-  return res;
-};
-
-export const deleteCabin = (cabinId: number, imagePath: string) => {
-  const res = http
-    .request<AxiosResponse<"">>("delete", API_ENDPOINTS.cabins, {
-      params: { id: `eq.${cabinId}` },
-    })
-    .then(() => {
-      http.request<"">("delete", imagePath);
+    await http.request<void>('post', API_ENDPOINTS.cabins, {
+      data: { ...body, image: imagePath || body.image },
     });
-  toaster.promise(res, {
-    success: {
-      description: "Cabin deleted successfully",
-    },
-    error: { description: "Cabin failed to delete" },
-    loading: { description: "Deleting" },
-  });
-  return res;
+
+    toaster.success({
+      description: 'Cabin created successfully',
+    });
+  } catch {
+    toaster.error({ description: 'Cabin could not be created' });
+    throw new Error();
+  } finally {
+    toaster.dismiss('loading');
+  }
+};
+
+export const editCabin = async (
+  id: string | number,
+  body: Partial<CabinType>,
+  bucketName?: string
+) => {
+  try {
+    toaster.loading({ description: 'Editing cabin', id: 'editingCabin' });
+
+    let imagePath;
+    if (bucketName) {
+      imagePath = await postImage(bucketName, body.image as Blob);
+    }
+
+    http.request<void>('patch', API_ENDPOINTS.cabins, {
+      params: {
+        id: `eq.${id}`,
+      },
+      data: { ...body, image: imagePath || body.image },
+    });
+
+    toaster.success({
+      description: 'Cabin edited successfully',
+    });
+  } catch {
+    toaster.error({ description: 'Failed to edit cabin' });
+    throw new Error();
+  } finally {
+    toaster.dismiss('editingCabin');
+  }
+};
+
+export const deleteCabin = async (cabinId: string | number) => {
+  try {
+    toaster.loading({ description: 'Deleting', id: 'deleting' });
+    const res = await http.request<void>('delete', API_ENDPOINTS.cabins, {
+      params: { id: `eq.${cabinId}` },
+    });
+    toaster.success({ description: 'Cabin deleted successfully' });
+
+    return res;
+  } catch (err) {
+    if (isAxiosError(err)) {
+      if (err.response?.data.code == 23503) {
+        toaster.error({
+          title: 'Failed to delete cabin',
+          description: `You can't delete this cabin because it’s still associated with one or more bookings.`,
+        });
+      } else {
+        toaster.error({ description: 'Failed to delete cabin' });
+      }
+    }
+    throw new Error();
+  } finally {
+    toaster.dismiss('deleting');
+  }
 };
