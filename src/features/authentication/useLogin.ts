@@ -1,12 +1,12 @@
 import { login } from "@/services/api/authApi";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 
 export const useLogin = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       login({ email, password }),
     onSuccess(res) {
@@ -17,5 +17,5 @@ export const useLogin = () => {
     },
   });
 
-  return { mutate, isLoading };
+  return { mutate, isPending };
 };

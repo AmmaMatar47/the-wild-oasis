@@ -19,3 +19,10 @@ export const API_ENDPOINTS = {
 export const CABINS_PAGE_SIZE = 6;
 
 export const BOOKINGS_PAGE_SIZE = 6;
+
+export const SUPPORTED_IMAGE_FORMATS = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+];
+export const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2MB

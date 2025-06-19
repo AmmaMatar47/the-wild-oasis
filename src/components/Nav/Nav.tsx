@@ -8,12 +8,19 @@ import {
   HiOutlineHomeModern,
   HiOutlineUsers,
 } from "react-icons/hi2";
+import { useTheme } from "@/context/ThemeContext";
 
 const Nav = () => {
+  const { theme } = useTheme();
+
   return (
     <nav className={styles.nav}>
       <img
-        src="../../../public/logo-light.png"
+        src={
+          theme === "dark"
+            ? "../../../public/logo-dark.png"
+            : "../../../public/logo-light.png"
+        }
         alt=""
         className={styles.appLogo}
       />

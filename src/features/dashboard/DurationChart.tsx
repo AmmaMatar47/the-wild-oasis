@@ -141,7 +141,15 @@ const DurationChart = ({
               ))}
             </Pie>
 
-            <Tooltip />
+            <Tooltip
+              itemStyle={{
+                color: "var(--color-grey-800)",
+              }}
+              contentStyle={{
+                backgroundColor: "var(--color-grey-0)",
+                borderColor: "var(--color-grey-200)",
+              }}
+            />
             <Legend
               verticalAlign="middle"
               align="right"

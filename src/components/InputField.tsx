@@ -29,10 +29,10 @@ const InputField = ({
         {label}
       </Field.Label>
       <Input
-        focusRingColor="var(--color-brand-600)"
         maxW="16.8rem"
+        focusRingColor="var(--color-brand-600)"
         boxShadow="var(--shadow-sm)"
-        border="solid 1px var(--color-grey-300)"
+        border={invalid ? "" : `solid 1px var(--color-grey-300)`}
         {...props}
       />
       <Field.ErrorText>{errorMessage}</Field.ErrorText>

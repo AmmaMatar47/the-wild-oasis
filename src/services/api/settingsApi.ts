@@ -21,16 +21,15 @@ export const getSettings = async () => {
 
 export const updateSettings = (settingsData: UpdateSettingsRequestType) => {
   // There's only one settings row in the server so no need for passing an id for the updateSettings function
-  const res = http.request<SettingsType[]>("patch", API_ENDPOINTS.settings, {
-    params: { id: "eq.1" },
-    data: settingsData,
-  });
-
-  toaster.promise(res, {
-    error: { description: "failed to update settings" },
-    loading: { description: "Updating settings" },
-    success: { description: "Settings updated successfully" },
-  });
-
-  return res;
+  try {
+    const res = http.request<SettingsType[]>("patch", API_ENDPOINTS.settings, {
+      params: { id: "eq.1" },
+      data: settingsData,
+    });
+    toaster.success({ description: "Settings updated successfully" });
+    return res;
+  } catch {
+    toaster.error({ description: "Failed to update settings" });
+    throw new Error();
+  }
 };

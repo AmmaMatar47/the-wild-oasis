@@ -1,6 +1,6 @@
 import Heading from "@/components/Heading";
 import SectionHeader from "@/components/SectionHeader";
-import Segment from "@/components/Segment/Segment";
+import Segment from "@/components/Segment";
 import { useSearchParams } from "react-router";
 import DashboardLayout from "@/features/dashboard/DashboardLayout";
 

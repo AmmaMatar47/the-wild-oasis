@@ -13,6 +13,7 @@ import {
   YAxis,
 } from "recharts";
 import DashboardBox from "../../components/SectionBox";
+import { useTheme } from "@/context/ThemeContext";
 
 const SalesChart = ({
   bookingsPrices,
@@ -21,6 +22,8 @@ const SalesChart = ({
   bookingsPrices: BookingsPricesType[];
   numDays: number;
 }) => {
+  const { theme } = useTheme();
+
   const startDate = formatDateToReadable(
     String(subDays(getToday(), Number(numDays) - 1)),
   );
@@ -42,6 +45,22 @@ const SalesChart = ({
         .reduce((acc, cur) => acc + cur.extraPrice, 0),
     };
   });
+
+  const colors =
+    theme === "dark"
+      ? {
+          extraSales: { stroke: "#4f46e5", fill: "#4f46e5" },
+          totalSales: { stroke: "#22c55e", fill: "#22c55e" },
+          text: "#e5e7eb",
+          background: "#18212f",
+        }
+      : {
+          extraSales: { stroke: "#4f46e5", fill: "#c7d2fe" },
+          totalSales: { stroke: "#16a34a", fill: "#dcfce7" },
+          text: "#374151",
+          background: "#fff",
+        };
+
   return (
     <DashboardBox padding="6" gridColumn="1 / -1">
       <Heading as="h3" fontSize="xl" marginBottom="8">
@@ -51,14 +70,22 @@ const SalesChart = ({
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={data} margin={{ top: 20, left: 32, bottom: 50 }}>
           <CartesianGrid strokeDasharray="4" />
-          <XAxis dataKey="label" />
-          <YAxis unit="$" />
+          <XAxis
+            dataKey="label"
+            tick={{ fill: colors.text }}
+            tickLine={{ stroke: colors.text }}
+          />
+          <YAxis
+            unit="$"
+            tick={{ fill: colors.text }}
+            tickLine={{ stroke: colors.text }}
+          />
           <Area
             type="monotone"
             dataKey="totalSales"
             stackId="1"
-            stroke="#00a640"
-            fill="#80c69bc2"
+            stroke={colors.totalSales.stroke}
+            fill={colors.totalSales.fill}
             strokeWidth={1.5}
             unit="$"
             name="Total sales"
@@ -67,13 +94,18 @@ const SalesChart = ({
             type="monotone"
             dataKey="extraSales"
             stackId="2"
-            stroke="#8884d8"
-            fill="#8884d8ac"
+            stroke={colors.extraSales.stroke}
+            fill={colors.extraSales.fill}
             strokeWidth={1.5}
             unit="$"
             name="Extra sales"
           />
-          <Tooltip />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "var(--color-grey-0)",
+              borderColor: "var(--color-grey-200)",
+            }}
+          />
         </AreaChart>
       </ResponsiveContainer>
     </DashboardBox>

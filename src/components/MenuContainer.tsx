@@ -13,6 +13,8 @@ const MenuContainer = ({ children }: { children: React.ReactNode }) => {
           height="2rem"
           borderRadius="4px"
           marginRight="0.5rem"
+          _hover={{ bgColor: "var(--color-grey-100)" }}
+          _open={{ bgColor: "var(--color-grey-100)" }}
         >
           <HiEllipsisVertical
             fill="var(--color-grey-600)"
@@ -23,7 +25,12 @@ const MenuContainer = ({ children }: { children: React.ReactNode }) => {
 
       <Portal>
         <Menu.Positioner>
-          <Menu.Content>{children}</Menu.Content>
+          <Menu.Content
+            bgColor="var(--color-grey-0)"
+            _highlighted={{ bgColor: "var(--color-grey-0)" }}
+          >
+            {children}
+          </Menu.Content>
         </Menu.Positioner>
       </Portal>
     </Menu.Root>

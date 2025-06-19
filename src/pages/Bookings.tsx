@@ -1,11 +1,10 @@
 import SectionHeader from "@/components/SectionHeader";
 import Heading from "@/components/Heading";
-import Segment from "@/components/Segment/Segment";
-import SelectComp from "@/components/Select";
-import Spinner from "@/components/Spinner/Spinner";
+import Segment from "@/components/Segment";
+import Select from "@/components/Select";
 import TablePagination from "@/components/TablePagination";
 import BookingsTable from "@/features/bookings/BookingsTable";
-import { BookingsType, getBookings } from "@/services/api/bookingsApi";
+import { getBookings } from "@/services/api/bookingsApi";
 import { getDataRange } from "@/services/api/indexApi";
 import { calculatePageRange } from "@/utils/helper";
 import {
@@ -17,6 +16,13 @@ import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import PageError from "@/components/PageError";
 import { BOOKINGS_PAGE_SIZE } from "@/utils/constants";
+import { BookingsType } from "@/types/bookingsTypes";
+
+export interface FetchBookingsProps {
+  status: string;
+  sortBy: string;
+  page: number;
+}
 
 const segmentItems = [
   {
@@ -55,11 +61,7 @@ const Bookings = () => {
       status = activeStatus,
       sortBy = sortByValue,
       page = activePage,
-    }: {
-      status?: string;
-      sortBy?: string;
-      page?: number;
-    }) => {
+    }: Partial<FetchBookingsProps>) => {
       try {
         setIsLoading(true);
         const bookingsDataCount = await getDataRange("bookings", {
@@ -127,7 +129,7 @@ const Bookings = () => {
             onValueChange={handleSegmentValueChange}
           />
 
-          <SelectComp
+          <Select
             collection={sortBy}
             value={[sortByValue]}
             onValueChange={(value) => handleSortingValueChange(value)}
@@ -135,22 +137,23 @@ const Bookings = () => {
           />
         </Flex>
       </SectionHeader>{" "}
-      {isLoading ? (
-        <Spinner />
-      ) : error !== undefined ? (
+      {error ? (
         <PageError message={error} />
       ) : (
-        <>
-          <BookingsTable bookings={bookings} />
-          {bookingsCount <= BOOKINGS_PAGE_SIZE || !bookingsCount ? null : (
-            <TablePagination
-              page={activePage}
-              pageSize={BOOKINGS_PAGE_SIZE}
-              onPageChange={handlePageChange}
-              count={bookingsCount}
-            />
-          )}
-        </>
+        <BookingsTable
+          bookings={bookings}
+          isLoading={isLoading}
+          fetchBookings={fetchBookings}
+        />
+      )}
+      {bookingsCount <= BOOKINGS_PAGE_SIZE || !bookingsCount ? null : (
+        <TablePagination
+          page={activePage}
+          pageSize={BOOKINGS_PAGE_SIZE}
+          onPageChange={handlePageChange}
+          count={bookingsCount}
+          disabled={isLoading}
+        />
       )}
     </>
   );

@@ -6,13 +6,14 @@ import Spinner from "@/components/Spinner/Spinner";
 import SectionHeader from "@/components/SectionHeader";
 import Heading from "../components/Heading";
 import BackButton from "@/components/BackButton";
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { getSettings, SettingsType } from "@/services/api/settingsApi";
 import { formatToUSCurrency } from "@/utils/helper";
 import Checkbox from "@/components/Checkbox";
 import { Tooltip } from "@/components/ui/tooltip";
 import PageError from "@/components/PageError";
 import { BookingDetailsType } from "@/types/bookingsTypes";
+import Button from "@/components/Button";
 
 const CheckIn = () => {
   const params = useParams();
@@ -69,6 +70,7 @@ const CheckIn = () => {
         <Heading>Check in booking #{booking.id}</Heading>
         <BackButton />
       </SectionHeader>
+
       <BookingsDetailsBox booking={booking} />
 
       {!booking.hasBreakfast && (
@@ -89,6 +91,7 @@ const CheckIn = () => {
 
               setAddBreakfastChecked(!!e.checked);
             }}
+            cursor="pointer"
           >
             Want to add breakfast for{" "}
             {formatToUSCurrency(settings.breakfastPrice)}?
@@ -96,33 +99,35 @@ const CheckIn = () => {
         </Box>
       )}
 
-      <Box marginBottom="8" boxShadow="var(--shadow-sm)">
-        <Checkbox
-          checked={paidChecked}
-          onCheckedChange={(e) => setPaidChecked(!!e.checked)}
-          bgColor="var(--color-grey-0)"
-          disabled={booking.isPaid && paidChecked}
-        >
-          I confirm that {booking.guests.fullName} has paid the total amount of{" "}
-          {addBreakfastChecked
-            ? formatToUSCurrency(booking.totalPrice + settings.breakfastPrice)
-            : formatToUSCurrency(booking.totalPrice)}{" "}
-          {addBreakfastChecked &&
-            `(${formatToUSCurrency(booking.totalPrice)} + ${formatToUSCurrency(settings.breakfastPrice)})`}
-        </Checkbox>
-      </Box>
+      <Tooltip
+        content="This booking is marked as paid and cannot be charged again."
+        disabled={!(booking.isPaid && paidChecked)}
+      >
+        <Box marginBottom="8" boxShadow="var(--shadow-sm)">
+          <Checkbox
+            checked={paidChecked}
+            onCheckedChange={(e) => setPaidChecked(!!e.checked)}
+            bgColor="var(--color-grey-0)"
+            disabled={booking.isPaid && paidChecked}
+            cursor="pointer"
+          >
+            I confirm that {booking.guests.fullName} has paid the total amount
+            of{" "}
+            {addBreakfastChecked
+              ? formatToUSCurrency(booking.totalPrice + settings.breakfastPrice)
+              : formatToUSCurrency(booking.totalPrice)}{" "}
+            {addBreakfastChecked &&
+              `(${formatToUSCurrency(booking.totalPrice)} + ${formatToUSCurrency(settings.breakfastPrice)})`}
+          </Checkbox>
+        </Box>
+      </Tooltip>
 
       <Flex justifyContent="end">
         <Tooltip
           content="Please verify payment before checking in"
           disabled={paidChecked}
         >
-          <Button
-            bgColor="var(--color-brand-600)"
-            _hover={{ bgColor: "var(--color-brand-700)" }}
-            disabled={!paidChecked}
-            onClick={handleCheckIn}
-          >
+          <Button disabled={!paidChecked} onClick={handleCheckIn}>
             Check in booking #{bookingId}
           </Button>
         </Tooltip>

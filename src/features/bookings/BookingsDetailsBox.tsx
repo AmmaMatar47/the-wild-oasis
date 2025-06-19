@@ -20,9 +20,9 @@ const BookingsDetailsBox = ({ booking }: { booking: BookingDetailsType }) => {
         bgColor="var(--color-brand-500)"
         width="100%"
         paddingY="5"
-        color="var(--color-grey-200)"
         borderTopRadius="md"
         alignItems="center"
+        color="#fff"
       >
         <Container
           display="flex"
@@ -32,7 +32,7 @@ const BookingsDetailsBox = ({ booking }: { booking: BookingDetailsType }) => {
           alignItems="center"
         >
           <HiOutlineHomeModern size="32" />
-          {booking.numNights} nights in Cabin {booking.cabins.name}
+          {booking.numNights} night(s) in Cabin {booking.cabins.name}
         </Container>
 
         <Text fontWeight="500" fontSize="lg" width="100%">

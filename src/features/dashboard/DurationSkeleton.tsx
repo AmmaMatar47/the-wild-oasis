@@ -1,12 +1,7 @@
-import {
-  Flex,
-  SkeletonCircle,
-  SkeletonText,
-  For,
-  Box,
-  Circle,
-} from "@chakra-ui/react";
+import { Flex, For, Box, Circle } from "@chakra-ui/react";
 import SectionBox from "../../components/SectionBox";
+import SkeletonText from "@/components/SkeletonText";
+import SkeletonCircle from "@/components/SkeletonCircle";
 
 const DurationSkeleton = () => {
   return (
@@ -31,9 +26,14 @@ const DurationSkeleton = () => {
           />
         </Box>
         <Box>
-          <For each={["", "", "", "", "", "", ""]}>
+          <For each={new Array(7).fill("")}>
             {() => (
-              <Flex width="4rem" marginTop="1.5" gap="1">
+              <Flex
+                width="4rem"
+                marginTop="1.5"
+                gap="1"
+                key={crypto.randomUUID()}
+              >
                 <SkeletonCircle size="1rem" variant="shine" />
                 <SkeletonText noOfLines={1} variant="shine" />
               </Flex>

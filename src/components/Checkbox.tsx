@@ -15,7 +15,7 @@ const Checkbox: React.FC<CheckboxRootProps> = ({ children, ...props }) => {
       {...props}
     >
       <CheckboxChakraUI.HiddenInput />
-      <CheckboxChakraUI.Control />
+      <CheckboxChakraUI.Control borderColor="var(--color-grey-200)" />
       <CheckboxChakraUI.Label fontSize="md" fontWeight="400">
         {children}
       </CheckboxChakraUI.Label>

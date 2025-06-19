@@ -1,6 +1,6 @@
 import { getStaysWithinDuration } from "@/services/api/bookingsApi";
 import { subDays } from "date-fns";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
 
 export const useRecentStays = () => {

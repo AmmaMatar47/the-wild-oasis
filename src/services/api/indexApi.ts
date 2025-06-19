@@ -31,7 +31,6 @@ export const postImage = async (bucketName: string, file: Blob) => {
         data: formData,
       },
     );
-    console.log(res.request.responseURL);
     return res.request.responseURL as string;
   } catch (err) {
     if (axios.isAxiosError(err)) {
@@ -41,6 +40,9 @@ export const postImage = async (bucketName: string, file: Blob) => {
           description: `${err.response?.data.message}`,
         });
       }
+      throw new Error(err.message);
+    } else {
+      Promise.reject(err);
     }
   }
 };

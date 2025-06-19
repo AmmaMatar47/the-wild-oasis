@@ -7,23 +7,22 @@ import {
 } from "@chakra-ui/react";
 
 interface DeleteDialogProps extends DialogRootProps {
-  children: string;
   title: string;
   onDelete: () => void;
 }
 
-const DeleteDialog = ({
+const DeleteDialog: React.FC<DeleteDialogProps> = ({
   children,
   title,
   onDelete,
   ...props
-}: DeleteDialogProps) => {
+}) => {
   return (
     <Dialog.Root lazyMount {...props} placement="center">
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          <Dialog.Content>
+          <Dialog.Content bgColor="var(--color-grey-0)">
             <Dialog.Header>
               <Dialog.Title
                 color="var(--color-grey-700)"
@@ -36,17 +35,29 @@ const DeleteDialog = ({
             <Dialog.Body color="var(--color-grey-500)">{children}</Dialog.Body>
             <Dialog.Footer>
               <Dialog.ActionTrigger asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button
+                  variant="outline"
+                  color="var(--color-grey-700)"
+                  bgColor="var(--color-grey-0)"
+                  _hover={{ bgColor: "var(--color-grey-100)" }}
+                  borderColor="var(--color-grey-200)"
+                >
+                  Cancel
+                </Button>
               </Dialog.ActionTrigger>
               <Button
                 onClick={onDelete}
-                bg="var(--color-red-700)"
-                _hover={{ bg: "var(--color-red-800)" }}
+                color="#fff"
+                bgColor="var(--color-red-700)"
+                _hover={{ bgColor: "var(--color-red-800)" }}
               >
                 Delete
               </Button>
             </Dialog.Footer>
-            <Dialog.CloseTrigger asChild>
+            <Dialog.CloseTrigger
+              asChild
+              _hover={{ bgColor: "var(--color-grey-100)" }}
+            >
               <CloseButton size="sm" />
             </Dialog.CloseTrigger>
           </Dialog.Content>

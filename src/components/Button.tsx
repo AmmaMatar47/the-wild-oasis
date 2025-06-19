@@ -5,8 +5,8 @@ const Button: React.FC<ButtonProps> = ({ children, ...props }) => {
     <ChakraUiButton
       bgColor="var(--color-brand-600)"
       _hover={{ bgColor: "var(--color-brand-700)" }}
-      fontSize="md"
-      color="var(--color-grey-100)"
+      color="#fff"
+      fontSize=".875rem"
       {...props}
     >
       {children}

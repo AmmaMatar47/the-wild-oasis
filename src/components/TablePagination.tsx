@@ -6,15 +6,19 @@ import {
 } from "@chakra-ui/react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
-const TablePagination = ({ ...props }: PaginationRootProps) => {
+interface TablePagination extends PaginationRootProps {
+  disabled?: boolean;
+}
+
+const TablePagination = ({ disabled, ...props }: TablePagination) => {
   return (
     <Pagination.Root
       {...props}
       backgroundColor="var(--color-grey-50)"
-      boxShadow="xs"
       borderBottomRadius="md"
+      boxShadow="-1px 0 0 0 var(--chakra-colors-border),1px 0 0 0 var(--chakra-colors-border),0 1px 0 0 var(--chakra-colors-border)"
     >
-      <ButtonGroup variant="ghost" size="lg" w="full">
+      <ButtonGroup variant="ghost" size="lg" w="full" gap="0">
         <Pagination.PageText
           format="long"
           flex="1"
@@ -23,12 +27,21 @@ const TablePagination = ({ ...props }: PaginationRootProps) => {
           paddingLeft="4"
         />
         <Pagination.PrevTrigger asChild>
-          <IconButton>
+          <IconButton
+            _hover={{ bgColor: "var(--color-brand-600)", color: "#fff" }}
+            borderRadius="none"
+            disabled={disabled}
+          >
             <LuChevronLeft />
           </IconButton>
         </Pagination.PrevTrigger>
         <Pagination.NextTrigger asChild>
-          <IconButton>
+          <IconButton
+            _hover={{ bgColor: "var(--color-brand-600)", color: "#fff" }}
+            borderRadius="none"
+            borderBottomEndRadius="md"
+            disabled={disabled}
+          >
             <LuChevronRight />
           </IconButton>
         </Pagination.NextTrigger>

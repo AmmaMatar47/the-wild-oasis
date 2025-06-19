@@ -1,15 +1,16 @@
 html {
   box-sizing: border-box;
+  background-color: var(--color-grey-50);
 }
 
 body {
   font-family: "Poppins", sans-serif;
   display: flex;
   flex-direction: column;
-}
-
-#root {
-  flex: 1;
+  ::selection {
+    background-color: #5900d6;
+    color: #ffffff;
+  }
 }
 
 ul {
@@ -18,4 +19,13 @@ ul {
 
 a {
   text-decoration: none;
+}
+
+.link-btn {
+  color: var(--color-brand-500);
+  font-weight: 500;
+  text-decoration: underline;
+  &:hover {
+    text-decoration: none;
+  }
 }

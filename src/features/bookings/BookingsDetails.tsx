@@ -3,18 +3,19 @@ import Heading from "@/components/Heading";
 import Spinner from "@/components/Spinner/Spinner";
 import StatusBadge from "@/components/StatusBadge";
 import {
-  BookingDetailsType,
   checkOut,
   deleteBooking,
   getBookingById,
 } from "@/services/api/bookingsApi";
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router";
 import BookingsDetailsBox from "./BookingsDetailsBox";
 import SectionHeader from "@/components/SectionHeader";
 import BackButton from "@/components/BackButton";
 import PageError from "@/components/PageError";
+import { BookingDetailsType } from "@/types/bookingsTypes";
+import Button from "@/components/Button";
 
 const BookingsDetails = () => {
   const navigate = useNavigate();
@@ -71,23 +72,15 @@ const BookingsDetails = () => {
 
       <Flex justifyContent="end" gap="4">
         {booking.status === "unconfirmed" && (
-          <Button
-            bgColor="var(--color-brand-600)"
-            _hover={{ bgColor: "var(--color-brand-700)" }}
-          >
+          <Button asChild>
             <Link to={`/checkin/${booking.id}`}>Check in</Link>
           </Button>
         )}
         {booking.status === "checked-in" && (
-          <Button
-            bgColor="var(--color-brand-600)"
-            _hover={{ bgColor: "var(--color-brand-700)" }}
-            onClick={handleCheckOut}
-          >
-            Check out
-          </Button>
+          <Button onClick={handleCheckOut}>Check out</Button>
         )}
         <Button
+          color="#fff"
           bgColor="var(--color-red-700)"
           _hover={{ bgColor: "var(--color-red-800)" }}
           onClick={handleToggleDeleteDialog}

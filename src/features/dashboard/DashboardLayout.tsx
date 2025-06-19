@@ -9,6 +9,7 @@ import { useCabins } from "../cabins/useCabins";
 import StatsBoxSkeleton from "./StatsBoxSkeleton";
 import DurationSkeleton from "./DurationSkeleton";
 import SalesChartSkeleton from "./SalesChartSkeleton";
+import SectionError from "@/components/SectionError";
 
 const DashboardLayout = () => {
   const {
@@ -39,14 +40,25 @@ const DashboardLayout = () => {
 
       {isLoadingConfirmedStays ? (
         <DurationSkeleton />
-      ) : (
+      ) : confirmedStays ? (
         <DurationChart confirmedStays={confirmedStays} />
+      ) : (
+        <SectionError
+          description="We're having trouble loading the stays duration information. Please try again later."
+          gridColumn="3 / -1"
+        />
       )}
 
       {isLoadingBookingsPrices ? (
         <SalesChartSkeleton />
-      ) : (
+      ) : bookingsPrices ? (
         <SalesChart bookingsPrices={bookingsPrices} numDays={numDays} />
+      ) : (
+        <SectionError
+          description="We're having trouble loading the sales information. Please try again later."
+          gridColumn="1 / -1"
+          paddingTop="6rem"
+        />
       )}
     </Grid>
   );

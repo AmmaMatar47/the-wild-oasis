@@ -4,8 +4,9 @@ import { API_ENDPOINTS } from "@/utils/constants";
 import { Credentials, LoginResType, UserDataRes } from "@/types/authTypes";
 import { ImageFileType } from "@/types/cabinsTypes";
 import { postImage } from "./indexApi";
+import axios from "axios";
 
-export const createUser = ({
+export const createUser = async ({
   fullName,
   ...userData
 }: {
@@ -13,17 +14,32 @@ export const createUser = ({
   email: string;
   password: string;
 }) => {
-  const res = http.request<"">("post", API_ENDPOINTS.users.signup, {
-    data: { ...userData, data: { fullName, avatar: null } },
-  });
+  try {
+    const res = await http.request<LoginResType>(
+      "post",
+      API_ENDPOINTS.users.signup,
+      {
+        data: { ...userData, data: { fullName, avatar: null } },
+      },
+    );
+    toaster.success({ description: "Account created successfully" });
 
-  toaster.promise(res, {
-    success: { description: "User created successfully" },
-    error: { description: "Failed to create new user" },
-    loading: { description: "Creating user" },
-  });
-
-  return res;
+    return res;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      toaster.error({
+        title: "Account creation failed",
+        description: err.response?.data?.msg
+          ? `${err.response.data.msg}. Please try again.`
+          : "Something went wrong. Please try again later.",
+      });
+    } else {
+      toaster.error({
+        description: `Account creation failed, Please try again`,
+      });
+    }
+    throw new Error();
+  }
 };
 
 export const login = async (credentials: Credentials) => {
@@ -87,35 +103,54 @@ export const updateAccount = async (
     fullName: string;
     avatarFile: null | ImageFileType;
   },
-  oldAvatarPath?: string,
+  oldAvatarURL?: string,
 ) => {
   try {
-    if (avatarFile !== null && oldAvatarPath) {
+    toaster.loading({ description: "Updating", id: "uploading" });
+    let imagePath;
+    if (avatarFile !== null && oldAvatarURL) {
       const bucketName = `object/avatars/${avatarFile.name}`;
-      const imagePath = await postImage(bucketName, avatarFile);
-
-      http.request<"">("put", API_ENDPOINTS.users.user, {
-        data: { data: { fullName: fullName, avatar: imagePath } },
-      });
-      http.request<"">("delete", oldAvatarPath);
-    } else {
-      http.request<"">("put", API_ENDPOINTS.users.user, {
-        data: { data: { fullName: fullName } },
-      });
+      // Upload new Avatar
+      imagePath = await postImage(bucketName, avatarFile);
+      // Delete old Avatar
+      http.request<void>("delete", oldAvatarURL);
     }
+    // Update user data
+    const res = await http.request<UserDataRes>(
+      "put",
+      API_ENDPOINTS.users.user,
+      {
+        data: { data: { fullName: fullName, avatar: imagePath } },
+      },
+    );
+    toaster.success({ description: "Account updated successfully" });
+    return res.data;
   } catch {
     toaster.error({ description: "Failed to update account" });
+    throw new Error();
+  } finally {
+    toaster.dismiss("uploading");
   }
 };
 
-export const changePassword = (password: string) => {
-  const res = http.request<"">("put", API_ENDPOINTS.users.user, {
-    data: { password: password },
-  });
+export const changePassword = async (password: string) => {
+  try {
+    const res = await http.request<void>("put", API_ENDPOINTS.users.user, {
+      data: { password: password },
+    });
 
-  toaster.promise(res, {
-    loading: { description: "Chan" },
-    error: { description: "Failed to logout" },
-    success: { description: "Logged out successfully" },
-  });
+    toaster.success({ description: "Password changed successfully" });
+
+    return res;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      toaster.error({
+        title: "Failed to change password",
+        description: err.response?.data.msg,
+      });
+    } else {
+      toaster.error({ description: "Failed to change password" });
+    }
+    throw new Error();
+  }
 };

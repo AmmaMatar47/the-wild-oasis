@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import Nav from "../Nav/Nav";
 import styles from "./AppLayout.module.scss";
-import AppHeader from "../AppHeader";
+import AppHeader from "../AppHeader/AppHeader";
 import { Flex } from "@chakra-ui/react";
 
 const AppLayout = () => {

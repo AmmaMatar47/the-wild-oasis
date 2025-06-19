@@ -1,12 +1,13 @@
 import Button from "@/components/Button";
-import { Field, Input } from "@chakra-ui/react";
+import { Field, Input, Text } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useLogin } from "./useLogin";
+import { Link } from "react-router";
 
 const initialValues = {
-  email: "raedamar00@gmail.com",
-  password: "12345678",
+  email: "",
+  password: "",
 };
 
 const logInValidation = Yup.object().shape({
@@ -19,7 +20,7 @@ const logInValidation = Yup.object().shape({
 });
 
 const LoginForm = () => {
-  const { mutate, isLoading } = useLogin();
+  const { mutate, isPending } = useLogin();
 
   const handleSubmit = (values: typeof initialValues) => {
     mutate(values);
@@ -36,17 +37,19 @@ const LoginForm = () => {
       <Field.Root
         marginBottom="6"
         color="var(--color-grey-700)"
-        invalid={!!formik.errors.email}
+        invalid={!!formik.errors.email && formik.touched.email}
       >
         <Field.Label>Email address</Field.Label>
         <Input
           name="email"
           value={formik.values.email}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          placeholder="your.email@example.com"
           focusRingColor="var(--color-brand-600)"
           boxShadow="var(--shadow-sm)"
           border="solid 1px var(--color-grey-300)"
-          disabled={isLoading}
+          disabled={isPending}
         />
         <Field.ErrorText>{formik.errors.email}</Field.ErrorText>
       </Field.Root>
@@ -54,23 +57,38 @@ const LoginForm = () => {
       <Field.Root
         marginBottom="7"
         color="var(--color-grey-700)"
-        invalid={!!formik.errors.password}
+        invalid={!!formik.errors.password && formik.touched.password}
       >
         <Field.Label>Password</Field.Label>
         <Input
           name="password"
           value={formik.values.password}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
           type="password"
           focusRingColor="var(--color-brand-600)"
           boxShadow="var(--shadow-sm)"
           border="solid 1px var(--color-grey-300)"
-          disabled={isLoading}
+          disabled={isPending}
         />
         <Field.ErrorText>{formik.errors.password}</Field.ErrorText>
       </Field.Root>
 
-      <Button type="submit" w="100%" disabled={isLoading}>
+      <Text fontSize="0.8rem" textAlign="center" color="var(--color-grey-500)">
+        Don't have an account?{" "}
+        <Link to="/signup" className="link-btn">
+          Sign up
+        </Link>
+      </Text>
+
+      <Button
+        type="submit"
+        w="100%"
+        marginTop="6"
+        loading={isPending}
+        loadingText="Logging in"
+        disabled={!formik.isValid}
+      >
         Log in
       </Button>
     </form>

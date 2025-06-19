@@ -5,13 +5,12 @@ import {
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { CabinResponseType } from "../types/cabinsTypes";
-import Spinner from "@/components/Spinner/Spinner";
-import Segment from "@/components/Segment/Segment";
+import Segment from "@/components/Segment";
 import CabinsTable from "@/features/cabins/CabinsTable";
 import CreateCabin from "@/features/cabins/CreateCabin";
 import { useSearchParams } from "react-router-dom";
 import TablePagination from "@/components/TablePagination";
-import SelectComp from "@/components/Select";
+import Select from "@/components/Select";
 import Heading from "@/components/Heading";
 import { calculatePageRange } from "@/utils/helper";
 import { getDataRange } from "@/services/api/indexApi";
@@ -19,6 +18,12 @@ import SectionHeader from "@/components/SectionHeader";
 import PageError from "@/components/PageError";
 import { CABINS_PAGE_SIZE } from "@/utils/constants";
 import { getCabins } from "@/services/api/cabinsApi";
+
+export interface FetchCabinsProps {
+  activeSorting?: string;
+  activeSegmentValue?: string;
+  activePageParam?: number;
+}
 
 const segmentItems = [
   { label: "All", value: "All" },
@@ -132,31 +137,34 @@ const Cabins = () => {
             onValueChange={handleSegmentValueChange}
           />
 
-          <SelectComp
+          <Select
             collection={sortBy}
             value={[sortingValue]}
             onValueChange={handleSortingValueChange}
             disabled={cabinsCount < 2}
           />
+          <CreateCabin fetchCabins={fetchCabins} />
         </Flex>
       </SectionHeader>
-      {isLoading ? (
-        <Spinner />
-      ) : error !== undefined ? (
-        <PageError message={error} />
-      ) : (
+      {error === undefined ? (
         <>
-          <CabinsTable cabins={cabins} />
+          <CabinsTable
+            cabins={cabins}
+            fetchCabins={fetchCabins}
+            isLoading={isLoading}
+          />
           {cabinsCount <= CABINS_PAGE_SIZE || !cabinsCount ? null : (
             <TablePagination
               page={activePage}
               pageSize={CABINS_PAGE_SIZE}
               onPageChange={handlePageChange}
               count={cabinsCount}
+              disabled={isLoading}
             />
           )}
-          <CreateCabin />
         </>
+      ) : (
+        <PageError message={error} />
       )}
     </>
   );

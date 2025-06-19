@@ -1,44 +1,23 @@
+import Button from "@/components/Button";
 import InputField from "@/components/InputField";
+import Separator from "@/components/Separator";
 import { createUser } from "@/services/api/authApi";
-import { Button, Flex, Separator } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useState } from "react";
-import * as Yup from "yup";
-
-const initialUserValues = {
-  fullName: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-};
-
-const createUserFormValidation = Yup.object().shape({
-  fullName: Yup.string()
-    .min(2, "Name must be at least 2 characters")
-    .max(20, "Name cannot exceed 20 characters")
-    .required("Full name is required"),
-
-  email: Yup.string()
-    .email("Please enter a valid email address")
-    .required("Email is required"),
-
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
-
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords must match")
-    .required("Please confirm password"),
-});
+import {
+  createUserFormValidation,
+  initialUserValues,
+} from "./signupFormConstant";
 
 const CreateUserForm = () => {
-  const [isCreatingUser, setIsCreatingUser] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (values: typeof initialUserValues) => {
     const { fullName, email, password } = values;
-    setIsCreatingUser(true);
+    setIsLoading(true);
     createUser({ fullName, email, password }).finally(() => {
-      setIsCreatingUser(false);
+      setIsLoading(false);
     });
   };
 
@@ -46,8 +25,6 @@ const CreateUserForm = () => {
     initialValues: initialUserValues,
     onSubmit: handleSubmit,
     validationSchema: createUserFormValidation,
-    validateOnChange: false,
-    validateOnBlur: false,
   });
 
   return (
@@ -56,57 +33,67 @@ const CreateUserForm = () => {
         name="fullName"
         value={formik.values.fullName}
         onChange={formik.handleChange}
-        label="User name"
+        onBlur={formik.handleBlur}
+        placeholder="Username (e.g., Ammar Matar)"
+        label="Username"
         labelWidth="12rem"
         maxWidth="22rem"
         errorMessage={formik.errors.fullName}
-        invalid={!!formik.errors.fullName}
-        disabled={isCreatingUser}
+        invalid={!!formik.errors.fullName && formik.touched.fullName}
+        disabled={isLoading}
       />
       <Separator marginY="4" />
       <InputField
         name="email"
         value={formik.values.email}
         onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        placeholder="your.email@example.com"
         label="Email address"
         labelWidth="12rem"
         maxWidth="22rem"
         errorMessage={formik.errors.email}
-        invalid={!!formik.errors.email}
-        disabled={isCreatingUser}
+        invalid={!!formik.errors.email && formik.touched.email}
+        disabled={isLoading}
       />
       <Separator marginY="4" />
       <InputField
         name="password"
         value={formik.values.password}
         onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
         type="password"
-        label="Password (min 8 characters)"
+        label="Password"
+        placeholder="Create a password (min. 8 chars)"
         labelWidth="12rem"
         maxWidth="22rem"
         errorMessage={formik.errors.password}
-        invalid={!!formik.errors.password}
-        disabled={isCreatingUser}
+        invalid={!!formik.errors.password && formik.touched.password}
+        disabled={isLoading}
       />
       <Separator marginY="4" />
       <InputField
         name="confirmPassword"
         value={formik.values.confirmPassword}
         onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        placeholder="Re-enter password"
         type="password"
         label="Confirm password"
         labelWidth="12rem"
         maxWidth="22rem"
         errorMessage={formik.errors.confirmPassword}
-        invalid={!!formik.errors.confirmPassword}
-        disabled={isCreatingUser}
+        invalid={
+          !!formik.errors.confirmPassword && formik.touched.confirmPassword
+        }
+        disabled={isLoading}
       />
       <Flex justifyContent="end" marginTop="6">
         <Button
           type="submit"
-          bgColor="var(--color-brand-500)"
-          _hover={{ bgColor: "var(--color-brand-700)" }}
-          disabled={isCreatingUser}
+          loading={isLoading}
+          disabled={!formik.isValid}
+          loadingText="Creating account..."
         >
           Create new user
         </Button>

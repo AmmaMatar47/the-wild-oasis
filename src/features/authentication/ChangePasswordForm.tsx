@@ -1,10 +1,12 @@
 import Button from "@/components/Button";
 import InputField from "@/components/InputField";
 import SectionBox from "@/components/SectionBox";
-import { Flex, Separator } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { changePassword } from "@/services/api/authApi";
+import Separator from "@/components/Separator";
+import { useState } from "react";
 
 const initialUserValues = {
   password: "",
@@ -22,9 +24,17 @@ const changePasswordFormValidation = Yup.object().shape({
 });
 
 const ChangePasswordForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSubmit = (values: typeof initialUserValues) => {
-    console.log(values);
-    changePassword(values.password);
+    setIsLoading(true);
+    changePassword(values.password)
+      .then(() => {
+        formik.resetForm();
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const formik = useFormik({
@@ -45,7 +55,9 @@ const ChangePasswordForm = () => {
           value={formik.values.password}
           errorMessage={formik.errors.password}
           onChange={formik.handleChange}
-          invalid={!!formik.errors.password}
+          onBlur={formik.handleBlur}
+          invalid={!!formik.errors.password && formik.touched.password}
+          disabled={isLoading}
         />
         <Separator marginY="1.4rem" />
         <InputField
@@ -57,7 +69,11 @@ const ChangePasswordForm = () => {
           value={formik.values.confirmPassword}
           errorMessage={formik.errors.confirmPassword}
           onChange={formik.handleChange}
-          invalid={!!formik.errors.confirmPassword}
+          onBlur={formik.handleBlur}
+          invalid={
+            !!formik.errors.confirmPassword && formik.touched.confirmPassword
+          }
+          disabled={isLoading}
         />
 
         <Flex justifyContent="end" marginTop="1.6rem">
@@ -66,6 +82,8 @@ const ChangePasswordForm = () => {
             fontSize="sm"
             disabled={!formik.isValid}
             type="submit"
+            loading={isLoading}
+            loadingText="Changing password"
           >
             Change password
           </Button>

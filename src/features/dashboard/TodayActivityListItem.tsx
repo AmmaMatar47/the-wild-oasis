@@ -1,23 +1,20 @@
+import Button from "@/components/Button";
+import { checkOut } from "@/services/api/bookingsApi";
 import { TodaysBookingsType } from "@/types/bookingsTypes";
-import {
-  Badge,
-  Flex,
-  List,
-  Image,
-  Text,
-  Button,
-  ListItemProps,
-} from "@chakra-ui/react";
+import { Badge, Flex, List, Text, ListItemProps } from "@chakra-ui/react";
 import { Link } from "react-router";
 
-interface ListItem extends ListItemProps {
+interface TodayActivityListItem extends ListItemProps {
   data: TodaysBookingsType;
-  key: number | string;
 }
 
-const ListItem = ({ data, key, ...props }: ListItem) => {
+const TodayActivityListItem = ({ data, ...props }: TodayActivityListItem) => {
+  const handleCheckout = () => {
+    checkOut(data.id);
+  };
+
   return (
-    <List.Item key={key} {...props}>
+    <List.Item {...props}>
       <Flex justifyContent="space-between" alignItems="center" paddingY="3">
         <Flex gap="3" alignItems="center">
           <Badge
@@ -30,7 +27,7 @@ const ListItem = ({ data, key, ...props }: ListItem) => {
           >
             {data.status === "unconfirmed" ? "Arriving" : "Departing"}
           </Badge>
-          <Image src={data.guests.countryFlag} />
+          <Text>{data.guests.countryFlag}</Text>
           <Text
             fontSize="0.9rem"
             fontWeight="500"
@@ -42,26 +39,23 @@ const ListItem = ({ data, key, ...props }: ListItem) => {
         <Flex gap="4">
           <Text fontSize="0.87rem">{data.numNights} nights</Text>
           {data.status === "unconfirmed" ? (
-            <Link to={`/checkin/${data.id}`}>
-              <Button
-                size="2xs"
-                paddingX="3"
-                fontSize=".75rem"
-                w="5.6rem"
-                textTransform="uppercase"
-                bgColor="var(--color-brand-500)"
-              >
-                Check in
-              </Button>
-            </Link>
+            <Button
+              size="2xs"
+              paddingX="3"
+              fontSize=".75rem"
+              w="5.6rem"
+              textTransform="uppercase"
+            >
+              <Link to={`/checkin/${data.id}`}>Check in</Link>
+            </Button>
           ) : (
             <Button
               size="2xs"
               paddingX="3"
               fontSize=".75rem"
               w="5.6rem"
-              bgColor="var(--color-brand-500)"
               textTransform="uppercase"
+              onClick={handleCheckout}
             >
               Check out
             </Button>
@@ -72,4 +66,4 @@ const ListItem = ({ data, key, ...props }: ListItem) => {
   );
 };
 
-export default ListItem;
+export default TodayActivityListItem;

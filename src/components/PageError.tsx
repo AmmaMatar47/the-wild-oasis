@@ -5,7 +5,7 @@ const PageError = ({ message }: { message: string }) => {
   return (
     <Center marginTop="40">
       <Flex flexDirection="column" alignItems="center" gap="1">
-        <HiOutlineExclamationCircle size={120} stroke="var(--color-red-500)" />
+        <HiOutlineExclamationCircle size={120} stroke="var(--color-red-700)" />
         <Heading fontSize="xl" color="var(--color-grey-700)">
           An unexpected error occurred!
         </Heading>

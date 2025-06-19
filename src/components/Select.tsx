@@ -1,58 +1,64 @@
 import {
   ListCollection,
   Portal,
-  Select,
+  Select as SelectChakraUI,
   SelectRootProps,
 } from "@chakra-ui/react";
 
-interface SelectCompParams extends SelectRootProps {
+interface SelectParams extends SelectRootProps {
   collection: ListCollection<{
     label: string;
     value: string;
   }>;
 }
 
-const SelectComp = ({ collection, ...props }: SelectCompParams) => {
+const Select = ({ collection, ...props }: SelectParams) => {
   return (
-    <Select.Root
+    <SelectChakraUI.Root
       collection={collection}
       width="12.5rem"
       variant="subtle"
       {...props}
     >
-      <Select.HiddenSelect />
-      <Select.Control>
-        <Select.Trigger
+      <SelectChakraUI.HiddenSelect />
+      <SelectChakraUI.Control>
+        <SelectChakraUI.Trigger
           bg="var(--color-grey-0)"
-          borderRadius="md"
+          borderRadius="sm"
           shadow="var(--shadow-sm)"
-          padding=".625rem"
+          cursor="pointer"
         >
-          <Select.ValueText
+          <SelectChakraUI.ValueText
             placeholder="Sort by"
             fontSize=".875rem"
             fontWeight="500"
             color="var(--color-grey-700)"
           />
-        </Select.Trigger>
-        <Select.IndicatorGroup>
-          <Select.Indicator />
-        </Select.IndicatorGroup>
-      </Select.Control>
+        </SelectChakraUI.Trigger>
+        <SelectChakraUI.IndicatorGroup color="var(--color-grey-700)">
+          <SelectChakraUI.Indicator />
+        </SelectChakraUI.IndicatorGroup>
+      </SelectChakraUI.Control>
       <Portal>
-        <Select.Positioner>
-          <Select.Content>
+        <SelectChakraUI.Positioner>
+          <SelectChakraUI.Content bgColor="var(--color-grey-0)" gapY="1">
             {collection.items.map((item) => (
-              <Select.Item item={item} key={item.value} fontSize=".875rem">
+              <SelectChakraUI.Item
+                item={item}
+                key={item.value}
+                fontSize=".875rem"
+                _checked={{ bgColor: "var(--color-grey-100)" }}
+                _highlighted={{ bg: "var(--color-grey-100)" }}
+              >
                 {item.label}
-                <Select.ItemIndicator />
-              </Select.Item>
+                <SelectChakraUI.ItemIndicator />
+              </SelectChakraUI.Item>
             ))}
-          </Select.Content>
-        </Select.Positioner>
+          </SelectChakraUI.Content>
+        </SelectChakraUI.Positioner>
       </Portal>
-    </Select.Root>
+    </SelectChakraUI.Root>
   );
 };
 
-export default SelectComp;
+export default Select;
