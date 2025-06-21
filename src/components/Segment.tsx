@@ -19,7 +19,7 @@ const Segment = ({
   return (
     <SegmentGroup.Root
       value={value}
-      onValueChange={(e) => onValueChange(e.value)}
+      onValueChange={(e) => onValueChange(e.value ?? "")}
       bgColor="var(--color-grey-0)"
       shadow="var(--shadow-sm)"
     >

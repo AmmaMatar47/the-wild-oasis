@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "prepare": "husky install",
     "format": "prettier --write .",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit -p tsconfig.app.json"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.13.0",
@@ -27,6 +27,7 @@
     "react-router": "^7.4.0",
     "react-router-dom": "^7.5.1",
     "recharts": "^2.15.3",
+    "typescript": "^5.8.3",
     "yup": "^1.6.1"
   },
   "devDependencies": {
@@ -46,7 +47,6 @@
     "husky": "^9.1.7",
     "prettier": "^3.5.3",
     "sass-embedded": "^1.86.0",
-    "typescript": "~5.7.2",
     "typescript-eslint": "^8.32.1",
     "vite": "^6.2.0",
     "vite-plugin-eslint": "^1.8.1",

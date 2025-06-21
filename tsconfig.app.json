@@ -6,6 +6,8 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "rootDir": "./src",
+    "composite": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -25,5 +27,5 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "src/features/authentication/.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/*.tsx"]
 }

@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosResponse } from "axios";
 import { CabinType } from "../types/cabinsTypes";
 import { BookingDetailsType } from "../types/bookingsTypes";
 import { UpdateSettingsRequestType } from "./api/settingsApi";
@@ -21,7 +21,7 @@ type HttpDataType =
   | { refresh_token: string }
   | { password: string };
 
-const HttpService = class HttpService {
+class HttpService {
   private instance: AxiosInstance;
   private isAuthenticated: boolean =
     localStorage.getItem("refresh_token") === null ? false : true;
@@ -98,7 +98,7 @@ const HttpService = class HttpService {
       data?: HttpDataType;
       headers?: { range: string };
     },
-  ) {
+  ): Promise<AxiosResponse<Res>> {
     return this.instance.request<Res>({
       method,
       url: endpoint,
@@ -107,6 +107,6 @@ const HttpService = class HttpService {
       headers: config?.headers,
     });
   }
-};
+}
 
 export const http = new HttpService(import.meta.env.VITE_WILD_OASIS_BASE_URL);
