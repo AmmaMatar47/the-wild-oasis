@@ -1,11 +1,14 @@
-import Button from '@/components/Button';
-import InputField from '@/components/InputField';
-import Separator from '@/components/Separator';
-import { createUser } from '@/services/api/authApi';
-import { Flex } from '@chakra-ui/react';
-import { useFormik } from 'formik';
-import { useState } from 'react';
-import { createUserFormValidation, initialUserValues } from './signupFormConstant';
+import Button from "@/components/Button";
+import InputField from "@/components/InputField";
+import Separator from "@/components/Separator";
+import { createUser } from "@/services/api/authApi";
+import { Flex } from "@chakra-ui/react";
+import { useFormik } from "formik";
+import { useState } from "react";
+import {
+  createUserFormValidation,
+  initialUserValues,
+} from "./signupFormConstant";
 
 const CreateUserForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,68 +30,70 @@ const CreateUserForm = () => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <InputField
-        name='fullName'
+        name="fullName"
         value={formik.values.fullName}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        label='Username'
-        placeholder='(e.g., Ammar Matar)'
-        labelWidth='12rem'
-        maxWidth='22rem'
+        label="Username"
+        placeholder="(e.g., Ammar Matar)"
+        labelWidth="12rem"
+        maxWidth="22rem"
         errorMessage={formik.errors.fullName}
         invalid={!!formik.errors.fullName && formik.touched.fullName}
         disabled={isLoading}
       />
-      <Separator marginY='4' />
+      <Separator marginY="4" />
       <InputField
-        name='email'
+        name="email"
         value={formik.values.email}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        placeholder='your.email@example.com'
-        label='Email address'
-        labelWidth='12rem'
-        maxWidth='22rem'
+        placeholder="your.email@example.com"
+        label="Email address"
+        labelWidth="12rem"
+        maxWidth="22rem"
         errorMessage={formik.errors.email}
         invalid={!!formik.errors.email && formik.touched.email}
         disabled={isLoading}
       />
-      <Separator marginY='4' />
+      <Separator marginY="4" />
       <InputField
-        name='password'
+        name="password"
         value={formik.values.password}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        type='password'
-        label='Password'
-        placeholder='At least 8 characters'
-        labelWidth='12rem'
-        maxWidth='22rem'
+        type="password"
+        label="Password"
+        placeholder="At least 8 characters"
+        labelWidth="12rem"
+        maxWidth="22rem"
         errorMessage={formik.errors.password}
         invalid={!!formik.errors.password && formik.touched.password}
         disabled={isLoading}
       />
-      <Separator marginY='4' />
+      <Separator marginY="4" />
       <InputField
-        name='confirmPassword'
+        name="confirmPassword"
         value={formik.values.confirmPassword}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        placeholder='Re-enter password'
-        type='password'
-        label='Confirm password'
-        labelWidth='12rem'
-        maxWidth='22rem'
+        placeholder="Re-enter password"
+        type="password"
+        label="Confirm password"
+        labelWidth="12rem"
+        maxWidth="22rem"
         errorMessage={formik.errors.confirmPassword}
-        invalid={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
+        invalid={
+          !!formik.errors.confirmPassword && formik.touched.confirmPassword
+        }
         disabled={isLoading}
       />
-      <Flex justifyContent='end' marginTop='6'>
+      <Flex justifyContent="end" marginTop="6">
         <Button
-          type='submit'
+          type="submit"
           loading={isLoading}
           disabled={!formik.isValid}
-          loadingText='Creating account...'
+          loadingText="Creating account..."
         >
           Create new user
         </Button>
