@@ -1,5 +1,5 @@
-import { Avatar as AvatarChakraUI, AvatarRootProps } from '@chakra-ui/react';
-import Skeleton from './Skeleton';
+import { Avatar as AvatarChakraUI, AvatarRootProps } from "@chakra-ui/react";
+import Skeleton from "./Skeleton";
 
 interface AvatarProps extends AvatarRootProps {
   avatarSrc?: string;
@@ -7,12 +7,20 @@ interface AvatarProps extends AvatarRootProps {
   isLoadingAvatar?: boolean;
 }
 
-const Avatar = ({ avatarSrc, fullName, isLoadingAvatar, ...props }: AvatarProps) => {
+const Avatar = ({
+  avatarSrc,
+  fullName,
+  isLoadingAvatar,
+  ...props
+}: AvatarProps) => {
   return (
-    <Skeleton rounded='full' loading={isLoadingAvatar === undefined ? false : isLoadingAvatar}>
-      <AvatarChakraUI.Root colorPalette='purple' {...props}>
+    <Skeleton
+      rounded="full"
+      loading={isLoadingAvatar === undefined ? false : isLoadingAvatar}
+    >
+      <AvatarChakraUI.Root colorPalette="purple" {...props}>
         <AvatarChakraUI.Fallback name={fullName} />
-        <AvatarChakraUI.Image src={avatarSrc} alt='User  avatar' />
+        <AvatarChakraUI.Image src={avatarSrc} alt="User  avatar" />
       </AvatarChakraUI.Root>
     </Skeleton>
   );
