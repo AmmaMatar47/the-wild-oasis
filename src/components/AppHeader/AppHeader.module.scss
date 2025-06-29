@@ -1,30 +1,21 @@
+%initial-style {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  transition: all 0.3s ease-in !important;
+}
+
 .darkModeIcon {
-  animation: darkModeIconAnimation 0.2s ease-in-out;
+  @extend %initial-style;
+  translate: 150%;
 }
 
 .lightModeIcon {
-  animation: lightModeIconAnimation 0.2s ease-in-out;
+  @extend %initial-style;
+  translate: -150%;
 }
 
-@keyframes darkModeIconAnimation {
-  0% {
-    scale: 0;
-    translate: 0 100%;
-  }
-
-  100% {
-    scale: 1;
-    translate: 0;
-  }
-}
-
-@keyframes lightModeIconAnimation {
-  0% {
-    scale: 0;
-    translate: 0 -100%;
-  }
-  100% {
-    scale: 1;
-    translate: 0;
-  }
+.activeTheme {
+  translate: 0;
+  transition: all 0.3s ease-out !important;
 }

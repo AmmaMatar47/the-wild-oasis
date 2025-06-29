@@ -1,15 +1,17 @@
-import { Center, Flex, Heading, Text } from "@chakra-ui/react";
-import { HiOutlineExclamationCircle } from "react-icons/hi2";
+import { Center, Flex, Heading, Text } from '@chakra-ui/react';
+import { HiOutlineExclamationCircle } from 'react-icons/hi2';
 
 const PageError = ({ message }: { message: string }) => {
   return (
-    <Center marginTop="40">
-      <Flex flexDirection="column" alignItems="center" gap="1">
-        <HiOutlineExclamationCircle size={120} stroke="var(--color-red-700)" />
-        <Heading fontSize="xl" color="var(--color-grey-700)">
+    <Center marginTop='40'>
+      <Flex flexDirection='column' alignItems='center' gap='1'>
+        <HiOutlineExclamationCircle size={120} stroke='var(--color-red-700)' />
+        <Heading fontSize='xl' color='var(--color-grey-700)'>
           An unexpected error occurred!
         </Heading>
-        <Text color="var(--color-grey-500)">{message}</Text>
+        <Text color='var(--color-grey-500)' textAlign='center'>
+          {message}
+        </Text>
       </Flex>
     </Center>
   );

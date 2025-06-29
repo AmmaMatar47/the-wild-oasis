@@ -1,6 +1,6 @@
-import { CabinResponseType } from "./cabinsTypes";
+import { CabinResponseType } from './cabinsTypes';
 
-export type StatusType = "unconfirmed" | "checked-out" | "checked-in";
+export type StatusType = 'unconfirmed' | 'checked-out' | 'checked-in';
 
 interface Guests {
   countryFlag: string;
@@ -66,8 +66,8 @@ export interface ConfirmedBookingsType {
 export interface TodaysBookingsType {
   cabinId: number;
   cabinPrice: number;
-  created_at: string; // or Date if you'll convert it
-  endDate: string; // or Date
+  created_at: string;
+  endDate: string;
   extraPrice: number;
   guestId: number;
   guests: {
@@ -82,6 +82,6 @@ export interface TodaysBookingsType {
   numNights: number;
   observations: string | null;
   startDate: string; // or Date
-  status: "checked-in" | "checked-out" | "unconfirmed"; // add other possible statuses
+  status: 'checked-in' | 'checked-out' | 'unconfirmed'; // add other possible statuses
   totalPrice: number;
 }
