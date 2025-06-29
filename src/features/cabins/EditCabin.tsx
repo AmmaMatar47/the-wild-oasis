@@ -1,17 +1,23 @@
-import { getCabinById } from '@/services/api/cabinsApi';
-import Separator from '@/components/Separator';
-import { Dialog, Field, Stack, Textarea, FileUploadFileChangeDetails } from '@chakra-ui/react';
-import { useFormik } from 'formik';
-import React, { useEffect, useState } from 'react';
-import InputField from '@/components/InputField';
-import { Tooltip } from '@/components/ui/tooltip';
-import { cabinFormValidation, formInitialValues } from './cabinsFormConfig';
-import { CabinType, ImageFileType } from '@/types/cabinsTypes';
-import Button from '@/components/Button';
-import ImageUploadField from '@/components/ImageUploadField';
-import { useSearchParams } from 'react-router';
-import Spinner from '@/components/Spinner/Spinner';
-import { useEditCabin } from './useEditCabin';
+import { getCabinById } from "@/services/api/cabinsApi";
+import Separator from "@/components/Separator";
+import {
+  Dialog,
+  Field,
+  Stack,
+  Textarea,
+  FileUploadFileChangeDetails,
+} from "@chakra-ui/react";
+import { useFormik } from "formik";
+import React, { useEffect, useState } from "react";
+import InputField from "@/components/InputField";
+import { Tooltip } from "@/components/ui/tooltip";
+import { cabinFormValidation, formInitialValues } from "./cabinsFormConfig";
+import { CabinType, ImageFileType } from "@/types/cabinsTypes";
+import Button from "@/components/Button";
+import ImageUploadField from "@/components/ImageUploadField";
+import { useSearchParams } from "react-router";
+import Spinner from "@/components/Spinner/Spinner";
+import { useEditCabin } from "./useEditCabin";
 
 const EditCabin = ({
   open,
@@ -23,7 +29,7 @@ const EditCabin = ({
   const [isLoading, setIsLoading] = useState(true);
   const [cabinData, setCabinData] = useState<CabinType>();
   const [searchParams, setSearchParams] = useSearchParams();
-  const cabinId = searchParams.get('edit');
+  const cabinId = searchParams.get("edit");
   const { mutate, isEditing } = useEditCabin();
 
   const formik = useFormik({
@@ -46,8 +52,8 @@ const EditCabin = ({
   }, [searchParams, cabinId]);
 
   const removeEditCabinURlParam = () => {
-    setSearchParams(prevParams => {
-      prevParams.delete('edit');
+    setSearchParams((prevParams) => {
+      prevParams.delete("edit");
       return prevParams;
     });
   };
@@ -75,7 +81,7 @@ const EditCabin = ({
           bucketName,
           imagePath: cabinData?.image as string,
         },
-        commonOptions
+        commonOptions,
       );
     } else {
       mutate({ cabinId, values }, commonOptions);
@@ -83,51 +89,53 @@ const EditCabin = ({
   }
 
   const handleFileChange = (files: FileUploadFileChangeDetails) => {
-    if (!formik.touched.image) formik.setFieldTouched('image', true);
+    if (!formik.touched.image) formik.setFieldTouched("image", true);
     if (!files?.acceptedFiles?.[0] && cabinData) {
       // Return old image path in case the picked image is removed
-      formik.setFieldValue('image', cabinData.image);
+      formik.setFieldValue("image", cabinData.image);
       return;
     }
     const file: File = files.acceptedFiles[0];
-    formik.setFieldValue('image', file);
+    formik.setFieldValue("image", file);
   };
 
   return (
     <Dialog.Root
-      placement='center'
-      size='xl'
+      placement="center"
+      size="xl"
       lazyMount
       open={open}
-      onOpenChange={e => {
+      onOpenChange={(e) => {
         removeEditCabinURlParam();
         setOpen(e.open);
         if (!e.open) {
           formik.setValues(formInitialValues);
         }
       }}
-      scrollBehavior='inside'
+      scrollBehavior="inside"
     >
       <Dialog.Backdrop />
       <Dialog.Positioner>
-        <Dialog.Content bgColor='var(--color-grey-0)'>
+        <Dialog.Content bgColor="var(--color-grey-0)">
           <Dialog.Header>
-            <Dialog.Title color='var(--color-grey-800)'>Edit cabin</Dialog.Title>
+            <Dialog.Title color="var(--color-grey-800)">
+              Edit cabin
+            </Dialog.Title>
           </Dialog.Header>
-          <Dialog.Body paddingTop='8'>
+          <Dialog.Body paddingTop="8">
             {isLoading ? (
               <Spinner />
             ) : (
               <form onSubmit={formik.handleSubmit}>
                 <Stack
-                  gap='4'
-                  css={{ '--field-label-width': '148px' }}
-                  color='var(--color-grey-700)'
-                  marginBottom='2.4rem'
+                  gap="4"
+                  css={{ "--field-label-width": "148px" }}
+                  color="var(--color-grey-700)"
+                  marginBottom="2.4rem"
                 >
                   <InputField
-                    name='name'
-                    label='Cabin name'
+                    name="name"
+                    label="Cabin name"
                     value={formik.values.name}
                     errorMessage={formik.errors.name}
                     onChange={formik.handleChange}
@@ -139,14 +147,16 @@ const EditCabin = ({
                   <Separator />
 
                   <InputField
-                    type='number'
-                    name='maxCapacity'
-                    label='Maximum capacity'
+                    type="number"
+                    name="maxCapacity"
+                    label="Maximum capacity"
                     value={formik.values.maxCapacity}
                     errorMessage={formik.errors.maxCapacity}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    invalid={!!formik.errors.maxCapacity && formik.touched.maxCapacity}
+                    invalid={
+                      !!formik.errors.maxCapacity && formik.touched.maxCapacity
+                    }
                     disabled={isEditing}
                     required
                   />
@@ -154,14 +164,17 @@ const EditCabin = ({
                   <Separator />
 
                   <InputField
-                    type='number'
-                    name='regularPrice'
-                    label='Regular price'
+                    type="number"
+                    name="regularPrice"
+                    label="Regular price"
                     value={formik.values.regularPrice}
                     errorMessage={formik.errors.regularPrice}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    invalid={!!formik.errors.regularPrice && formik.touched.regularPrice}
+                    invalid={
+                      !!formik.errors.regularPrice &&
+                      formik.touched.regularPrice
+                    }
                     disabled={isEditing}
                     required
                   />
@@ -169,14 +182,16 @@ const EditCabin = ({
                   <Separator />
 
                   <InputField
-                    type='number'
-                    name='discount'
-                    label='Discount'
+                    type="number"
+                    name="discount"
+                    label="Discount"
                     value={formik.values.discount}
                     errorMessage={formik.errors.discount}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    invalid={!!formik.errors.discount && formik.touched.discount}
+                    invalid={
+                      !!formik.errors.discount && formik.touched.discount
+                    }
                     disabled={isEditing}
                     required
                   />
@@ -184,39 +199,43 @@ const EditCabin = ({
                   <Separator />
 
                   <Field.Root
-                    justifyContent='start'
-                    gap='6.2rem'
-                    orientation='horizontal'
-                    invalid={!!formik.errors.description && formik.touched.description}
+                    justifyContent="start"
+                    gap="6.2rem"
+                    orientation="horizontal"
+                    invalid={
+                      !!formik.errors.description && formik.touched.description
+                    }
                     disabled={isEditing}
                   >
                     <Field.Label>
                       Description <Field.RequiredIndicator />
                     </Field.Label>
                     <Textarea
-                      name='description'
-                      maxW='16.8rem'
-                      minH='6.2rem'
+                      name="description"
+                      maxW="16.8rem"
+                      minH="6.2rem"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       value={formik.values.description}
-                      focusRingColor='var(--color-brand-600)'
-                      boxShadow='var(--shadow-sm)'
+                      focusRingColor="var(--color-brand-600)"
+                      boxShadow="var(--shadow-sm)"
                       border={
                         formik.errors.description && formik.touched.description
-                          ? ''
+                          ? ""
                           : `solid 1px var(--color-grey-300)`
                       }
-                      resize='none'
+                      resize="none"
                     />
-                    <Field.ErrorText>{formik.errors.description}</Field.ErrorText>
+                    <Field.ErrorText>
+                      {formik.errors.description}
+                    </Field.ErrorText>
                   </Field.Root>
 
                   <Separator />
 
                   <ImageUploadField
-                    marginLeft='4rem'
-                    label='Cabin image'
+                    marginLeft="4rem"
+                    label="Cabin image"
                     onFileChange={handleFileChange}
                     invalid={!!formik.errors.image && !!formik.touched.image}
                     errorMessage={formik.errors.image}
@@ -226,28 +245,28 @@ const EditCabin = ({
                 <Dialog.Footer>
                   <Dialog.ActionTrigger asChild>
                     <Button
-                      variant='outline'
-                      color='var(--color-grey-700)'
-                      bgColor='var(--color-grey-0)'
-                      _hover={{ bgColor: 'var(--color-grey-100)' }}
-                      borderColor='var(--color-grey-200)'
-                      w='6.8rem'
-                      borderRadius='sm'
+                      variant="outline"
+                      color="var(--color-grey-700)"
+                      bgColor="var(--color-grey-0)"
+                      _hover={{ bgColor: "var(--color-grey-100)" }}
+                      borderColor="var(--color-grey-200)"
+                      w="6.8rem"
+                      borderRadius="sm"
                     >
                       Cancel
                     </Button>
                   </Dialog.ActionTrigger>
                   <Tooltip
-                    content='Change one field at least to edit the cabin'
+                    content="Change one field at least to edit the cabin"
                     disabled={isEditing || formik.dirty}
                     openDelay={300}
                     closeDelay={300}
                   >
                     <Button
-                      minW='6.8rem'
-                      type='submit'
+                      minW="6.8rem"
+                      type="submit"
                       loading={isEditing}
-                      loadingText='Editing cabin...'
+                      loadingText="Editing cabin..."
                       disabled={!formik.dirty || !formik.isValid}
                     >
                       Edit Cabin
@@ -255,7 +274,7 @@ const EditCabin = ({
                   </Tooltip>
                 </Dialog.Footer>
               </form>
-            )}{' '}
+            )}{" "}
           </Dialog.Body>
         </Dialog.Content>
       </Dialog.Positioner>

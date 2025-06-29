@@ -1,7 +1,7 @@
-import { FileUpload, Field, FileUploadRootProps } from '@chakra-ui/react';
-import { LuFileImage } from 'react-icons/lu';
-import Button from './Button';
-import ImageUploadItem from './ImageUploadItem';
+import { FileUpload, Field, FileUploadRootProps } from "@chakra-ui/react";
+import { LuFileImage } from "react-icons/lu";
+import Button from "./Button";
+import ImageUploadItem from "./ImageUploadItem";
 
 interface ImageUploadFieldProps extends FileUploadRootProps {
   label: string;
@@ -9,22 +9,33 @@ interface ImageUploadFieldProps extends FileUploadRootProps {
   invalid: boolean;
 }
 
-const ImageUploadField = ({ label, errorMessage, invalid, ...props }: ImageUploadFieldProps) => {
+const ImageUploadField = ({
+  label,
+  errorMessage,
+  invalid,
+  ...props
+}: ImageUploadFieldProps) => {
   return (
     <Field.Root
-      orientation='horizontal'
-      justifyContent='start'
+      orientation="horizontal"
+      justifyContent="start"
       invalid={invalid}
       required={props.required}
     >
-      <Field.Label minW='11rem' color='var(--color-grey-700)' alignSelf='start'>
+      <Field.Label minW="11rem" color="var(--color-grey-700)" alignSelf="start">
         {label} <Field.RequiredIndicator />
       </Field.Label>
 
-      <FileUpload.Root flexDir='row' accept='image/*' name='image' maxW='20rem' {...props}>
+      <FileUpload.Root
+        flexDir="row"
+        accept="image/*"
+        name="image"
+        maxW="20rem"
+        {...props}
+      >
         <FileUpload.HiddenInput />
         <FileUpload.Trigger asChild>
-          <Button size='sm' fontSize='sm'>
+          <Button size="sm" fontSize="sm">
             <LuFileImage /> Upload image
           </Button>
         </FileUpload.Trigger>
