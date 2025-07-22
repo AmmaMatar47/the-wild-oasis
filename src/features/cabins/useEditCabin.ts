@@ -1,13 +1,13 @@
-import { editCabin } from "@/services/api/cabinsApi";
-import { CabinType } from "@/types/cabinsTypes";
-import { useMutation } from "@tanstack/react-query";
-import { useQueryClient } from "@tanstack/react-query";
+import { editCabin } from '@/services/api/cabinsApi';
+import { CabinType } from '@/types/cabinsTypes';
+import { useMutation } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const useEditCabin = () => {
   const queryClient = useQueryClient();
 
   const { mutate, isPending: isEditing } = useMutation({
-    mutationKey: ["cabins"],
+    mutationKey: ['cabins'],
     mutationFn: ({
       cabinId,
       values,
@@ -20,7 +20,7 @@ export const useEditCabin = () => {
       imagePath?: string;
     }) => editCabin(cabinId, values, bucketName, imagePath),
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
+      queryClient.invalidateQueries({ queryKey: ['cabins'] });
     },
   });
 

@@ -1,5 +1,5 @@
-import { updateSettings } from "@/services/api/settingsApi";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { updateSettings } from '@/services/api/settingsApi';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const useUpdateSettings = () => {
   const queryClient = useQueryClient();
@@ -7,7 +7,7 @@ export const useUpdateSettings = () => {
   const { mutate, data, error, isPending } = useMutation({
     mutationFn: updateSettings,
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["settings"] });
+      queryClient.invalidateQueries({ queryKey: ['settings'] });
     },
   });
 

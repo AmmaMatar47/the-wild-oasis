@@ -1,27 +1,27 @@
-import { polyfillCountryFlagEmojis } from "country-flag-emoji-polyfill";
-import { useEffect } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import { lazy, Suspense } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
-import { Toaster } from "./components/ui/toaster";
-import AppLayout from "./components/AppLayout/AppLayout";
-import Users from "./pages/Users";
-import Settings from "./pages/Settings";
-import Login from "./pages/Login";
-import PageNotFound from "./pages/PageNotFound";
-import ProtectedRoute from "./components/ProtectedRoute";
-import { ThemeProvider } from "./context/ThemeContext";
-import { ColorModeProvider } from "./components/ui/color-mode";
-import Signup from "./pages/Signup";
-import Spinner from "./components/Spinner/Spinner";
+import { polyfillCountryFlagEmojis } from 'country-flag-emoji-polyfill';
+import { useEffect } from 'react';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
+import { lazy, Suspense } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ChakraProvider, defaultSystem } from '@chakra-ui/react';
+import { Toaster } from './components/ui/toaster';
+import AppLayout from './components/AppLayout/AppLayout';
+import Users from './pages/Users';
+import Settings from './pages/Settings';
+import Login from './pages/Login';
+import PageNotFound from './pages/PageNotFound';
+import ProtectedRoute from './components/ProtectedRoute';
+import { ThemeProvider } from './context/ThemeContext';
+import { ColorModeProvider } from './components/ui/color-mode';
+import Signup from './pages/Signup';
+import Spinner from './components/Spinner/Spinner';
 
-const Dashboard = lazy(() => import("./pages/Dashboard"));
-const Profile = lazy(() => import("./pages/Profile"));
-const Cabins = lazy(() => import("./pages/Cabins"));
-const Bookings = lazy(() => import("./pages/Bookings"));
-const BookingsDetails = lazy(() => import("./pages/BookingsDetails"));
-const CheckIn = lazy(() => import("./pages/CheckIn"));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Cabins = lazy(() => import('./pages/Cabins'));
+const Bookings = lazy(() => import('./pages/Bookings'));
+const BookingsDetails = lazy(() => import('./pages/BookingsDetails'));
+const CheckIn = lazy(() => import('./pages/CheckIn'));
 
 const queryClient = new QueryClient();
 
@@ -38,7 +38,7 @@ const App = () => {
             <BrowserRouter>
               <Suspense fallback={<Spinner />}>
                 <Routes>
-                  <Route index element={<Navigate to="login" replace />} />
+                  <Route index element={<Navigate to='login' replace />} />
                   <Route
                     element={
                       <ProtectedRoute>
@@ -46,21 +46,18 @@ const App = () => {
                       </ProtectedRoute>
                     }
                   >
+                    <Route index element={<Navigate replace={true} to='/dashboard' />} />
                     <Route
-                      index
-                      element={<Navigate replace={true} to="/dashboard" />}
-                    />
-                    <Route
-                      path="dashboard"
+                      path='dashboard'
                       element={
                         <Suspense fallback={<Spinner />}>
                           <Dashboard />
                         </Suspense>
                       }
                     />
-                    <Route path="users" element={<Users />} />
+                    <Route path='users' element={<Users />} />
                     <Route
-                      path="profile"
+                      path='profile'
                       element={
                         <Suspense fallback={<Spinner />}>
                           <Profile />
@@ -68,7 +65,7 @@ const App = () => {
                       }
                     />
                     <Route
-                      path="cabins"
+                      path='cabins'
                       element={
                         <Suspense fallback={<Spinner />}>
                           <Cabins />
@@ -76,7 +73,7 @@ const App = () => {
                       }
                     />
                     <Route
-                      path="bookings"
+                      path='bookings'
                       element={
                         <Suspense fallback={<Spinner />}>
                           <Bookings />
@@ -84,7 +81,7 @@ const App = () => {
                       }
                     />
                     <Route
-                      path="bookings/:bookingsId"
+                      path='bookings/:bookingsId'
                       element={
                         <Suspense fallback={<Spinner />}>
                           <BookingsDetails />
@@ -92,18 +89,18 @@ const App = () => {
                       }
                     />
                     <Route
-                      path="checkin/:bookingsId"
+                      path='checkin/:bookingsId'
                       element={
                         <Suspense fallback={<Spinner />}>
                           <CheckIn />
                         </Suspense>
                       }
                     />
-                    <Route path="settings" element={<Settings />} />
+                    <Route path='settings' element={<Settings />} />
                   </Route>
-                  <Route path="signup" element={<Signup />} />
-                  <Route path="login" element={<Login />} />
-                  <Route path="*" element={<PageNotFound />} />
+                  <Route path='signup' element={<Signup />} />
+                  <Route path='login' element={<Login />} />
+                  <Route path='*' element={<PageNotFound />} />
                 </Routes>
               </Suspense>
             </BrowserRouter>

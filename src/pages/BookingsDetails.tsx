@@ -1,20 +1,20 @@
-import DeleteDialog from "@/components/DeleteDialog";
-import Heading from "@/components/Heading";
-import StatusBadge from "@/components/StatusBadge";
-import { getBookingById } from "@/services/api/bookingsApi";
-import { Flex, Strong } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { useParams, useNavigate, Link } from "react-router";
-import BookingsDetailsBox from "../features/bookings/BookingsDetailsBox";
-import SectionHeader from "@/components/SectionHeader";
-import BackButton from "@/components/BackButton";
-import PageError from "@/components/PageError";
-import { BookingDetailsType } from "@/types/bookingsTypes";
-import Button from "@/components/Button";
-import Skeleton from "@/components/Skeleton";
-import BookingsDetailsBoxSkeleton from "../features/bookings/BookingsDetailsBoxSkeleton";
-import { useCheckout } from "./../features/bookings/useCheckout";
-import { useDeleteBooking } from "./../features/bookings/useDeleteBooking";
+import DeleteDialog from '@/components/DeleteDialog';
+import Heading from '@/components/Heading';
+import StatusBadge from '@/components/StatusBadge';
+import { getBookingById } from '@/services/api/bookingsApi';
+import { Flex, Strong } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate, Link } from 'react-router';
+import BookingsDetailsBox from '../features/bookings/BookingsDetailsBox';
+import SectionHeader from '@/components/SectionHeader';
+import BackButton from '@/components/BackButton';
+import PageError from '@/components/PageError';
+import { BookingDetailsType } from '@/types/bookingsTypes';
+import Button from '@/components/Button';
+import Skeleton from '@/components/Skeleton';
+import BookingsDetailsBoxSkeleton from '../features/bookings/BookingsDetailsBoxSkeleton';
+import { useCheckout } from './../features/bookings/useCheckout';
+import { useDeleteBooking } from './../features/bookings/useDeleteBooking';
 
 const BookingsDetails = () => {
   const { deleteBooking } = useDeleteBooking();
@@ -40,36 +40,36 @@ const BookingsDetails = () => {
     fetchBooking();
   }, [bookingsId]);
 
-  const handleGoBack = () => navigate(-1);
+  const goBack = () => navigate(-1);
 
-  const handleToggleDeleteDialog = () => setIsDeleteOpen((open) => !open);
+  const handleToggleDeleteDialog = () => setIsDeleteOpen(open => !open);
 
   const handleDeleteBooking = () => {
     deleteBooking(bookingsId, {
       onSuccess() {
-        setIsDeleteOpen((open) => !open);
-        handleGoBack();
+        setIsDeleteOpen(open => !open);
+        goBack();
       },
     });
   };
 
   const handleCheckOut = () => {
-    checkout(bookingsId);
+    checkout(bookingsId, {
+      onSuccess() {
+        goBack();
+      },
+    });
   };
 
   return booking === undefined && !isLoading ? (
-    <PageError message="Failed to load booking details" />
+    <PageError message='Failed to load booking details' />
   ) : (
     <>
       <SectionHeader>
-        <Flex alignItems="center" gap="4">
+        <Flex alignItems='center' gap='4'>
           <Heading>Booking #{bookingsId} </Heading>
           <Skeleton loading={isLoading}>
-            {booking && (
-              <StatusBadge status={booking.status}>
-                {booking.status}
-              </StatusBadge>
-            )}
+            {booking && <StatusBadge status={booking.status}>{booking.status}</StatusBadge>}
           </Skeleton>
         </Flex>
         <BackButton />
@@ -81,19 +81,19 @@ const BookingsDetails = () => {
         <BookingsDetailsBox booking={booking} />
       )}
 
-      <Flex justifyContent="end" gap="4">
-        {booking && booking.status === "unconfirmed" && (
+      <Flex justifyContent='end' gap='4'>
+        {booking && booking.status === 'unconfirmed' && (
           <Button asChild disabled={isLoading}>
             <Link to={`/checkin/${booking.id}`}>Check in</Link>
           </Button>
         )}
-        {booking && booking.status === "checked-in" && (
+        {booking && booking.status === 'checked-in' && (
           <Button onClick={handleCheckOut}>Check out</Button>
         )}
         <Button
-          color="#fff"
-          bgColor="var(--color-red-700)"
-          _hover={{ bgColor: "var(--color-red-800)" }}
+          color='#fff'
+          bgColor='var(--color-red-700)'
+          _hover={{ bgColor: 'var(--color-red-800)' }}
           onClick={handleToggleDeleteDialog}
           disabled={isLoading}
         >
@@ -101,17 +101,16 @@ const BookingsDetails = () => {
         </Button>
       </Flex>
       <DeleteDialog
-        title="Delete booking"
+        title='Delete booking'
         onDelete={handleDeleteBooking}
         open={isDeleteOpen}
         onOpenChange={handleToggleDeleteDialog}
       >
-        Are you sure you want to delete{" "}
-        <Strong color="var(--color-grey-700)" fontWeight="500">
+        Are you sure you want to delete{' '}
+        <Strong color='var(--color-grey-700)' fontWeight='500'>
           {booking && booking.guests.fullName}'s
-        </Strong>{" "}
-        booking? It will be permanently deleted, and this action cannot be
-        undone.{" "}
+        </Strong>{' '}
+        booking? It will be permanently deleted, and this action cannot be undone.{' '}
       </DeleteDialog>
     </>
   );
