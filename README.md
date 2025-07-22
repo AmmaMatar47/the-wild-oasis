@@ -24,4 +24,4 @@ The application includes user authentication, role-based access control, and a r
 - **Database**: Supabase
 - **Authentication**: Supabase Auth JWT
 - **Deployment**: Vercel
-- **Other Tools**: Formik, Redux Toolkit
+- **Other Tools**: Formik, Redux Toolkit, Recharts
