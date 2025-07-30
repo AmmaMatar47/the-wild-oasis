@@ -24,7 +24,11 @@ export const useCabins = () => {
   } = useQuery({
     queryKey: ["cabins", activePage, sortingValue, activeSegment],
     queryFn: () =>
-      getCabins(sortingValue, activeSegment, calculatePageRange(activePage, CABINS_PAGE_SIZE)),
+      getCabins(
+        sortingValue,
+        activeSegment,
+        calculatePageRange(activePage, CABINS_PAGE_SIZE),
+      ),
   });
 
   useEffect(() => {
@@ -32,7 +36,7 @@ export const useCabins = () => {
       if (!isFetching) return;
       const count = await getDataRange(
         "cabins",
-        activeSegment === "All" ? null : { discount: activeSegment }
+        activeSegment === "All" ? null : { discount: activeSegment },
       );
       setCabinsCount(count);
     };

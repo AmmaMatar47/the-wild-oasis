@@ -3,7 +3,10 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { Field, Input, Text } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { Link } from "react-router";
-import { createUserFormValidation, initialUserValues } from "./signupFormConstant";
+import {
+  createUserFormValidation,
+  initialUserValues,
+} from "./signupFormConstant";
 import { useSignup } from "./useSignup";
 
 const SignupForm = () => {
@@ -87,7 +90,9 @@ const SignupForm = () => {
       <Field.Root
         marginBottom="4"
         color="var(--color-grey-700)"
-        invalid={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
+        invalid={
+          !!formik.errors.confirmPassword && formik.touched.confirmPassword
+        }
       >
         <Field.Label>Confirm password</Field.Label>
         <PasswordInput

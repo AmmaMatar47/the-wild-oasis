@@ -80,7 +80,9 @@ const ChangePasswordForm = () => {
           orientation="horizontal"
           justifyContent="start"
           gap="6.2rem"
-          invalid={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
+          invalid={
+            !!formik.errors.confirmPassword && formik.touched.confirmPassword
+          }
           required
         >
           <Field.Label minW="13rem">

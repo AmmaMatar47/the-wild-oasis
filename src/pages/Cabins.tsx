@@ -8,7 +8,11 @@ import CabinsTable from "@/features/cabins/CabinsTable";
 import CreateCabin from "@/features/cabins/CreateCabin";
 import { useCabins } from "@/features/cabins/useCabins";
 import { CABINS_PAGE_SIZE } from "@/utils/constants";
-import { createListCollection, Flex, SelectValueChangeDetails } from "@chakra-ui/react";
+import {
+  createListCollection,
+  Flex,
+  SelectValueChangeDetails,
+} from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 
@@ -46,16 +50,16 @@ const Cabins = () => {
 
   const handlePageChange = useCallback(
     ({ page }: { page: number }) => {
-      setSearchParams(prevParams => {
+      setSearchParams((prevParams) => {
         prevParams.set("page", String(page));
         return prevParams;
       });
     },
-    [setSearchParams]
+    [setSearchParams],
   );
 
   const handleSegmentValueChange = (value: string) => {
-    setSearchParams(prevParams => {
+    setSearchParams((prevParams) => {
       prevParams.set("discount", value);
       prevParams.set("page", "1");
       return prevParams;
@@ -66,9 +70,9 @@ const Cabins = () => {
     details: SelectValueChangeDetails<{
       label: string;
       value: string;
-    }>
+    }>,
   ) => {
-    setSearchParams(prevParams => {
+    setSearchParams((prevParams) => {
       prevParams.set("order", details.value[0]);
       prevParams.set("page", "1");
       return prevParams;
@@ -96,10 +100,16 @@ const Cabins = () => {
         </Flex>
       </SectionHeader>
       {error ? (
-        <PageError message={"Failed to load cabins data, Please try again later."} />
+        <PageError
+          message={"Failed to load cabins data, Please try again later."}
+        />
       ) : (
         <>
-          <CabinsTable cabins={cabins} fetchCabins={refetch} isLoading={isLoading} />
+          <CabinsTable
+            cabins={cabins}
+            fetchCabins={refetch}
+            isLoading={isLoading}
+          />
           {cabinsCount <= CABINS_PAGE_SIZE || !cabinsCount ? null : (
             <TablePagination
               page={activePage}

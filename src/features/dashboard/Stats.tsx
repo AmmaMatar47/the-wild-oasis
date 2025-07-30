@@ -1,5 +1,8 @@
 import StatBox from "@/components/StatBox";
-import { BookingsPricesType, ConfirmedBookingsType } from "../../types/bookingsTypes";
+import {
+  BookingsPricesType,
+  ConfirmedBookingsType,
+} from "../../types/bookingsTypes";
 import { Circle, FormatNumber } from "@chakra-ui/react";
 import {
   HiOutlineBanknotes,
@@ -22,13 +25,16 @@ const Stats = ({
 }) => {
   const bookingsNum = bookingsPrices ? String(bookingsPrices.length) : 0;
 
-  const sales = bookingsPrices ? bookingsPrices.reduce((acc, cur) => acc + cur.totalPrice, 0) : 0;
+  const sales = bookingsPrices
+    ? bookingsPrices.reduce((acc, cur) => acc + cur.totalPrice, 0)
+    : 0;
 
   const checkIns = confirmedStays ? confirmedStays.length : 0;
 
   const occupation =
     confirmedStays && cabins
-      ? confirmedStays.reduce((acc, cur) => acc + cur.numNights, 0) / (numDays * cabins.length)
+      ? confirmedStays.reduce((acc, cur) => acc + cur.numNights, 0) /
+        (numDays * cabins.length)
       : 0;
 
   return (

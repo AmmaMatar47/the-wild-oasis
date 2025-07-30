@@ -13,7 +13,10 @@ export const formatTimeToNow = (date: string) => {
   return result;
 };
 
-export const formatDateToReadable = (date: string, formatString = "MMM dd yyyy") => {
+export const formatDateToReadable = (
+  date: string,
+  formatString = "MMM dd yyyy",
+) => {
   const formattedDate: string = formatDate(date, formatString);
   return formattedDate;
 };

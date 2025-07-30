@@ -6,7 +6,10 @@ import { createUser } from "@/services/api/authApi";
 import { Field, Flex } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useState } from "react";
-import { createUserFormValidation, initialUserValues } from "./signupFormConstant";
+import {
+  createUserFormValidation,
+  initialUserValues,
+} from "./signupFormConstant";
 
 const CreateUserForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -95,7 +98,9 @@ const CreateUserForm = () => {
         orientation="horizontal"
         justifyContent="start"
         gap="6.2rem"
-        invalid={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
+        invalid={
+          !!formik.errors.confirmPassword && formik.touched.confirmPassword
+        }
         required
       >
         <Field.Label minW="12rem">
