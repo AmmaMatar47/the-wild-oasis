@@ -28,13 +28,10 @@ const updateUserValidation = Yup.object().shape({
     .required("Username is required")
     .min(2, "Username must be at least 2 characters")
     .max(20, "Username must be at most 20 characters")
-    .matches(
-      /^(?![_. ])(?!.*[_. ]{2})[a-zA-Z0-9._ ]+(?<![_. ])$/,
-      "Invalid username format",
-    ),
+    .matches(/^(?![_. ])(?!.*[_. ]{2})[a-zA-Z0-9._ ]+(?<![_. ])$/, "Invalid username format"),
   avatarFile: Yup.mixed<File>()
     .nullable()
-    .test("is-valid-type", "Only JPEG, PNG, or WEBP images", (value) => {
+    .test("is-valid-type", "Only JPEG, PNG, or WEBP images", value => {
       if (!value) return true;
 
       if (value instanceof File) {
@@ -43,7 +40,7 @@ const updateUserValidation = Yup.object().shape({
 
       return true;
     })
-    .test("is-valid-size", "File too large (max 2MB)", (value) => {
+    .test("is-valid-size", "File too large (max 2MB)", value => {
       if (!value) return true;
 
       if (value instanceof File) {
@@ -82,15 +79,14 @@ const UpdateAccountForm = ({ user }: { user: UserDataRes | undefined }) => {
           formik.resetForm();
           fileUpload.clearFiles();
         },
-      },
+      }
     );
   }
 
   function handleFileChange(files: FileUploadFileChangeDetails) {
     if (!formik.touched.avatarFile) formik.setFieldTouched("avatarFile", true);
 
-    if (files.acceptedFiles.length === 0)
-      formik.setFieldValue("avatarFile", null);
+    if (files.acceptedFiles.length === 0) formik.setFieldValue("avatarFile", null);
     if (!files?.acceptedFiles?.[0]) return;
 
     const file: File = files.acceptedFiles[0];
@@ -99,11 +95,7 @@ const UpdateAccountForm = ({ user }: { user: UserDataRes | undefined }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Tooltip
-        content={`You can't change the email address`}
-        closeDelay={200}
-        openDelay={200}
-      >
+      <Tooltip content={`You can't change the email address`} closeDelay={200} openDelay={200}>
         <InputField
           label="Email"
           defaultValue={user?.user_metadata.email}
@@ -134,11 +126,7 @@ const UpdateAccountForm = ({ user }: { user: UserDataRes | undefined }) => {
         justifyContent="start"
         invalid={!!formik.errors.avatarFile && !!formik.touched.avatarFile}
       >
-        <Field.Label
-          minW="11rem"
-          color="var(--color-grey-700)"
-          alignSelf="start"
-        >
+        <Field.Label minW="11rem" color="var(--color-grey-700)" alignSelf="start">
           Profile image
         </Field.Label>
         <FileUpload.RootProvider value={fileUpload} flexDir="row" maxW="20rem">

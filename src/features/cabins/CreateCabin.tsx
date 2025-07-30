@@ -1,23 +1,18 @@
-import Separator from "@/components/Separator";
-import {
-  Dialog,
-  Field,
-  FileUploadFileChangeDetails,
-  Stack,
-  Textarea,
-} from "@chakra-ui/react";
-import { useFormik } from "formik";
-import { useState } from "react";
-import InputField from "@/components/InputField";
-import { cabinFormValidation, formInitialValues } from "./cabinsFormConfig";
-import { CabinType, ImageFileType } from "@/types/cabinsTypes";
 import Button from "@/components/Button";
 import ImageUploadField from "@/components/ImageUploadField";
+import InputField from "@/components/InputField";
+import Separator from "@/components/Separator";
+import { CabinType, ImageFileType } from "@/types/cabinsTypes";
+import { Dialog, Field, FileUploadFileChangeDetails, Stack, Textarea } from "@chakra-ui/react";
+import { useFormik } from "formik";
+import { useState } from "react";
+import { cabinFormValidation, formInitialValues } from "./cabinsFormConfig";
 import { useCreateCabin } from "./useCreateCabin";
 
 const CreateCabin = () => {
   const { mutate: createCabin, isPending } = useCreateCabin();
   const [isFormOpen, setIsFormOpen] = useState(false);
+
   const formik = useFormik({
     initialValues: formInitialValues,
     validationSchema: cabinFormValidation,
@@ -33,7 +28,7 @@ const CreateCabin = () => {
         onSuccess() {
           setIsFormOpen(false);
         },
-      },
+      }
     );
   }
 
@@ -53,11 +48,12 @@ const CreateCabin = () => {
       placement="center"
       size="xl"
       open={isFormOpen}
-      onOpenChange={(e) => {
+      onOpenChange={e => {
         if (e) formik.resetForm();
         setIsFormOpen(e.open);
       }}
       scrollBehavior="inside"
+      initialFocusEl={() => null}
     >
       <Dialog.Trigger asChild>
         <Button h="2.4rem">Add new cabin</Button>
@@ -66,9 +62,7 @@ const CreateCabin = () => {
       <Dialog.Positioner>
         <Dialog.Content bgColor="var(--color-grey-0)">
           <Dialog.Header>
-            <Dialog.Title color="var(--color-grey-800)">
-              Create cabin
-            </Dialog.Title>
+            <Dialog.Title color="var(--color-grey-800)">Create cabin</Dialog.Title>
           </Dialog.Header>
           <Dialog.Body paddingTop="8">
             <form onSubmit={formik.handleSubmit}>
@@ -87,6 +81,7 @@ const CreateCabin = () => {
                   onBlur={formik.handleBlur}
                   invalid={!!formik.errors.name && formik.touched.name}
                   disabled={isPending}
+                  autoFocus={false}
                   required
                 />
 
@@ -100,9 +95,7 @@ const CreateCabin = () => {
                   errorMessage={formik.errors.maxCapacity}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  invalid={
-                    !!formik.errors.maxCapacity && formik.touched.maxCapacity
-                  }
+                  invalid={!!formik.errors.maxCapacity && formik.touched.maxCapacity}
                   disabled={isPending}
                   required
                 />
@@ -117,9 +110,7 @@ const CreateCabin = () => {
                   errorMessage={formik.errors.regularPrice}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  invalid={
-                    !!formik.errors.regularPrice && formik.touched.regularPrice
-                  }
+                  invalid={!!formik.errors.regularPrice && formik.touched.regularPrice}
                   disabled={isPending}
                   required
                 />
@@ -145,9 +136,7 @@ const CreateCabin = () => {
                   justifyContent="start"
                   gap="6.2rem"
                   orientation="horizontal"
-                  invalid={
-                    !!formik.errors.description && formik.touched.description
-                  }
+                  invalid={!!formik.errors.description && formik.touched.description}
                   disabled={isPending}
                 >
                   <Field.Label>Description</Field.Label>

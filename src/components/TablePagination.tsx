@@ -1,10 +1,4 @@
-import {
-  ButtonGroup,
-  IconButton,
-  Pagination,
-  PaginationRootProps,
-  Text,
-} from "@chakra-ui/react";
+import { ButtonGroup, IconButton, Pagination, PaginationRootProps, Text } from "@chakra-ui/react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 
 interface TablePagination extends PaginationRootProps {
@@ -32,7 +26,7 @@ const TablePagination = ({ itemsName, ...props }: TablePagination) => {
         </Pagination.PrevTrigger>
 
         <Pagination.Items
-          render={(page) => (
+          render={page => (
             <IconButton
               _selected={{
                 bgColor: "var(--color-brand-600) !important",
@@ -54,12 +48,7 @@ const TablePagination = ({ itemsName, ...props }: TablePagination) => {
         </Pagination.NextTrigger>
       </ButtonGroup>
 
-      <Text
-        fontSize="sm"
-        color="var(--color-grey-500)"
-        fontWeight="500"
-        paddingRight="4"
-      >
+      <Text fontSize="sm" color="var(--color-grey-500)" fontWeight="500" paddingRight="4">
         Total {itemsName}: {props.count}
       </Text>
     </Pagination.Root>

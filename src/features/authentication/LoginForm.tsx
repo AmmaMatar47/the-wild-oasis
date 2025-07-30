@@ -1,9 +1,10 @@
 import Button from "@/components/Button";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Field, Input, Text } from "@chakra-ui/react";
 import { useFormik } from "formik";
+import { Link } from "react-router";
 import * as Yup from "yup";
 import { useLogin } from "./useLogin";
-import { Link } from "react-router";
 
 const initialValues = {
   email: "",
@@ -11,9 +12,7 @@ const initialValues = {
 };
 
 const logInValidation = Yup.object().shape({
-  email: Yup.string()
-    .email("Please enter a valid email address")
-    .required("Email is required"),
+  email: Yup.string().email("Please enter a valid email address").required("Email is required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
@@ -60,7 +59,7 @@ const LoginForm = () => {
         invalid={!!formik.errors.password && formik.touched.password}
       >
         <Field.Label>Password</Field.Label>
-        <Input
+        <PasswordInput
           name="password"
           value={formik.values.password}
           onChange={formik.handleChange}

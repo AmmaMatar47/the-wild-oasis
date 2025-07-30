@@ -6,13 +6,9 @@ import { CabinResponseType, CabinType } from "@/types/cabinsTypes";
 import { deleteUnusedImage, postImage } from "./indexApi";
 
 export const getCabinsNames = async () => {
-  const res = await http.request<CabinResponseType[]>(
-    "get",
-    API_ENDPOINTS.cabins,
-    {
-      params: { select: "name" },
-    },
-  );
+  const res = await http.request<CabinResponseType[]>("get", API_ENDPOINTS.cabins, {
+    params: { select: "name" },
+  });
 
   return res.data;
 };
@@ -27,24 +23,16 @@ export const getCabinById = async (id: string) => {
   return res.data.at(0);
 };
 
-export const getCabins = async (
-  order: string,
-  discount: string,
-  range: string,
-) => {
-  const res = await http.request<CabinResponseType[]>(
-    "get",
-    API_ENDPOINTS.cabins,
-    {
-      params:
-        discount === "All"
-          ? { order: `${order},created_at.asc` }
-          : { order: order, discount: discount },
-      headers: {
-        range,
-      },
+export const getCabins = async (order: string, discount: string, range: string) => {
+  const res = await http.request<CabinResponseType[]>("get", API_ENDPOINTS.cabins, {
+    params:
+      discount === "All"
+        ? { order: `${order},created_at.asc` }
+        : { order: order, discount: discount },
+    headers: {
+      range,
     },
-  );
+  });
 
   return res.data;
 };
@@ -83,7 +71,7 @@ export const editCabin = async (
   id: string | number,
   body: Partial<CabinType>,
   bucketName?: string,
-  oldImage?: string,
+  oldImage?: string
 ) => {
   try {
     let imagePath;
@@ -92,7 +80,7 @@ export const editCabin = async (
       imagePath = await postImage(bucketName, body.image as Blob);
     }
 
-    http.request<void>("patch", API_ENDPOINTS.cabins, {
+    await http.request<void>("patch", API_ENDPOINTS.cabins, {
       params: {
         id: `eq.${id}`,
       },
@@ -121,10 +109,7 @@ export const editCabin = async (
   }
 };
 
-export const deleteCabin = async (
-  cabinId: string | number,
-  imagePath: string,
-) => {
+export const deleteCabin = async (cabinId: string | number, imagePath: string) => {
   try {
     toaster.loading({ description: "Deleting", id: "deleting" });
     const res = await http.request<void>("delete", API_ENDPOINTS.cabins, {

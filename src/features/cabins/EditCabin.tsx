@@ -1,12 +1,6 @@
 import { getCabinById } from "@/services/api/cabinsApi";
 import Separator from "@/components/Separator";
-import {
-  Dialog,
-  Field,
-  Stack,
-  Textarea,
-  FileUploadFileChangeDetails,
-} from "@chakra-ui/react";
+import { Dialog, Field, Stack, Textarea, FileUploadFileChangeDetails } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import InputField from "@/components/InputField";
@@ -41,7 +35,7 @@ const EditCabin = ({
 
   useEffect(() => {
     const fetchCabin = async () => {
-      setIsLoading(true);
+      if (open) setIsLoading(true);
       if (cabinId) {
         const res = await getCabinById(cabinId);
         setCabinData(res);
@@ -49,10 +43,10 @@ const EditCabin = ({
       }
     };
     fetchCabin();
-  }, [searchParams, cabinId]);
+  }, [searchParams, cabinId, open]);
 
   const removeEditCabinURlParam = () => {
-    setSearchParams((prevParams) => {
+    setSearchParams(prevParams => {
       prevParams.delete("edit");
       return prevParams;
     });
@@ -65,9 +59,6 @@ const EditCabin = ({
       onSuccess: () => {
         setOpen(false);
         removeEditCabinURlParam();
-        if (open) {
-          formik.setValues(formInitialValues);
-        }
       },
     };
 
@@ -81,7 +72,7 @@ const EditCabin = ({
           bucketName,
           imagePath: cabinData?.image as string,
         },
-        commonOptions,
+        commonOptions
       );
     } else {
       editCabin({ cabinId, values }, commonOptions);
@@ -105,7 +96,7 @@ const EditCabin = ({
       size="xl"
       lazyMount
       open={open}
-      onOpenChange={(e) => {
+      onOpenChange={e => {
         removeEditCabinURlParam();
         setOpen(e.open);
       }}
@@ -115,9 +106,7 @@ const EditCabin = ({
       <Dialog.Positioner>
         <Dialog.Content bgColor="var(--color-grey-0)">
           <Dialog.Header>
-            <Dialog.Title color="var(--color-grey-800)">
-              Edit cabin
-            </Dialog.Title>
+            <Dialog.Title color="var(--color-grey-800)">Edit cabin</Dialog.Title>
           </Dialog.Header>
           <Dialog.Body paddingTop="8">
             {isLoading ? (
@@ -151,9 +140,7 @@ const EditCabin = ({
                     errorMessage={formik.errors.maxCapacity}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    invalid={
-                      !!formik.errors.maxCapacity && formik.touched.maxCapacity
-                    }
+                    invalid={!!formik.errors.maxCapacity && formik.touched.maxCapacity}
                     disabled={isEditing}
                     required
                   />
@@ -168,10 +155,7 @@ const EditCabin = ({
                     errorMessage={formik.errors.regularPrice}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    invalid={
-                      !!formik.errors.regularPrice &&
-                      formik.touched.regularPrice
-                    }
+                    invalid={!!formik.errors.regularPrice && formik.touched.regularPrice}
                     disabled={isEditing}
                     required
                   />
@@ -186,9 +170,7 @@ const EditCabin = ({
                     errorMessage={formik.errors.discount}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    invalid={
-                      !!formik.errors.discount && formik.touched.discount
-                    }
+                    invalid={!!formik.errors.discount && formik.touched.discount}
                     disabled={isEditing}
                     required
                   />
@@ -199,9 +181,7 @@ const EditCabin = ({
                     justifyContent="start"
                     gap="6.2rem"
                     orientation="horizontal"
-                    invalid={
-                      !!formik.errors.description && formik.touched.description
-                    }
+                    invalid={!!formik.errors.description && formik.touched.description}
                     disabled={isEditing}
                   >
                     <Field.Label>
@@ -223,9 +203,7 @@ const EditCabin = ({
                       }
                       resize="none"
                     />
-                    <Field.ErrorText>
-                      {formik.errors.description}
-                    </Field.ErrorText>
+                    <Field.ErrorText>{formik.errors.description}</Field.ErrorText>
                   </Field.Root>
 
                   <Separator />

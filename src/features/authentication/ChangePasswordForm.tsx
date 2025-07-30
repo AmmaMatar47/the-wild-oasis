@@ -1,12 +1,12 @@
 import Button from "@/components/Button";
-import InputField from "@/components/InputField";
 import SectionBox from "@/components/SectionBox";
-import { Flex } from "@chakra-ui/react";
-import * as Yup from "yup";
-import { useFormik } from "formik";
-import { changePassword } from "@/services/api/authApi";
 import Separator from "@/components/Separator";
+import { PasswordInput } from "@/components/ui/password-input";
+import { changePassword } from "@/services/api/authApi";
+import { Field, Flex } from "@chakra-ui/react";
+import { useFormik } from "formik";
 import { useState } from "react";
+import * as Yup from "yup";
 
 const initialUserValues = {
   password: "",
@@ -46,37 +46,59 @@ const ChangePasswordForm = () => {
   return (
     <SectionBox padding="8">
       <form onSubmit={formik.handleSubmit}>
-        <InputField
-          type="password"
-          label="New password (min 8 char)"
-          labelWidth="13rem"
-          minW="26rem"
-          name="password"
-          value={formik.values.password}
-          errorMessage={formik.errors.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
+        <Field.Root
+          marginBottom="6"
+          color="var(--color-grey-700)"
+          orientation="horizontal"
+          justifyContent="start"
+          gap="6.2rem"
           invalid={!!formik.errors.password && formik.touched.password}
-          disabled={isLoading}
           required
-        />
+        >
+          <Field.Label minW="13rem">
+            New password (min 8 char) <Field.RequiredIndicator />
+          </Field.Label>
+          <PasswordInput
+            name="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            focusRingColor="var(--color-brand-600)"
+            boxShadow="var(--shadow-sm)"
+            border="solid 1px var(--color-grey-300)"
+            width="26rem"
+            disabled={isLoading}
+          />
+          <Field.ErrorText>{formik.errors.password}</Field.ErrorText>
+        </Field.Root>
+
         <Separator marginY="1.4rem" />
-        <InputField
-          type="password"
-          label="Confirm password"
-          labelWidth="13rem"
-          minW="26rem"
-          name="confirmPassword"
-          value={formik.values.confirmPassword}
-          errorMessage={formik.errors.confirmPassword}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          invalid={
-            !!formik.errors.confirmPassword && formik.touched.confirmPassword
-          }
-          disabled={isLoading}
+
+        <Field.Root
+          marginBottom="6"
+          color="var(--color-grey-700)"
+          orientation="horizontal"
+          justifyContent="start"
+          gap="6.2rem"
+          invalid={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
           required
-        />
+        >
+          <Field.Label minW="13rem">
+            Confirm password <Field.RequiredIndicator />
+          </Field.Label>
+          <PasswordInput
+            name="confirmPassword"
+            value={formik.values.confirmPassword}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            focusRingColor="var(--color-brand-600)"
+            boxShadow="var(--shadow-sm)"
+            border="solid 1px var(--color-grey-300)"
+            width="26rem"
+            disabled={isLoading}
+          />
+          <Field.ErrorText>{formik.errors.confirmPassword}</Field.ErrorText>
+        </Field.Root>
 
         <Flex justifyContent="end" marginTop="1.6rem">
           <Button size="sm" fontSize="sm" type="submit" loading={isLoading}>

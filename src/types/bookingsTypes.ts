@@ -81,7 +81,7 @@ export interface TodaysBookingsType {
   numGuests: number;
   numNights: number;
   observations: string | null;
-  startDate: string; // or Date
-  status: "checked-in" | "checked-out" | "unconfirmed"; // add other possible statuses
+  startDate: string;
+  status: "checked-in" | "checked-out" | "unconfirmed";
   totalPrice: number;
 }

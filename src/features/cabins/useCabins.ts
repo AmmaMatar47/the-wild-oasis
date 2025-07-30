@@ -20,26 +20,24 @@ export const useCabins = () => {
     refetch,
     error,
     isRefetching,
+    isFetching,
   } = useQuery({
     queryKey: ["cabins", activePage, sortingValue, activeSegment],
     queryFn: () =>
-      getCabins(
-        sortingValue,
-        activeSegment,
-        calculatePageRange(activePage, CABINS_PAGE_SIZE),
-      ),
+      getCabins(sortingValue, activeSegment, calculatePageRange(activePage, CABINS_PAGE_SIZE)),
   });
 
   useEffect(() => {
     const getCabinsCount = async () => {
+      if (!isFetching) return;
       const count = await getDataRange(
         "cabins",
-        activeSegment === "All" ? null : { discount: activeSegment },
+        activeSegment === "All" ? null : { discount: activeSegment }
       );
       setCabinsCount(count);
     };
     getCabinsCount();
-  }, [activeSegment, cabins, isRefetching]);
+  }, [activeSegment, cabins, isFetching]);
 
   return { cabins, isLoading, cabinsCount, refetch, error, isRefetching };
 };

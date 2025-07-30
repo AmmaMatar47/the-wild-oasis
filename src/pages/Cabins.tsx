@@ -1,19 +1,16 @@
-import {
-  createListCollection,
-  Flex,
-  SelectValueChangeDetails,
-} from "@chakra-ui/react";
+import Heading from "@/components/Heading";
+import PageError from "@/components/PageError";
+import SectionHeader from "@/components/SectionHeader";
 import Segment from "@/components/Segment";
+import Select from "@/components/Select";
+import TablePagination from "@/components/TablePagination";
 import CabinsTable from "@/features/cabins/CabinsTable";
 import CreateCabin from "@/features/cabins/CreateCabin";
-import { useSearchParams } from "react-router-dom";
-import TablePagination from "@/components/TablePagination";
-import Select from "@/components/Select";
-import Heading from "@/components/Heading";
-import SectionHeader from "@/components/SectionHeader";
-import PageError from "@/components/PageError";
-import { CABINS_PAGE_SIZE } from "@/utils/constants";
 import { useCabins } from "@/features/cabins/useCabins";
+import { CABINS_PAGE_SIZE } from "@/utils/constants";
+import { createListCollection, Flex, SelectValueChangeDetails } from "@chakra-ui/react";
+import { useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 
 export interface FetchCabinsProps {
   activeSorting?: string;
@@ -47,15 +44,18 @@ const Cabins = () => {
   const sortingValue = searchParams?.get("order") || "name.asc";
   const activeSegment = searchParams?.get("discount") || "All";
 
-  const handlePageChange = ({ page }: { page: number }) => {
-    setSearchParams((prevParams) => {
-      prevParams.set("page", String(page));
-      return prevParams;
-    });
-  };
+  const handlePageChange = useCallback(
+    ({ page }: { page: number }) => {
+      setSearchParams(prevParams => {
+        prevParams.set("page", String(page));
+        return prevParams;
+      });
+    },
+    [setSearchParams]
+  );
 
   const handleSegmentValueChange = (value: string) => {
-    setSearchParams((prevParams) => {
+    setSearchParams(prevParams => {
       prevParams.set("discount", value);
       prevParams.set("page", "1");
       return prevParams;
@@ -66,9 +66,9 @@ const Cabins = () => {
     details: SelectValueChangeDetails<{
       label: string;
       value: string;
-    }>,
+    }>
   ) => {
-    setSearchParams((prevParams) => {
+    setSearchParams(prevParams => {
       prevParams.set("order", details.value[0]);
       prevParams.set("page", "1");
       return prevParams;
@@ -96,16 +96,10 @@ const Cabins = () => {
         </Flex>
       </SectionHeader>
       {error ? (
-        <PageError
-          message={"Failed to load cabins data, Please try again later."}
-        />
+        <PageError message={"Failed to load cabins data, Please try again later."} />
       ) : (
         <>
-          <CabinsTable
-            cabins={cabins}
-            fetchCabins={refetch}
-            isLoading={isLoading}
-          />
+          <CabinsTable cabins={cabins} fetchCabins={refetch} isLoading={isLoading} />
           {cabinsCount <= CABINS_PAGE_SIZE || !cabinsCount ? null : (
             <TablePagination
               page={activePage}

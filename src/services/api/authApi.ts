@@ -15,13 +15,9 @@ export const createUser = async ({
   password: string;
 }) => {
   try {
-    const res = await http.request<LoginResType>(
-      "post",
-      API_ENDPOINTS.users.signup,
-      {
-        data: { ...userData, data: { fullName, avatar: null } },
-      },
-    );
+    const res = await http.request<LoginResType>("post", API_ENDPOINTS.users.signup, {
+      data: { ...userData, data: { fullName, avatar: null } },
+    });
     toaster.success({ description: "Account created successfully" });
 
     return res;
@@ -44,14 +40,10 @@ export const createUser = async ({
 
 export const login = async (credentials: Credentials) => {
   try {
-    const res = await http.request<LoginResType>(
-      "post",
-      API_ENDPOINTS.users.token,
-      {
-        params: { grant_type: "password" },
-        data: { ...credentials },
-      },
-    );
+    const res = await http.request<LoginResType>("post", API_ENDPOINTS.users.token, {
+      params: { grant_type: "password" },
+      data: { ...credentials },
+    });
     http.setIsAuthenticated(true);
     return res.data;
   } catch (err) {
@@ -89,7 +81,7 @@ export const requestNewAccessToken = () => {
         grant_type: "refresh_token",
       },
       data: { refresh_token: refreshToken },
-    },
+    }
   );
 
   return res;
@@ -103,25 +95,21 @@ export const updateAccount = async (
     fullName: string;
     avatarFile: null | ImageFileType;
   },
-  oldAvatarURL?: string,
+  oldAvatarURL?: string
 ) => {
   try {
     let imagePath;
-    if (avatarFile !== null && oldAvatarURL) {
+    if (avatarFile !== null) {
       const bucketName = `object/avatars/${avatarFile.name}`;
       // Upload new Avatar
       imagePath = await postImage(bucketName, avatarFile);
       // Delete old Avatar
-      http.request<void>("delete", oldAvatarURL);
+      if (oldAvatarURL) http.request<void>("delete", oldAvatarURL);
     }
     // Update user data
-    const res = await http.request<UserDataRes>(
-      "put",
-      API_ENDPOINTS.users.user,
-      {
-        data: { data: { fullName: fullName, avatar: imagePath } },
-      },
-    );
+    const res = await http.request<UserDataRes>("put", API_ENDPOINTS.users.user, {
+      data: { data: { fullName: fullName, avatar: imagePath } },
+    });
     toaster.success({ description: "Account updated successfully" });
     return res.data;
   } catch (err) {

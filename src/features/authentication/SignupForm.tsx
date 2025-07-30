@@ -1,11 +1,9 @@
-import { useFormik } from "formik";
-import {
-  createUserFormValidation,
-  initialUserValues,
-} from "./signupFormConstant";
-import { Field, Input, Text } from "@chakra-ui/react";
 import Button from "@/components/Button";
+import { PasswordInput } from "@/components/ui/password-input";
+import { Field, Input, Text } from "@chakra-ui/react";
+import { useFormik } from "formik";
 import { Link } from "react-router";
+import { createUserFormValidation, initialUserValues } from "./signupFormConstant";
 import { useSignup } from "./useSignup";
 
 const SignupForm = () => {
@@ -70,7 +68,7 @@ const SignupForm = () => {
         invalid={!!formik.errors.password && formik.touched.password}
       >
         <Field.Label>Password</Field.Label>
-        <Input
+        <PasswordInput
           name="password"
           type="password"
           value={formik.values.password}
@@ -82,18 +80,17 @@ const SignupForm = () => {
           border="solid 1px var(--color-grey-300)"
           disabled={isSigningUp}
         />
+
         <Field.ErrorText>{formik.errors.password}</Field.ErrorText>
       </Field.Root>
 
       <Field.Root
         marginBottom="4"
         color="var(--color-grey-700)"
-        invalid={
-          !!formik.errors.confirmPassword && formik.touched.confirmPassword
-        }
+        invalid={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
       >
         <Field.Label>Confirm password</Field.Label>
-        <Input
+        <PasswordInput
           name="confirmPassword"
           type="password"
           value={formik.values.confirmPassword}

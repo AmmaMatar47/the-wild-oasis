@@ -20,7 +20,7 @@ export const useEditCabin = () => {
       imagePath?: string;
     }) => editCabin(cabinId, values, bucketName, imagePath),
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["cabins"] });
+      queryClient.invalidateQueries({ queryKey: ["cabins"], type: "active" });
     },
   });
 

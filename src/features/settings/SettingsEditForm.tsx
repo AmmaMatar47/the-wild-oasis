@@ -16,7 +16,7 @@ const settingsFormValidation = Yup.object().shape({
   maxBookingLength: Yup.number()
     .min(
       Yup.ref("minBookingLength"),
-      "Maximum booking length must be greater than or equal to the minimum",
+      "Maximum booking length must be greater than or equal to the minimum"
     )
     .required("Maximum booking length is required"),
 
@@ -30,7 +30,7 @@ const settingsFormValidation = Yup.object().shape({
 });
 
 const SettingsEditForm = () => {
-  const { settings, isLoading } = useSettings();
+  const { settings, isLoading, isRefetching } = useSettings();
   const { mutate, isPending } = useUpdateSettings();
 
   const initialSettingsValues = {
@@ -63,9 +63,7 @@ const SettingsEditForm = () => {
         labelWidth="12rem"
         maxWidth="22rem"
         errorMessage={formik.errors.minBookingLength}
-        invalid={
-          !!formik.errors.minBookingLength && formik.touched.minBookingLength
-        }
+        invalid={!!formik.errors.minBookingLength && formik.touched.minBookingLength}
         disabled={isLoading || isPending}
       />
       <Separator marginY="4" />
@@ -79,9 +77,7 @@ const SettingsEditForm = () => {
         labelWidth="12rem"
         maxWidth="22rem"
         errorMessage={formik.errors.maxBookingLength}
-        invalid={
-          !!formik.errors.maxBookingLength && formik.touched.maxBookingLength
-        }
+        invalid={!!formik.errors.maxBookingLength && formik.touched.maxBookingLength}
         disabled={isLoading || isPending}
       />
       <Separator marginY="4" />
@@ -95,10 +91,7 @@ const SettingsEditForm = () => {
         labelWidth="12rem"
         maxWidth="22rem"
         errorMessage={formik.errors.maxGuestsPerBooking}
-        invalid={
-          !!formik.errors.maxGuestsPerBooking &&
-          formik.touched.maxGuestsPerBooking
-        }
+        invalid={!!formik.errors.maxGuestsPerBooking && formik.touched.maxGuestsPerBooking}
         disabled={isLoading || isPending}
       />
       <Separator marginY="4" />
@@ -112,9 +105,7 @@ const SettingsEditForm = () => {
         labelWidth="12rem"
         maxWidth="22rem"
         errorMessage={formik.errors.breakfastPrice}
-        invalid={
-          !!formik.errors.breakfastPrice && formik.touched.breakfastPrice
-        }
+        invalid={!!formik.errors.breakfastPrice && formik.touched.breakfastPrice}
         disabled={isLoading || isPending}
       />
       <Flex justifyContent="end" marginTop="6">
@@ -126,7 +117,7 @@ const SettingsEditForm = () => {
         >
           <Button
             type="submit"
-            disabled={isLoading || !formik.dirty}
+            disabled={isLoading || isRefetching || !formik.dirty}
             loading={isPending}
           >
             Update settings
