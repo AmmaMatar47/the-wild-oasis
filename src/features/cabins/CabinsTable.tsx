@@ -1,9 +1,4 @@
-import {
-  HiMiniHomeModern,
-  HiPencil,
-  HiSquare2Stack,
-  HiTrash,
-} from "react-icons/hi2";
+import { HiMiniHomeModern, HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 
 import DeleteDialog from "@/components/DeleteDialog";
 import EmptyPage from "@/components/EmptyPage";
@@ -47,9 +42,7 @@ const CabinsTable = ({
     imagePath: string;
   }>(initialDeleteInfoState);
 
-  const [toggleEditForm, setToggleEditForm] = useState(
-    () => !!searchParams.get("edit"),
-  );
+  const [toggleEditForm, setToggleEditForm] = useState(() => !!searchParams.get("edit"));
 
   const handleDuplicateCabin = (cabin: CabinResponseType) => {
     mutate({
@@ -65,7 +58,7 @@ const CabinsTable = ({
   };
 
   const handleEditMenuItemClick = (cabinId: number) => {
-    setSearchParams((prevParams) => {
+    setSearchParams(prevParams => {
       if (!toggleEditForm) prevParams.set("edit", String(cabinId));
       else prevParams.delete("edit");
       return prevParams;
@@ -74,11 +67,7 @@ const CabinsTable = ({
     setToggleEditForm(true);
   };
 
-  const handleDeleteMenuItemClick = (
-    cabinId: number,
-    cabinName: string,
-    cabinImage: string,
-  ) => {
+  const handleDeleteMenuItemClick = (cabinId: number, cabinName: string, cabinImage: string) => {
     setDeleteCabinInfo({
       cabinId: cabinId,
       name: cabinName,
@@ -89,20 +78,18 @@ const CabinsTable = ({
 
   const handleDeleteCabin = () => {
     if (deleteCabinInfo.cabinId !== null) {
-      deleteCabin(deleteCabinInfo.cabinId, deleteCabinInfo.imagePath).then(
-        () => {
-          fetchCabins();
-          const activePage = Number(searchParams.get("page"));
-          if (cabins && cabins.length <= 1 && activePage > 1) {
-            setSearchParams((prevParams) => {
-              prevParams.set("page", String(activePage - 1));
-              return prevParams;
-            });
-          }
-        },
-      );
+      deleteCabin(deleteCabinInfo.cabinId, deleteCabinInfo.imagePath).then(() => {
+        fetchCabins();
+        const activePage = Number(searchParams.get("page"));
+        if (cabins && cabins.length <= 1 && activePage > 1) {
+          setSearchParams(prevParams => {
+            prevParams.set("page", String(activePage - 1));
+            return prevParams;
+          });
+        }
+      });
     }
-    setDeleteCabinInfo((prevInfo) => {
+    setDeleteCabinInfo(prevInfo => {
       return { ...initialDeleteInfoState, name: prevInfo.name };
     });
   };
@@ -113,22 +100,12 @@ const CabinsTable = ({
         {/* Table Header */}
         <Table.Header backgroundColor="var(--color-grey-50)">
           <Table.Row>
-            <Table.ColumnHeader
-              className="table-head"
-              paddingLeft="4.8rem"
-              w="16rem"
-            >
+            <Table.ColumnHeader className="table-head" paddingLeft="4.8rem" w="16rem">
               CABIN
             </Table.ColumnHeader>
-            <Table.ColumnHeader className="table-head">
-              CAPACITY
-            </Table.ColumnHeader>
-            <Table.ColumnHeader className="table-head">
-              PRICE
-            </Table.ColumnHeader>
-            <Table.ColumnHeader className="table-head">
-              DISCOUNT
-            </Table.ColumnHeader>
+            <Table.ColumnHeader className="table-head">CAPACITY</Table.ColumnHeader>
+            <Table.ColumnHeader className="table-head">PRICE</Table.ColumnHeader>
+            <Table.ColumnHeader className="table-head">DISCOUNT</Table.ColumnHeader>
             <Table.ColumnHeader className="table-head"></Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
@@ -140,7 +117,7 @@ const CabinsTable = ({
               {() => <CabinsTableRowSkeleton key={crypto.randomUUID()} />}
             </For>
           ) : (
-            cabins?.map((cabin) => (
+            cabins?.map(cabin => (
               <Table.Row
                 key={cabin.id}
                 backgroundColor="var(--color-grey-0)"
@@ -161,7 +138,7 @@ const CabinsTable = ({
                     objectFit="cover"
                     aspectRatio={3 / 2}
                     height={70.4}
-                    onError={(e) => {
+                    onError={e => {
                       const target = e.target as HTMLImageElement;
                       target.src = "house-placeholder.jpg";
                       target.srcset = "house-placeholder.jpg";
@@ -209,13 +186,7 @@ const CabinsTable = ({
                       color="fg.error"
                       className="menu-item"
                       _highlighted={{ bg: "bg.error", color: "fg.error" }}
-                      onClick={() =>
-                        handleDeleteMenuItemClick(
-                          cabin.id,
-                          cabin.name,
-                          cabin.image,
-                        )
-                      }
+                      onClick={() => handleDeleteMenuItemClick(cabin.id, cabin.name, cabin.image)}
                     >
                       <HiTrash />
                       Delete
@@ -231,7 +202,7 @@ const CabinsTable = ({
       <DeleteDialog
         open={deleteCabinInfo.open}
         onOpenChange={() =>
-          setDeleteCabinInfo((prevInfo) => {
+          setDeleteCabinInfo(prevInfo => {
             return { ...initialDeleteInfoState, name: prevInfo.name };
           })
         }

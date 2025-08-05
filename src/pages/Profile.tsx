@@ -27,6 +27,7 @@ const Profile = () => {
             size="2xl"
             w="7.2rem"
             h="7.2rem"
+            fontSize="2.4rem"
             isLoadingAvatar={isLoading}
           />
 
