@@ -46,7 +46,10 @@ const App = () => {
                       </ProtectedRoute>
                     }
                   >
-                    <Route index element={<Navigate replace={true} to="/dashboard" />} />
+                    <Route
+                      index
+                      element={<Navigate replace={true} to="/dashboard" />}
+                    />
                     <Route
                       path="dashboard"
                       element={

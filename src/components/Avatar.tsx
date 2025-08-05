@@ -7,9 +7,17 @@ interface AvatarProps extends AvatarRootProps {
   isLoadingAvatar?: boolean;
 }
 
-const Avatar = ({ avatarSrc, fullName, isLoadingAvatar, ...props }: AvatarProps) => {
+const Avatar = ({
+  avatarSrc,
+  fullName,
+  isLoadingAvatar,
+  ...props
+}: AvatarProps) => {
   return (
-    <Skeleton rounded="full" loading={isLoadingAvatar === undefined ? false : isLoadingAvatar}>
+    <Skeleton
+      rounded="full"
+      loading={isLoadingAvatar === undefined ? false : isLoadingAvatar}
+    >
       <AvatarChakraUI.Root colorPalette="purple" {...props}>
         <AvatarChakraUI.Fallback name={fullName} fontSize={props.fontSize} />
         <AvatarChakraUI.Image src={avatarSrc} alt="Profile picture" />
