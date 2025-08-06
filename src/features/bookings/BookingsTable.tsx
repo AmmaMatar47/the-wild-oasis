@@ -8,7 +8,11 @@ import {
 
 import { Flex, For, Menu, Strong, Table, Text } from "@chakra-ui/react";
 import EmptyPage from "@/components/EmptyPage";
-import { formatDateToReadable, formatTimeToNow, formatToUSCurrency } from "../../utils/helper";
+import {
+  formatDateToReadable,
+  formatTimeToNow,
+  formatToUSCurrency,
+} from "../../utils/helper";
 import MenuContainer from "@/components/MenuContainer";
 import DeleteDialog from "@/components/DeleteDialog";
 import { useState } from "react";
@@ -41,12 +45,13 @@ const BookingsTable = ({ bookings, isLoading }: BookingsTableProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { deleteBooking } = useDeleteBooking();
   const { checkout } = useCheckout();
-  const [deleteDialogInfo, setDeleteDialogInfo] = useState<DeleteBookingInfo>(initialDeleteInfo);
+  const [deleteDialogInfo, setDeleteDialogInfo] =
+    useState<DeleteBookingInfo>(initialDeleteInfo);
 
   const correctPageForEmptyResults = () => {
     const activePage = Number(searchParams.get("page"));
     if (bookings && bookings.length <= 1 && activePage > 1) {
-      setSearchParams(prevParams => {
+      setSearchParams((prevParams) => {
         prevParams.set("page", String(activePage - 1));
         return prevParams;
       });
@@ -54,7 +59,7 @@ const BookingsTable = ({ bookings, isLoading }: BookingsTableProps) => {
   };
 
   const handleToggleDeleteDialog = (id?: number, guestName?: string) => {
-    setDeleteDialogInfo(prevInfo => {
+    setDeleteDialogInfo((prevInfo) => {
       return {
         id,
         guestName: guestName ? guestName : prevInfo.guestName,
@@ -66,7 +71,7 @@ const BookingsTable = ({ bookings, isLoading }: BookingsTableProps) => {
   const handleDeleteBooking = (id: number) => {
     deleteBooking(id, {
       onSuccess() {
-        setDeleteDialogInfo(prevInfo => {
+        setDeleteDialogInfo((prevInfo) => {
           return { ...initialDeleteInfo, guestName: prevInfo.guestName };
         });
         correctPageForEmptyResults();
@@ -84,17 +89,30 @@ const BookingsTable = ({ bookings, isLoading }: BookingsTableProps) => {
 
   return bookings?.length !== 0 ? (
     <>
-      <Table.Root variant="outline" size="sm" borderTopRadius="md" fontSize="0.875rem">
+      <Table.Root
+        variant="outline"
+        size="sm"
+        borderTopRadius="md"
+        fontSize="0.875rem"
+      >
         {/* Table Header */}
         <Table.Header backgroundColor="var(--color-grey-50)">
           <Table.Row textTransform="uppercase">
             <Table.ColumnHeader className="table-head" padding="0 2rem">
               Cabin
             </Table.ColumnHeader>
-            <Table.ColumnHeader className="table-head">Guest</Table.ColumnHeader>
-            <Table.ColumnHeader className="table-head">Stay duration</Table.ColumnHeader>
-            <Table.ColumnHeader className="table-head">Status</Table.ColumnHeader>
-            <Table.ColumnHeader className="table-head">Amount</Table.ColumnHeader>
+            <Table.ColumnHeader className="table-head">
+              Guest
+            </Table.ColumnHeader>
+            <Table.ColumnHeader className="table-head">
+              Stay duration
+            </Table.ColumnHeader>
+            <Table.ColumnHeader className="table-head">
+              Status
+            </Table.ColumnHeader>
+            <Table.ColumnHeader className="table-head">
+              Amount
+            </Table.ColumnHeader>
             <Table.ColumnHeader className="table-head"></Table.ColumnHeader>
           </Table.Row>
         </Table.Header>
@@ -106,7 +124,7 @@ const BookingsTable = ({ bookings, isLoading }: BookingsTableProps) => {
               {() => <BookingsSkeletonRow key={crypto.randomUUID()} />}
             </For>
           ) : (
-            bookings?.map(booking => (
+            bookings?.map((booking) => (
               <Table.Row
                 key={booking.id}
                 backgroundColor="var(--color-grey-0)"
@@ -114,7 +132,12 @@ const BookingsTable = ({ bookings, isLoading }: BookingsTableProps) => {
                 borderColor="var(--color-grey-100)"
                 h="4.5rem"
               >
-                <Table.Cell fontFamily="Sono" fontSize="1rem" fontWeight="600" padding="0 2rem">
+                <Table.Cell
+                  fontFamily="Sono"
+                  fontSize="1rem"
+                  fontWeight="600"
+                  padding="0 2rem"
+                >
                   {booking.cabins.name}
                 </Table.Cell>
 
@@ -129,17 +152,24 @@ const BookingsTable = ({ bookings, isLoading }: BookingsTableProps) => {
 
                 <Table.Cell>
                   <Flex fontSize=".85rem" fontWeight="500">
-                    {formatTimeToNow(booking.startDate)} &rarr; {booking.numNights} night
+                    {formatTimeToNow(booking.startDate)} &rarr;{" "}
+                    {booking.numNights} night
                     {booking.numNights === 1 ? "" : "s"} stay
                   </Flex>
-                  <Text fontSize="xs" flexDirection="row" color="var(--color-grey-500)">
+                  <Text
+                    fontSize="xs"
+                    flexDirection="row"
+                    color="var(--color-grey-500)"
+                  >
                     {formatDateToReadable(booking.startDate)} &mdash;{" "}
                     {formatDateToReadable(booking.endDate)}
                   </Text>
                 </Table.Cell>
 
                 <Table.Cell>
-                  <StatusBadge status={booking.status}>{booking.status}</StatusBadge>
+                  <StatusBadge status={booking.status}>
+                    {booking.status}
+                  </StatusBadge>
                 </Table.Cell>
 
                 <Table.Cell fontFamily="Sono" fontWeight="500">
@@ -190,7 +220,12 @@ const BookingsTable = ({ bookings, isLoading }: BookingsTableProps) => {
                       value="delete-cabin"
                       color="fg.error"
                       _highlighted={{ bg: "bg.error", color: "fg.error" }}
-                      onClick={() => handleToggleDeleteDialog(booking.id, booking.guests.fullName)}
+                      onClick={() =>
+                        handleToggleDeleteDialog(
+                          booking.id,
+                          booking.guests.fullName,
+                        )
+                      }
                     >
                       <HiTrash />
                       Delete booking
@@ -213,7 +248,8 @@ const BookingsTable = ({ bookings, isLoading }: BookingsTableProps) => {
         <Strong color="var(--color-grey-700)" fontWeight="500">
           {deleteDialogInfo.guestName}'s
         </Strong>{" "}
-        booking? It will be permanently deleted, and this action cannot be undone.
+        booking? It will be permanently deleted, and this action cannot be
+        undone.
       </DeleteDialog>
     </>
   ) : (
